@@ -1,0 +1,110 @@
+        -:    0:Source:E:/BubbleMAC_INFOCOM/main.cpp
+        -:    0:Graph:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\main.cpp.gcno
+        -:    0:Data:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include <iostream>
+        -:    2:#include "vehicle.h"
+        -:    3:#include "parameters.h"
+        -:    4:#include "common.h"
+        -:    5:#include "UpLocation.h"
+        -:    6:#include "communication.h"
+        -:    7:
+        -:    8:using namespace std;
+        -:    9:
+function main called 1 returned 100% blocks executed 100%
+        1:   10:int main() {
+        1:   11:    cout << "Hello, World!" << endl;
+        1:   11-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   11-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   12:    srand(0);
+        1:   12-block  0
+call    0 returned 1
+        -:   13:
+        1:   14:    int slot_start = 0;
+        1:   15:    int slot_end = 300;
+        1:   16:    int slot_step = 1;
+        -:   17:
+        -:   18:    struct Duallist ALL_Vehicles;
+        1:   19:    duallist_init(&ALL_Vehicles);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   20:
+      301:   21:    for(int slot = slot_start; slot < slot_end; slot+=slot_step){
+        1:   21-block  0
+      300:   21-block  1
+      301:   21-block  2
+branch  0 taken 300
+branch  1 taken 1 (fallthrough)
+      300:   22:        cout<<"slot = "<< slot<<endl;
+      300:   22-block  0
+call    0 returned 300
+branch  1 taken 300 (fallthrough)
+branch  2 taken 0 (throw)
+      300:   22-block  1
+call    3 returned 300
+branch  4 taken 300 (fallthrough)
+branch  5 taken 0 (throw)
+      300:   22-block  2
+call    6 returned 300
+branch  7 taken 300 (fallthrough)
+branch  8 taken 0 (throw)
+        -:   23:
+      300:   24:        if(slot % UpLocSlot == 0){
+      300:   24-block  0
+branch  0 taken 60 (fallthrough)
+branch  1 taken 240
+       60:   25:            init_simulation(&ALL_Vehicles);
+       60:   25-block  0
+call    0 returned 60
+branch  1 taken 60 (fallthrough)
+branch  2 taken 0 (throw)
+       60:   26:            updateLocation(&ALL_Vehicles, slot);
+       60:   26-block  0
+call    0 returned 60
+branch  1 taken 60 (fallthrough)
+branch  2 taken 0 (throw)
+       60:   27:            handle_neighbours(&ALL_Vehicles);
+       60:   27-block  0
+call    0 returned 60
+branch  1 taken 60 (fallthrough)
+branch  2 taken 0 (throw)
+       60:   28:            printf("The location of vehicles has been updated, Current slot = %d\n", slot);
+       60:   28-block  0
+call    0 returned 60
+branch  1 taken 60 (fallthrough)
+branch  2 taken 0 (throw)
+       60:   29:            printVehilces(&ALL_Vehicles);
+       60:   29-block  0
+call    0 returned 60
+branch  1 taken 60 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   30:        }
+        -:   31:
+        -:   32:        //handle the transmitter at each slot
+      300:   33:        handle_transmitter(&ALL_Vehicles, slot);
+      300:   33-block  0
+call    0 returned 300
+branch  1 taken 300 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   34:        //handle the receiver at each slot
+      300:   35:        handle_receiver(&ALL_Vehicles, slot);
+      300:   35-block  0
+call    0 returned 300
+branch  1 taken 300 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   36:    }
+        1:   37:    printf("Total Cars: %d\n cnt_pkt_tx: %d\n cnt_pkt_0: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n", Car_Number, cnt_pkt_tx, cnt_pkt_0, cnt_pkt_1, cnt_pkt_2);
+        1:   37-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   38:    return 0;
+        1:   38-block  0
+        -:   39:}

@@ -1,0 +1,917 @@
+        -:    0:Source:E:/BubbleMAC_INFOCOM/common.cpp
+        -:    0:Graph:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\common.cpp.gcno
+        -:    0:Data:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\common.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by cyx02 on 2022/6/27.
+        -:    3://
+        -:    4:
+        -:    5:#include "common.h"
+        -:    6:#include <stddef.h>
+        -:    7:#include <stdlib.h>
+        -:    8:#include <cstdio>
+        -:    9:
+        -:   10:
+        -:   11:/*
+        -:   12: *  Dual list
+        -:   13: */
+        -:   14:
+function _Z26duallist_copy_by_referenceP8DuallistS0_ called 0 returned 0% blocks executed 0%
+    #####:   15:struct Duallist* duallist_copy_by_reference(struct Duallist *destDuallist, struct Duallist *aDuallist)
+        -:   16:{
+        -:   17:    struct Item *aItem;
+        -:   18:
+    #####:   19:    if(destDuallist == NULL) {
+    %%%%%:   19-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:   20:        destDuallist = (struct Duallist*)malloc(sizeof(struct Duallist));
+    %%%%%:   20-block  0
+        -:   21:    }
+    #####:   22:    duallist_init(destDuallist);
+    %%%%%:   22-block  0
+call    0 never executed
+        -:   23:
+    #####:   24:    if(aDuallist!=NULL) {
+branch  0 never executed
+branch  1 never executed
+    #####:   25:        aItem = aDuallist->head;
+    #####:   26:        while(aItem!=NULL) {
+    %%%%%:   26-block  0
+    %%%%%:   26-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:   27:            duallist_add_to_tail(destDuallist, aItem->datap);
+    %%%%%:   27-block  0
+call    0 never executed
+    #####:   28:            aItem=aItem->next;
+        -:   29:        }
+        -:   30:    }
+    #####:   31:    return destDuallist;
+    %%%%%:   31-block  0
+        -:   32:}
+        -:   33:
+        -:   34:
+function _Z13duallist_copyP8DuallistS0_PFPvS1_E called 0 returned 0% blocks executed 0%
+    #####:   35:struct Duallist* duallist_copy(struct Duallist *destDuallist, struct Duallist *aDuallist, void*(*copy_func)(void*))
+        -:   36:{
+        -:   37:    struct Item *aItem;
+        -:   38:
+    #####:   39:    if(destDuallist == NULL) {
+    %%%%%:   39-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:   40:        destDuallist = (struct Duallist*)malloc(sizeof(struct Duallist));
+    %%%%%:   40-block  0
+        -:   41:    }
+    #####:   42:    duallist_init(destDuallist);
+    %%%%%:   42-block  0
+call    0 never executed
+    #####:   43:    if(aDuallist!=NULL) {
+branch  0 never executed
+branch  1 never executed
+    #####:   44:        aItem = aDuallist->head;
+    #####:   45:        while(aItem!=NULL) {
+    %%%%%:   45-block  0
+    %%%%%:   45-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:   46:            duallist_add_to_tail(destDuallist, copy_func(aItem->datap));
+    %%%%%:   46-block  0
+call    0 never executed
+call    1 never executed
+    #####:   47:            aItem=aItem->next;
+        -:   48:        }
+        -:   49:    }
+    #####:   50:    return destDuallist;
+    %%%%%:   50-block  0
+        -:   51:}
+        -:   52:
+        -:   53:
+function _Z21duallist_reverse_copyP8DuallistS0_PFPvS1_E called 0 returned 0% blocks executed 0%
+    #####:   54:struct Duallist* duallist_reverse_copy(struct Duallist *destDuallist, struct Duallist *aDuallist, void*(*copy_func)(void*))
+        -:   55:{
+        -:   56:    struct Item *aItem;
+        -:   57:
+    #####:   58:    if(destDuallist == NULL) {
+    %%%%%:   58-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:   59:        destDuallist = (struct Duallist*)malloc(sizeof(struct Duallist));
+    %%%%%:   59-block  0
+        -:   60:    }
+    #####:   61:    duallist_init(destDuallist);
+    %%%%%:   61-block  0
+call    0 never executed
+    #####:   62:    if(aDuallist!=NULL) {
+branch  0 never executed
+branch  1 never executed
+    #####:   63:        aItem = aDuallist->head;
+    #####:   64:        while(aItem!=NULL) {
+    %%%%%:   64-block  0
+    %%%%%:   64-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:   65:            duallist_add_to_head(destDuallist, copy_func(aItem->datap));
+    %%%%%:   65-block  0
+call    0 never executed
+call    1 never executed
+    #####:   66:            aItem=aItem->next;
+        -:   67:        }
+        -:   68:    }
+    #####:   69:    return destDuallist;
+    %%%%%:   69-block  0
+        -:   70:}
+        -:   71:
+        -:   72:
+function _Z13duallist_initP8Duallist called 8245 returned 100% blocks executed 75%
+     8245:   73:void duallist_init(struct Duallist *duallist)
+        -:   74:{
+        -:   75:    //Function：to initialize a duallist
+        -:   76:    //Input: Address of a duallist
+        -:   77:    //Output: Set the head of Duallist to 0, set the nItems=0.
+     8245:   78:    if(duallist == NULL) {
+     8245:   78-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 8245
+    #####:   79:        return;
+    %%%%%:   79-block  0
+        -:   80:    }
+     8245:   81:    duallist->head = NULL;
+     8245:   82:    duallist->nItems = 0;
+     8245:   82-block  0
+        -:   83:}
+        -:   84:
+function _Z20duallist_add_to_headP8DuallistPv called 0 returned 0% blocks executed 0%
+    #####:   85:struct Item* duallist_add_to_head(struct Duallist* duallist, void *data)
+        -:   86:{
+        -:   87:    struct Item *newp;
+        -:   88:
+    #####:   89:    if(duallist == NULL) {
+    %%%%%:   89-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:   90:        return NULL;
+    %%%%%:   90-block  0
+        -:   91:    }
+    #####:   92:    newp = (struct Item*)malloc(sizeof(struct Item));
+    #####:   93:    newp->datap = data;
+    #####:   94:    if(duallist->head != NULL) {
+    %%%%%:   94-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:   95:        newp->next = duallist->head;
+    #####:   96:        newp->prev = duallist->head->prev;
+    #####:   97:        duallist->head->prev = newp;
+    #####:   98:        duallist->head = newp;
+    %%%%%:   98-block  0
+        -:   99:    } else {
+    #####:  100:        newp->next = NULL;
+    #####:  101:        newp->prev = newp;
+    #####:  102:        duallist->head = newp;
+    %%%%%:  102-block  0
+        -:  103:    }
+    #####:  104:    duallist->nItems ++;
+    #####:  105:    return newp;
+    %%%%%:  105-block  0
+        -:  106:}
+        -:  107:
+function _Z20duallist_add_to_tailP8DuallistPv called 294324 returned 100% blocks executed 86%
+   294324:  108:struct Item* duallist_add_to_tail(struct Duallist *duallist, void *data)
+        -:  109:{
+        -:  110:    //Function: Add a data to the duallist at rhe tail.
+        -:  111:    //Input: Address of a duallist, address of a data.
+        -:  112:    //Output: Address of an Item, which is not necessary.
+        -:  113:    struct Item *newp;
+        -:  114:
+   294324:  115:    if(duallist == NULL) {
+   294324:  115-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 294324
+    #####:  116:        return NULL;
+    %%%%%:  116-block  0
+        -:  117:    }
+   294324:  118:    newp = (struct Item*)malloc(sizeof(struct Item));
+   294324:  119:    newp->datap = data;
+   294324:  120:    if(duallist->head != NULL) {
+   294324:  120-block  0
+branch  0 taken 290201 (fallthrough)
+branch  1 taken 4123
+   290201:  121:        newp->next = NULL;
+   290201:  122:        newp->prev = duallist->head->prev;
+   290201:  123:        duallist->head->prev->next = newp;
+   290201:  124:        duallist->head->prev = newp;
+   290201:  124-block  0
+        -:  125:    } else {
+     4123:  126:        newp->next = NULL;
+     4123:  127:        newp->prev = newp;
+     4123:  128:        duallist->head = newp;
+     4123:  128-block  0
+        -:  129:    }
+   294324:  130:    duallist->nItems ++;
+   294324:  131:    return newp;
+   294324:  131-block  0
+        -:  132:}
+        -:  133:
+        -:  134:
+function _Z34duallist_add_in_sequence_from_headP8DuallistPvPFiS1_S1_E called 0 returned 0% blocks executed 0%
+    #####:  135:struct Item* duallist_add_in_sequence_from_head(struct Duallist *duallist, void* data, int(*sort_func)(void*, void*))
+        -:  136:{
+        -:  137:    struct Item *newp, *aItem;
+        -:  138:
+    #####:  139:    if(duallist == NULL) {
+    %%%%%:  139-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  140:        return NULL;
+    %%%%%:  140-block  0
+        -:  141:    }
+    #####:  142:    newp = (struct Item*)malloc(sizeof(struct Item));
+    #####:  143:    newp->datap = data;
+    #####:  144:    if(duallist->head != NULL) {
+    %%%%%:  144-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  145:        aItem = duallist->head;
+    #####:  146:        while(aItem->next != NULL && sort_func(data, aItem->datap)){
+    %%%%%:  146-block  0
+    %%%%%:  146-block  1
+branch  0 never executed
+branch  1 never executed
+    %%%%%:  146-block  2
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    %%%%%:  146-block  3
+    %%%%%:  146-block  4
+    %%%%%:  146-block  5
+branch  5 never executed
+branch  6 never executed
+    #####:  147:            aItem = aItem->next;
+    %%%%%:  147-block  0
+        -:  148:        }
+    #####:  149:        if(!sort_func(data, aItem->datap)) {
+    %%%%%:  149-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  150:            if (aItem == duallist->head) {
+    %%%%%:  150-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  151:                newp->next = aItem;
+    #####:  152:                newp->prev = aItem->prev;
+    #####:  153:                aItem->prev = newp;
+    #####:  154:                duallist->head = newp;
+    %%%%%:  154-block  0
+        -:  155:            } else {
+    #####:  156:                newp->next = aItem;
+    #####:  157:                newp->prev = aItem->prev;
+    #####:  158:                aItem->prev = newp;
+    #####:  159:                newp->prev->next = newp;
+    %%%%%:  159-block  0
+        -:  160:            }
+        -:  161:        } else {
+    #####:  162:            newp->next = NULL;
+    #####:  163:            aItem->next = newp;
+    #####:  164:            newp->prev = aItem;
+    #####:  165:            duallist->head->prev = newp;
+    %%%%%:  165-block  0
+        -:  166:        }
+        -:  167:    } else {
+    #####:  168:        newp->next = NULL;
+    #####:  169:        newp->prev = newp;
+    #####:  170:        duallist->head = newp;
+    %%%%%:  170-block  0
+        -:  171:    }
+    #####:  172:    duallist->nItems ++;
+    #####:  173:    return newp;
+    %%%%%:  173-block  0
+        -:  174:}
+        -:  175:
+function _Z34duallist_add_in_sequence_from_tailP8DuallistPvPFiS1_S1_E called 0 returned 0% blocks executed 0%
+    #####:  176:struct Item* duallist_add_in_sequence_from_tail(struct Duallist *duallist, void* data, int(*sort_func)(void*, void*))
+        -:  177:{
+        -:  178:    //Function：
+        -:  179:    //Input: (1)address of a Duallist,(2)address of a data (3)address of a sort function
+        -:  180:    //Output:
+        -:  181:    struct Item *newp, *aItem;
+        -:  182:
+    #####:  183:    if(duallist == NULL) {
+    %%%%%:  183-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  184:        return NULL;
+    %%%%%:  184-block  0
+        -:  185:    }
+    #####:  186:    newp = (struct Item*)malloc(sizeof(struct Item));
+    #####:  187:    newp->datap = data;
+    #####:  188:    if(duallist->head != NULL) {
+    %%%%%:  188-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  189:        aItem = duallist->head->prev;
+    #####:  190:        while(aItem != duallist->head && sort_func(data, aItem->datap)){
+    %%%%%:  190-block  0
+    %%%%%:  190-block  1
+branch  0 never executed
+branch  1 never executed
+    %%%%%:  190-block  2
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    %%%%%:  190-block  3
+    %%%%%:  190-block  4
+    %%%%%:  190-block  5
+branch  5 never executed
+branch  6 never executed
+    #####:  191:            aItem = aItem->prev;
+    %%%%%:  191-block  0
+        -:  192:        }
+    #####:  193:        if(!sort_func(data, aItem->datap)) {
+    %%%%%:  193-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  194:            if (aItem->next == NULL) {
+    %%%%%:  194-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  195:                newp->next = NULL;
+    #####:  196:                newp->prev = aItem;
+    #####:  197:                aItem->next = newp;
+    #####:  198:                duallist->head->prev = newp;
+    %%%%%:  198-block  0
+        -:  199:            } else {
+    #####:  200:                newp->next = aItem->next;
+    #####:  201:                newp->prev = aItem;
+    #####:  202:                aItem->next->prev = newp;
+    #####:  203:                aItem->next = newp;
+    %%%%%:  203-block  0
+        -:  204:            }
+        -:  205:        } else {
+    #####:  206:            newp->next = aItem;
+    #####:  207:            newp->prev = aItem->prev;
+    #####:  208:            aItem->prev = newp;
+    #####:  209:            duallist->head = newp;
+    %%%%%:  209-block  0
+        -:  210:        }
+        -:  211:    } else {
+    #####:  212:        newp->next = NULL;
+    #####:  213:        newp->prev = newp;
+    #####:  214:        duallist->head = newp;
+    %%%%%:  214-block  0
+        -:  215:    }
+    #####:  216:    duallist->nItems ++;
+    #####:  217:    return newp;
+    %%%%%:  217-block  0
+        -:  218:}
+        -:  219:
+function _Z24duallist_add_before_itemP8DuallistP4ItemS2_Pv called 0 returned 0% blocks executed 0%
+    #####:  220:struct Item* duallist_add_before_item(struct Duallist *duallist, struct Item *fItem, struct Item *lItem, void *data)
+        -:  221:{
+        -:  222:    struct Item *theItem;
+        -:  223:
+    #####:  224:    if (fItem->next == NULL) {
+    %%%%%:  224-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  225:        theItem = duallist_add_to_head(duallist, data);
+    %%%%%:  225-block  0
+call    0 never executed
+    #####:  226:        return theItem;
+        -:  227:    }
+        -:  228:
+    #####:  229:    theItem = (struct Item*)malloc(sizeof(struct Item));
+    #####:  230:    theItem->datap = data;
+        -:  231:
+    #####:  232:    fItem->next = theItem;
+    #####:  233:    theItem->next = lItem;
+    #####:  234:    theItem->prev = fItem;
+    #####:  235:    lItem->prev = theItem;
+        -:  236:
+    #####:  237:    duallist->nItems ++;
+    #####:  238:    return theItem;
+    %%%%%:  238-block  0
+        -:  239:}
+        -:  240:
+        -:  241:/*
+        -:  242: * Find the location of an item in a duallist
+        -:  243: */
+function _Z13duallist_findP8DuallistPvPFiS1_S1_E called 0 returned 0% blocks executed 0%
+    #####:  244:struct Item* duallist_find(struct Duallist *duallist, void *key, int(*equal_func)(void*, void*))
+        -:  245:{
+        -:  246:    struct Item *aItem;
+        -:  247:
+    #####:  248:    if(duallist == NULL) {
+    %%%%%:  248-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  249:        return NULL;
+    %%%%%:  249-block  0
+        -:  250:    }
+    #####:  251:    aItem = duallist->head;
+    #####:  252:    while(aItem != NULL) {
+    %%%%%:  252-block  0
+    %%%%%:  252-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  253:        if(equal_func(key, aItem->datap))
+    %%%%%:  253-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  254:            return aItem;
+    %%%%%:  254-block  0
+    #####:  255:        aItem = aItem->next;
+    %%%%%:  255-block  0
+        -:  256:    }
+    #####:  257:    return NULL;
+    %%%%%:  257-block  0
+        -:  258:}
+        -:  259:
+        -:  260:
+        -:  261:
+        -:  262://add by cscs
+function _Z19duallist_add_uniqueP8DuallistPvPFiS1_S1_E called 0 returned 0% blocks executed 0%
+    #####:  263:struct Item* duallist_add_unique(struct Duallist *duallist, void *data, int(*judge_func)(void*, void*))
+        -:  264:{
+        -:  265:    struct Item* newp;
+    #####:  266:    if(duallist_find(duallist, data, judge_func)==NULL) {
+    %%%%%:  266-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  267:        newp = duallist_add_to_head(duallist, data);
+    %%%%%:  267-block  0
+call    0 never executed
+    #####:  268:        return newp;
+        -:  269:    } else {
+    #####:  270:        return NULL;
+    %%%%%:  270-block  0
+        -:  271:    }
+        -:  272:}//add by cscs
+        -:  273:
+        -:  274:/*
+        -:  275: * Pick up an item from the duallist and return the
+        -:  276: * wrapped data.
+        -:  277: */
+function _Z13duallist_pickP8DuallistPvPFiS1_S1_E called 0 returned 0% blocks executed 0%
+    #####:  278:void* duallist_pick(struct Duallist *duallist, void *key, int(*judge_func)(void*, void*))
+        -:  279:{
+        -:  280:    struct Item *aItem;
+    #####:  281:    void *rt = NULL;
+        -:  282:
+    #####:  283:    if(duallist == NULL) {
+    %%%%%:  283-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  284:        return NULL;
+    %%%%%:  284-block  0
+        -:  285:    }
+    #####:  286:    aItem = duallist->head;
+    #####:  287:    while(aItem != NULL) {
+    %%%%%:  287-block  0
+    %%%%%:  287-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  288:        if(judge_func(key, aItem->datap)) {
+    %%%%%:  288-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  289:            if(aItem == duallist->head) {
+    %%%%%:  289-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  290:                duallist->head = aItem->next;
+    #####:  291:                if(aItem->next != NULL)
+    %%%%%:  291-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  292:                    duallist->head->prev = aItem->prev;
+    %%%%%:  292-block  0
+        -:  293:            } else {
+    #####:  294:                aItem->prev->next = aItem->next;
+    #####:  295:                if(aItem->next != NULL)
+    %%%%%:  295-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  296:                    aItem->next->prev = aItem->prev;
+    %%%%%:  296-block  0
+        -:  297:                else
+    #####:  298:                    duallist->head->prev = aItem->prev;
+    %%%%%:  298-block  0
+        -:  299:            }
+    #####:  300:            rt = aItem->datap;
+    #####:  301:            free(aItem);
+    #####:  302:            duallist->nItems --;
+    #####:  303:            return rt;
+    %%%%%:  303-block  0
+        -:  304:        }
+    #####:  305:        aItem = aItem->next;
+    %%%%%:  305-block  0
+        -:  306:    }
+    #####:  307:    return NULL;
+    %%%%%:  307-block  0
+        -:  308:}
+        -:  309:
+function _Z18duallist_pick_itemP8DuallistP4Item called 218 returned 100% blocks executed 80%
+      218:  310:void* duallist_pick_item(struct Duallist *duallist, struct Item *theItem)
+        -:  311:{
+        -:  312:    void *rt;
+        -:  313:
+      218:  314:    if(duallist == NULL) {
+      218:  314-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 218
+    #####:  315:        return NULL;
+    %%%%%:  315-block  0
+        -:  316:    }
+      218:  317:    if(theItem == duallist->head) {
+      218:  317-block  0
+branch  0 taken 11 (fallthrough)
+branch  1 taken 207
+       11:  318:        duallist->head = theItem->next;
+       11:  319:        if(theItem->next != NULL)
+       11:  319-block  0
+branch  0 taken 11 (fallthrough)
+branch  1 taken 0
+       11:  320:            duallist->head->prev = theItem->prev;
+       11:  320-block  0
+        -:  321:    } else {
+      207:  322:        theItem->prev->next = theItem->next;
+      207:  323:        if(theItem->next != NULL)
+      207:  323-block  0
+branch  0 taken 207 (fallthrough)
+branch  1 taken 0
+      207:  324:            theItem->next->prev = theItem->prev;
+      207:  324-block  0
+        -:  325:        else
+    #####:  326:            duallist->head->prev = theItem->prev;
+    %%%%%:  326-block  0
+        -:  327:    }
+      218:  328:    rt = theItem->datap;
+      218:  329:    free(theItem);
+      218:  330:    duallist->nItems --;
+      218:  331:    return rt;
+      218:  331-block  0
+        -:  332:}
+        -:  333:
+        -:  334:/*
+        -:  335: * Pick up the head item from the duallist and return the
+        -:  336: * wrapped data.
+        -:  337: */
+function _Z18duallist_pick_headP8Duallist called 271556 returned 100% blocks executed 75%
+   271556:  338:void * duallist_pick_head(struct Duallist *duallist)
+        -:  339:{
+        -:  340:    struct Item *aItem;
+        -:  341:    void *rt;
+        -:  342:
+   271556:  343:    if(duallist == NULL) {
+   271556:  343-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 271556
+    #####:  344:        return NULL;
+    %%%%%:  344-block  0
+        -:  345:    }
+   271556:  346:    if(duallist->head != NULL) {
+   271556:  346-block  0
+branch  0 taken 271556 (fallthrough)
+branch  1 taken 0
+   271556:  347:        aItem = duallist->head;
+   271556:  348:        duallist->head = aItem->next;
+   271556:  349:        if(aItem->next != NULL)
+   271556:  349-block  0
+branch  0 taken 267732 (fallthrough)
+branch  1 taken 3824
+   267732:  350:            duallist->head->prev = aItem->prev;
+   267732:  350-block  0
+   271556:  351:        rt = aItem->datap;
+   271556:  352:        free(aItem);
+   271556:  353:        duallist->nItems --;
+   271556:  354:        return rt;
+   271556:  354-block  0
+        -:  355:    }
+    #####:  356:    return NULL;
+    %%%%%:  356-block  0
+        -:  357:}
+        -:  358:
+        -:  359:/*
+        -:  360: * Pick up the tail item from the duallist and return the
+        -:  361: * wrapped data.
+        -:  362: */
+function _Z18duallist_pick_tailP8Duallist called 0 returned 0% blocks executed 0%
+    #####:  363:void * duallist_pick_tail(struct Duallist *duallist)
+        -:  364:{
+        -:  365:    struct Item *aItem;
+        -:  366:    void *rt;
+        -:  367:
+    #####:  368:    if(duallist == NULL) {
+    %%%%%:  368-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  369:        return NULL;
+    %%%%%:  369-block  0
+        -:  370:    }
+    #####:  371:    if(duallist->head != NULL) {
+    %%%%%:  371-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  372:        aItem = duallist->head->prev;
+    #####:  373:        if(aItem->prev == aItem)
+    %%%%%:  373-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  374:            duallist->head = NULL;
+    %%%%%:  374-block  0
+        -:  375:        else {
+    #####:  376:            aItem->prev->next = NULL;
+    #####:  377:            duallist->head->prev = aItem->prev;
+    %%%%%:  377-block  0
+        -:  378:        }
+    #####:  379:        rt = aItem->datap;
+    #####:  380:        free(aItem);
+    #####:  381:        duallist->nItems --;
+    #####:  382:        return rt;
+    %%%%%:  382-block  0
+        -:  383:    }
+    #####:  384:    return NULL;
+    %%%%%:  384-block  0
+        -:  385:}
+        -:  386:
+function _Z17is_duallist_emptyP8Duallist called 275678 returned 100% blocks executed 83%
+   275678:  387:int is_duallist_empty(struct Duallist *duallist)
+        -:  388:{
+   275678:  389:    if(duallist == NULL) {
+   275678:  389-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 275678
+    #####:  390:        return -1;
+    %%%%%:  390-block  0
+        -:  391:    }
+   275678:  392:    if(duallist->head != NULL)
+   275678:  392-block  0
+branch  0 taken 271556 (fallthrough)
+branch  1 taken 4122
+   271556:  393:        return 0;
+   271556:  393-block  0
+     4122:  394:    return 1;
+     4122:  394-block  0
+        -:  395:}
+        -:  396:
+function _Z16duallist_destroyP8DuallistPFvPvE called 4122 returned 100% blocks executed 78%
+     4122:  397:void duallist_destroy(struct Duallist *duallist, void (*free_func)(void*))
+        -:  398:{
+        -:  399:    //Function: To destroy a duallist
+        -:  400:    //Input: (1)address of a duallist (2)address of free function
+        -:  401:    //Output:
+        -:  402:    void *datap;
+        -:  403:
+     4122:  404:    if(duallist == NULL) {
+     4122:  404-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 4122
+    #####:  405:        return ;
+    %%%%%:  405-block  0
+        -:  406:    }
+   275678:  407:    while (!is_duallist_empty(duallist)) {
+     4122:  407-block  0
+   275678:  407-block  1
+call    0 returned 275678
+branch  1 taken 271556
+branch  2 taken 4122 (fallthrough)
+   271556:  408:        datap = duallist_pick_head(duallist);
+   271556:  408-block  0
+call    0 returned 271556
+   271556:  409:        if(free_func)
+branch  0 taken 0 (fallthrough)
+branch  1 taken 271556
+    #####:  410:            free_func(datap);
+    %%%%%:  410-block  0
+call    0 never executed
+        -:  411:    }
+        -:  412:}
+        -:  413:
+function _Z13duallist_dumpP6_iobufP8DuallistPFvS0_PvE called 0 returned 0% blocks executed 0%
+    #####:  414:void duallist_dump(FILE *fOutput, struct Duallist *duallist, void(*dump_func)(FILE*, void*))
+        -:  415:{
+        -:  416:    unsigned long i;
+        -:  417:    struct Item *aItem;
+        -:  418:
+    #####:  419:    if(duallist == NULL) {
+    %%%%%:  419-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  420:        return ;
+    %%%%%:  420-block  0
+        -:  421:    }
+    #####:  422:    fwrite(&duallist->nItems, sizeof(unsigned long), 1, fOutput);
+    %%%%%:  422-block  0
+call    0 never executed
+    #####:  423:    aItem = duallist->head;
+    #####:  424:    for(i=0;i<duallist->nItems;i++) {
+    %%%%%:  424-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  425:        dump_func(fOutput, aItem->datap);
+    %%%%%:  425-block  0
+call    0 never executed
+    #####:  426:        aItem = aItem->next;
+        -:  427:    }
+        -:  428:}
+        -:  429:
+        -:  430:
+function _Z13duallist_loadP6_iobufP8DuallistPFPvS0_E called 0 returned 0% blocks executed 0%
+    #####:  431:void duallist_load(FILE *fInput, struct Duallist *duallist, void*(*load_func)(FILE*))
+        -:  432:{
+        -:  433:    unsigned long i, nItems;
+        -:  434:
+    #####:  435:    if(duallist == NULL) {
+    %%%%%:  435-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  436:        duallist = (struct Duallist*)malloc(sizeof(struct Duallist)) ;
+    %%%%%:  436-block  0
+        -:  437:    }
+    #####:  438:    duallist_init(duallist);
+    %%%%%:  438-block  0
+call    0 never executed
+    #####:  439:    fread(&nItems, sizeof(unsigned long), 1, fInput);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  440:    for (i = 0; i<nItems; i++)
+    %%%%%:  440-block  0
+    %%%%%:  440-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  441:        duallist_add_to_tail(duallist, load_func(fInput));
+    %%%%%:  441-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    %%%%%:  441-block  1
+call    3 never executed
+    #####:  442:}
+    %%%%%:  442-block  0
+        -:  443:
+        -:  444:
+        -:  445:
+        -:  446:
+        -:  447:
+function _Z16distance_to_tailP4Item called 0 returned 0% blocks executed 0%
+    #####:  448:unsigned long distance_to_tail(struct Item *aItem)
+        -:  449:{
+    #####:  450:    unsigned long count = 0;
+        -:  451:
+    #####:  452:    while(aItem) {
+    %%%%%:  452-block  0
+    %%%%%:  452-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  453:        count ++;
+    #####:  454:        aItem = aItem->next;
+    %%%%%:  454-block  0
+        -:  455:    }
+    #####:  456:    return count;
+    %%%%%:  456-block  0
+        -:  457:}
+        -:  458:
+        -:  459:
+function _Z16distance_to_headP8DuallistP4Item called 0 returned 0% blocks executed 0%
+    #####:  460:unsigned long distance_to_head(struct Duallist *aDuallist, struct Item *aItem)
+        -:  461:{
+    #####:  462:    unsigned long count = 0;
+        -:  463:
+    #####:  464:    while(aItem && aItem!=aDuallist->head) {
+    %%%%%:  464-block  0
+    %%%%%:  464-block  1
+branch  0 never executed
+branch  1 never executed
+    %%%%%:  464-block  2
+branch  2 never executed
+branch  3 never executed
+    #####:  465:        count ++;
+    #####:  466:        aItem = aItem->prev;
+    %%%%%:  466-block  0
+        -:  467:    }
+    #####:  468:    return count;
+    %%%%%:  468-block  0
+        -:  469:}
+        -:  470:
+function _Z10is_sublistP8DuallistS0_PFiPvS1_E called 0 returned 0% blocks executed 0%
+    #####:  471:int is_sublist(struct Duallist *aList, struct Duallist *bList, int(*equal_func)(void*, void*))
+        -:  472:{
+        -:  473:    struct Item *aItem, *bItem;
+        -:  474:    int foundItem;
+        -:  475:
+    #####:  476:    if(aList && bList) {
+    %%%%%:  476-block  0
+branch  0 never executed
+branch  1 never executed
+    %%%%%:  476-block  1
+branch  2 never executed
+branch  3 never executed
+    #####:  477:        aItem = aList->head;
+    #####:  478:        while(aItem) {
+    %%%%%:  478-block  0
+    %%%%%:  478-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  479:            bItem = bList->head;
+    #####:  480:            foundItem = 0;
+    #####:  481:            while(bItem) {
+    %%%%%:  481-block  0
+    %%%%%:  481-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  482:                if(equal_func(aItem->datap, bItem->datap))
+    %%%%%:  482-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  483:                    foundItem = 1;
+    %%%%%:  483-block  0
+    #####:  484:                bItem = bItem->next;
+    %%%%%:  484-block  0
+        -:  485:            }
+    #####:  486:            if(!foundItem)
+    %%%%%:  486-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  487:                return 0;
+    %%%%%:  487-block  0
+    #####:  488:            aItem = aItem->next;
+    %%%%%:  488-block  0
+        -:  489:        }
+    #####:  490:        return 1;
+    %%%%%:  490-block  0
+        -:  491:    }
+    #####:  492:    return 0;
+    %%%%%:  492-block  0
+        -:  493:}
+        -:  494:
+function _Z21duallist_remove_loopsP8DuallistPFiPvS1_EPFvS1_E called 0 returned 0% blocks executed 0%
+    #####:  495:void duallist_remove_loops(struct Duallist *aList, int(*equal_func)(void*,void*), void(*free_func)(void*))
+        -:  496:{
+        -:  497:    struct Item *aItem, *bItem, *temp;
+        -:  498:    void *datap;
+        -:  499:
+    #####:  500:    if(aList) {
+    %%%%%:  500-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  501:        aItem = aList->head;
+    #####:  502:        while(aItem) {
+    %%%%%:  502-block  0
+    %%%%%:  502-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  503:            bItem = aItem->next;
+    #####:  504:            while(bItem) {
+    %%%%%:  504-block  0
+    %%%%%:  504-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  505:                if(equal_func && equal_func(aItem->datap, bItem->datap)) {
+    %%%%%:  505-block  0
+branch  0 never executed
+branch  1 never executed
+    %%%%%:  505-block  1
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    %%%%%:  505-block  2
+    %%%%%:  505-block  3
+    %%%%%:  505-block  4
+branch  5 never executed
+branch  6 never executed
+    #####:  506:                    temp = aItem->next;
+    #####:  507:                    while(temp!=bItem->next) {
+    %%%%%:  507-block  0
+    %%%%%:  507-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  508:                        datap = duallist_pick_item(aList, aItem);
+    %%%%%:  508-block  0
+call    0 never executed
+    #####:  509:                        if(free_func)
+branch  0 never executed
+branch  1 never executed
+    #####:  510:                            free_func(datap);
+    %%%%%:  510-block  0
+call    0 never executed
+    #####:  511:                        aItem = temp;
+    #####:  512:                        temp = aItem->next;
+    %%%%%:  512-block  0
+        -:  513:                    }
+        -:  514:                }
+    #####:  515:                bItem = bItem->next;
+    %%%%%:  515-block  0
+        -:  516:            }
+    #####:  517:            aItem = aItem->next;
+    %%%%%:  517-block  0
+        -:  518:        }
+        -:  519:    }
+    #####:  520:}

@@ -1,0 +1,38 @@
+        -:    0:Source:E:/BubbleMAC_INFOCOM/vehicle.cpp
+        -:    0:Graph:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\vehicle.cpp.gcno
+        -:    0:Data:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\vehicle.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by cyx02 on 2022/6/27.
+        -:    3://
+        -:    4:
+        -:    5:#include "vehicle.h"
+        -:    6:#include "math.h"
+        -:    7:#include <cstdio>
+        -:    8:#include <stddef.h>
+        -:    9:
+function _Z24distance_between_vehiclePK7vehicleS1_ called 299936 returned 100% blocks executed 100%
+   299936:   10:double distance_between_vehicle(const struct vehicle* aCar, const struct vehicle* bCar){
+   299936:   11:    return sqrt((aCar->x - bCar->x)*(aCar->x - bCar->x) + (aCar->y - bCar->y)*(aCar->y - bCar->y));
+   299936:   11-block  0
+        -:   12:}
+        -:   13:
+        -:   14:
+function _Z13printVehilcesP8Duallist called 60 returned 100% blocks executed 100%
+       60:   15:void printVehilces(struct Duallist *ALL_Vehicles){
+        -:   16:    struct Item *aItem;
+        -:   17:    struct vehicle* aCar;
+        -:   18:
+       60:   19:    aItem =ALL_Vehicles-> head;
+     4182:   20:    while(aItem != NULL){
+       60:   20-block  0
+     4182:   20-block  1
+branch  0 taken 4122
+branch  1 taken 60 (fallthrough)
+     4122:   21:        aCar = (struct vehicle*)aItem->datap;
+     4122:   22:        printf("handled=%d, id= %s, x=%lf, y=%lf, CommRage=%lf, slot_occupied=%d, slot_condition=%d \n", aCar->handled, aCar->id, aCar->x, aCar->y, aCar->commRadius, aCar->slot_occupied, aCar->slot_condition);
+     4122:   22-block  0
+call    0 returned 4122
+     4122:   23:        aItem = aItem->next;
+        -:   24:    }
+       60:   25:}

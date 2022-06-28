@@ -1,0 +1,91 @@
+        -:    0:Source:E:/BubbleMAC_INFOCOM/packets.cpp
+        -:    0:Graph:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\packets.cpp.gcno
+        -:    0:Data:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\packets.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by cyx02 on 2022/6/27.
+        -:    3://
+        -:    4:
+        -:    5:#include "packets.h"
+        -:    6:#include "parameters.h"
+        -:    7:#include <cstdlib>
+        -:    8:
+        -:    9:
+function _Z10log_packetP6packeti called 0 returned 0% blocks executed 0%
+    #####:   10:void log_packet(struct packet * aPkt, int slot){
+        -:   11:    char output_collisions_path[100];
+        -:   12:    FILE * Collisions_output;
+    #####:   13:    sprintf(output_collisions_path, "./simulation_result/bubble_packet_%d_%d.txt", SlotPerFrame, traffic_density);
+    %%%%%:   13-block  0
+call    0 never executed
+        -:   14:    //printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!%d\n",traffic_density);
+    #####:   15:    Collisions_output = fopen(output_collisions_path,"a");
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:   16:
+    #####:   17:    fprintf(Collisions_output,"No: %d, slot: %d, condition: %d\n", cnt_pkt++, slot, aPkt->slot_condition);
+    %%%%%:   17-block  0
+call    0 never executed
+        -:   18:
+        -:   19:    // src
+    #####:   20:    fprintf(Collisions_output,"src id: %d\n",aPkt->srcVehicle->id);
+call    0 never executed
+        -:   21:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   22:    //     fprintf(Collisions_output,"%d ",aPkt->srcVehicle->slot_oneHop[i]);
+        -:   23:    // }
+        -:   24:    // fprintf(Collisions_output,"\n");
+        -:   25:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   26:    //     fprintf(Collisions_output,"%d ",aPkt->srcVehicle->slot_twoHop[i]);
+        -:   27:    // }
+        -:   28:    // fprintf(Collisions_output,"\n");
+        -:   29:
+        -:   30:    //dst
+    #####:   31:    fprintf(Collisions_output,"dst id: %d\n",aPkt->dstVehicle->id);
+call    0 never executed
+        -:   32:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   33:    //     fprintf(Collisions_output,"%d ",aPkt->dstVehicle->slot_oneHop[i]);
+        -:   34:    // }
+        -:   35:    // fprintf(Collisions_output,"\n");
+        -:   36:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   37:    //     fprintf(Collisions_output,"%d ",aPkt->dstVehicle->slot_twoHop[i]);
+        -:   38:    // }
+    #####:   39:    fprintf(Collisions_output,"\n");
+call    0 never executed
+        -:   40:
+    #####:   41:    fclose(Collisions_output);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:   42:}
+    %%%%%:   42-block  0
+        -:   43:
+        -:   44:
+        -:   45:
+        -:   46://generate_packet
+function _Z15generate_packetP7vehicleS0_ii called 0 returned 0% blocks executed 0%
+    #####:   47:struct packet * generate_packet(struct vehicle *aCar, struct vehicle *bCar, int slot, int condition){
+        -:   48:    struct packet* pkt;
+    #####:   49:    pkt = (struct packet*)malloc(sizeof(struct packet));
+    #####:   50:    pkt->timestamp = slot;
+        -:   51:    // pkt->slot_condition = 0;//还没有发生碰撞
+    #####:   52:    pkt->srcVehicle = aCar;
+    #####:   53:    pkt->dstVehicle = bCar;
+    #####:   54:    pkt->condition = condition;
+        -:   55:
+    #####:   56:    for(int i = 0; i < SlotPerFrame; i++){
+    %%%%%:   56-block  0
+    %%%%%:   56-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:   57:        pkt->OHN_snapshot[i] = aCar->OHN[i];
+    %%%%%:   57-block  0
+        -:   58:    }
+        -:   59:
+    #####:   60:    return pkt;
+    %%%%%:   60-block  0
+        -:   61:}
+        -:   62:
+        -:   63:
+        -:   64:
+        -:   65:

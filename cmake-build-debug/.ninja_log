@@ -1,0 +1,10 @@
+# ninja log v5
+11	104	6780028488794993	CMakeFiles/BubbleMAC_INFOCOM.dir/parameters.cpp.obj	d850164811bb9760
+4	367	6780030553279913	CMakeFiles/BubbleMAC_INFOCOM.dir/main.cpp.obj	eb4efc863e07886c
+26	170	6779735286838630	CMakeFiles/BubbleMAC_INFOCOM.dir/common.cpp.obj	46af283168a6011b
+367	592	6780030555505121	BubbleMAC_INFOCOM.exe	82148bb3c4ef74d8
+20	179	6780030551389936	CMakeFiles/BubbleMAC_INFOCOM.dir/vehicle.cpp.obj	63e3e71f5666dc6a
+36	174	6780030551339958	CMakeFiles/BubbleMAC_INFOCOM.dir/communication.cpp.obj	6c0d07191e3b5d72
+29	176	6780030551359958	CMakeFiles/BubbleMAC_INFOCOM.dir/packets.cpp.obj	bd92360e9b40ab32
+12	169	6780030551279950	CMakeFiles/BubbleMAC_INFOCOM.dir/UpLocation.cpp.obj	e26c108fd6a0dec1
+44	183	6780030551429925	CMakeFiles/BubbleMAC_INFOCOM.dir/collision.cpp.obj	54421c98a6d1f5c7

@@ -1,0 +1,246 @@
+        -:    0:Source:E:/BubbleMAC_INFOCOM/communication.cpp
+        -:    0:Graph:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\communication.cpp.gcno
+        -:    0:Data:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\communication.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by cyx02 on 2022/6/27.
+        -:    3://
+        -:    4:
+        -:    5:#include "communication.h"
+        -:    6:#include "stddef.h"
+        -:    7:#include "vehicle.h"
+        -:    8:#include "parameters.h"
+        -:    9:#include "packets.h"
+        -:   10:#include "collision.h"
+        -:   11:
+        -:   12:
+        -:   13:// transmit packets. For each vehicle, if it is a tx, it broadcast to neighbors within its communication range. If the rx also is a tx, there will be a collision, if not  it will receive the packet.
+function _Z18handle_transmitterP8Duallisti called 300 returned 100% blocks executed 50%
+      300:   14:void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
+        -:   15:    struct Item *aItem, *bItem;
+        -:   16:    struct vehicle *aCar, *bCar;
+        -:   17:
+      300:   18:    aItem = ALL_Vehicles->head;
+    20910:   19:    while(aItem != NULL){
+      300:   19-block  0
+    20910:   19-block  1
+branch  0 taken 20610
+branch  1 taken 300 (fallthrough)
+    20610:   20:        aCar = (struct vehicle*)aItem->datap;
+        -:   21:
+        -:   22:        //若车辆占用时槽并非当前时槽，则跳过(略过所有的receiver)
+    20610:   23:        if(aCar->slot_occupied != slot%SlotPerFrame){
+    20610:   23-block  0
+branch  0 taken 20519 (fallthrough)
+branch  1 taken 91
+    20519:   24:            aItem = aItem->next;
+    20519:   25:            continue;
+    20519:   25-block  0
+        -:   26:        }
+        -:   27:
+       91:   28:        printf("Current Slot: %d, Current Transmitter: %s\n", slot, aCar->id);//对当前时槽正好发射的节点进行操作
+       91:   28-block  0
+call    0 returned 91
+       91:   29:        cnt_pkt_tx++;
+       91:   30:        bItem = (struct Item*)aCar->neighbours.head;//遍历当前transmitter的邻居节点
+     6001:   31:        while(bItem != NULL){
+     6001:   31-block  0
+branch  0 taken 5910
+branch  1 taken 91 (fallthrough)
+     5910:   32:            bCar = (struct vehicle*)bItem->datap;
+        -:   33:            //printf("bCar Id: %s\n", bCar->id);
+     5910:   34:            double distanceAB = distance_between_vehicle(aCar, bCar);
+     5910:   34-block  0
+call    0 returned 5910
+     5910:   35:            if(aCar->commRadius < distanceAB){
+branch  0 taken 5910 (fallthrough)
+branch  1 taken 0
+        -:   36:                //printf("%d 's Comm Range is: %lf, OutRange neighbor is %d, distance is %lf\n",aCar->id,  aCar->commRadius, bCar->id,distanceAB);
+     5910:   37:                bItem = bItem->next;
+     5910:   37-block  0
+        -:   38:            }else{
+        -:   39:                //printf("%d 's Comm Range is: %lf, InRange neighbor is %d, distance is %lf\n", aCar->id,aCar->commRadius, bCar->id, distanceAB);
+    #####:   40:                if(bCar->slot_occupied == aCar->slot_occupied){     //若此时目标车辆也在发送，则产生collision
+    %%%%%:   40-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:   41:                    cnt_pkt_0++;
+    #####:   42:                    struct packet* pkt = generate_packet(aCar,bCar,slot,0);
+    %%%%%:   42-block  0
+call    0 never executed
+    #####:   43:                    duallist_add_to_head(&(bCar->packets), pkt);
+call    0 never executed
+    #####:   44:                    printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
+call    0 never executed
+    #####:   45:                    log_packet(pkt,slot);
+call    0 never executed
+        -:   46:
+    #####:   47:                    struct collision* coli =  generate_collision(aCar,bCar,0,slot);
+call    0 never executed
+    #####:   48:                    log_collision(coli);
+call    0 never executed
+    #####:   49:                    bItem = bItem->next;
+        -:   50:                }else{
+    #####:   51:                    struct packet* pkt = generate_packet(aCar,bCar,slot,1);
+    %%%%%:   51-block  0
+call    0 never executed
+    #####:   52:                    duallist_add_to_head(&(bCar->packets), pkt);
+call    0 never executed
+    #####:   53:                    printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
+call    0 never executed
+        -:   54:                    //log_packet(pkt,slot);
+    #####:   55:                    bItem = bItem->next;
+        -:   56:                }
+        -:   57:            }
+        -:   58:        }
+       91:   59:        aItem =aItem->next;
+       91:   59-block  0
+        -:   60:    }
+      300:   61:}
+        -:   62:
+        -:   63:
+function _Z15handle_receiverP8Duallisti called 300 returned 100% blocks executed 24%
+      300:   64:void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
+        -:   65:    struct Item *aItem, *bItem;
+        -:   66:    struct vehicle *aCar;
+        -:   67:
+      300:   68:    aItem = ALL_Vehicles->head;
+    20910:   69:    while(aItem != NULL){
+      300:   69-block  0
+    20910:   69-block  1
+branch  0 taken 20610
+branch  1 taken 300 (fallthrough)
+    20610:   70:        aCar = (struct vehicle*)aItem->datap;
+        -:   71:
+    20610:   72:        if(aCar->slot_occupied == slot%SlotPerFrame) {
+    20610:   72-block  0
+branch  0 taken 91 (fallthrough)
+branch  1 taken 20519
+       91:   73:            aItem = aItem->next;
+        -:   74:            // printf("There is a transmitter!\n");
+       91:   75:            continue; //忽略掉transmitter
+       91:   75-block  0
+        -:   76:        }
+        -:   77:
+        -:   78:        //printf("Current Slot: %d, Current Receiver: %d\n", slot, aCar->id);//对当前时槽正好发射的节点进行操作
+        -:   79:        //到目前时间一直都没有收到包
+    20519:   80:        if(aCar->packets.nItems == 0){
+    20519:   80-block  0
+branch  0 taken 20519 (fallthrough)
+branch  1 taken 0
+    20519:   81:            aItem = aItem->next;
+        -:   82:            // printf("There is no packets!\n");
+    20519:   83:            continue;
+    20519:   83-block  0
+        -:   84:        }
+        -:   85:
+        -:   86:        //数一下当前slot收到了多少个包---->packet只有当一个完整的frame才刷新
+    #####:   87:        int cnt_cur_pkt = 0;
+    #####:   88:        bItem =  (struct Item*)aCar->packets.head;
+    #####:   89:        while(bItem != NULL){
+    %%%%%:   89-block  0
+    %%%%%:   89-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:   90:            struct packet* pkt= (struct packet*)bItem->datap;
+        -:   91:
+    #####:   92:            if(pkt->timestamp != slot)//仅统计当前slot的pkt
+    %%%%%:   92-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:   93:                break;
+    %%%%%:   93-block  0
+        -:   94:            else
+    #####:   95:                cnt_cur_pkt++;
+        -:   96:
+    #####:   97:            bItem = bItem->next;
+    %%%%%:   97-block  0
+        -:   98:        }
+        -:   99:
+        -:  100:        // // 若当前slot收到0个包
+        -:  101:        // if(cnt_cur_pkt == 0){
+        -:  102:        //     aCar->OHN[slot] = NULL;
+        -:  103:        //     // aCar->THN[slot] = NULL; //改变THN只能通过pkt的信息
+        -:  104:        // }else if(cnt_cur_pkt == 1){//只收到一个pkt，则正常收包，update OHN 和THN, frontV, rearV 有问题
+        -:  105:        //     cnt_received++;
+        -:  106:        //     struct packet* pkt = (struct packet*)aCar->packets.head->datap; //取出第一个包
+        -:  107:        //     int index = pkt->timestamp%SlotPerFrame;
+        -:  108:        //     struct vehicle* value = pkt->srcVehicle;
+        -:  109:
+        -:  110:        //     //更新OHN时槽使用情况
+        -:  111:        //     aCar->OHN[index] = value;
+        -:  112:        //     //更新THN的时槽使用情况
+        -:  113:        //     for(int i = 0 ; i < SlotPerFrame; i++){
+        -:  114:        //         aCar->THN[i] = pkt->OHN_snapshot[i];//将pkt中携带的OHN信息更新到THN中，不考虑覆盖问题？？？？
+        -:  115:        //     }
+        -:  116:        //     // 将pkt指向的车更新到frontV, rearV
+        -:  117:        //  }else{//有两个或以上的pkt，产生Collision
+        -:  118:
+        -:  119:        //只记录碰撞，关于时槽的更新放到协议里面。因为每个协议的处理都不相同。
+        -:  120:
+    #####:  121:        if(cnt_cur_pkt == 1){
+    %%%%%:  121-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  122:            bItem = (struct Item*)aCar->packets.head;
+    #####:  123:            struct packet* pkt= (struct packet*)bItem->datap;
+    #####:  124:            pkt->condition = 1;
+    #####:  125:            log_packet(pkt,slot);       //正常收包
+    %%%%%:  125-block  0
+call    0 never executed
+    #####:  126:            cnt_pkt_1++;
+    #####:  127:            cnt_received++;
+    #####:  128:        }else if(cnt_cur_pkt >=2 ){     //产生碰撞的包
+    %%%%%:  128-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  129:            cnt_pkt_2 += cnt_cur_pkt;
+    #####:  130:            bItem = (struct Item*)aCar->packets.head;
+    #####:  131:            while(bItem!=NULL){
+    %%%%%:  131-block  0
+    %%%%%:  131-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:  132:                struct packet* pkt= (struct packet*)bItem->datap;
+    #####:  133:                pkt->condition = 2;
+    #####:  134:                log_packet(pkt,slot);
+    %%%%%:  134-block  0
+call    0 never executed
+    #####:  135:                if(pkt->timestamp == slot){
+branch  0 never executed
+branch  1 never executed
+    #####:  136:                    if(pkt->srcVehicle->slot_condition == 1){
+    %%%%%:  136-block  0
+branch  0 never executed
+branch  1 never executed
+        -:  137:                        //printf("hello!!!!_____________________________________________!!!!!!\n");
+        -:  138:                        //printf("%d %d\n",aCar->id,pkt->srcVehicle->id);
+    #####:  139:                        struct collision* coli = generate_collision(aCar,pkt->srcVehicle,1,slot);
+    %%%%%:  139-block  0
+call    0 never executed
+    #####:  140:                        log_collision(coli);
+call    0 never executed
+    #####:  141:                    }else if(pkt->srcVehicle->slot_condition == 2){
+    %%%%%:  141-block  0
+branch  0 never executed
+branch  1 never executed
+        -:  142:                        //printf("hello!!!!_____________________________________________~~~~~~~\n");
+    #####:  143:                        struct collision* coli = generate_collision(aCar,pkt->srcVehicle,2,slot);
+    %%%%%:  143-block  0
+call    0 never executed
+    #####:  144:                        log_collision(coli);
+call    0 never executed
+        -:  145:                    }
+    #####:  146:                    printf("hello!!!!_____________________________________________\n");
+    %%%%%:  146-block  0
+call    0 never executed
+        -:  147:                }
+    #####:  148:                bItem = bItem->next;
+    %%%%%:  148-block  0
+        -:  149:            }
+        -:  150:        }
+        -:  151:        //printf("hello\n");
+    #####:  152:        aItem = aItem->next;
+    %%%%%:  152-block  0
+        -:  153:    }
+      300:  154:}

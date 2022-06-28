@@ -1,0 +1,106 @@
+        -:    0:Source:E:/BubbleMAC_INFOCOM/collision.cpp
+        -:    0:Graph:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\collision.cpp.gcno
+        -:    0:Data:E:\BubbleMAC_INFOCOM\cmake-build-debug-coverage\CMakeFiles\BubbleMAC_INFOCOM.dir\collision.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by cyx02 on 2022/6/27.
+        -:    3://
+        -:    4:
+        -:    5:#include "collision.h"
+        -:    6:#include <cstdio>
+        -:    7:#include "parameters.h"
+        -:    8:#include "vehicle.h"
+        -:    9:#include <cstdlib>
+        -:   10:
+function _Z13log_collisionP9collision called 0 returned 0% blocks executed 0%
+    #####:   11:void log_collision(struct collision* coli){
+        -:   12:    char output_collisions_path[100];
+        -:   13:    FILE * Collisions_output;
+    #####:   14:    sprintf(output_collisions_path, "./simulation_result/bubble_collision_%d_%d.txt", SlotPerFrame, traffic_density);
+    %%%%%:   14-block  0
+call    0 never executed
+        -:   15:
+    #####:   16:    Collisions_output = fopen(output_collisions_path,"a");
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:   17:
+    #####:   18:    fprintf(Collisions_output, "No:%d, Type: %d, Slot: %d, Distance:%lf\n", cnt_coli++,coli->type, coli->slot, distance_between_vehicle(coli->src, coli->dst));
+    %%%%%:   18-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    %%%%%:   18-block  1
+call    3 never executed
+        -:   19:
+        -:   20:    //src
+    #####:   21:    fprintf(Collisions_output,"src ID: %d, x: %lf, y: %lf, comm.R: %lf \n",coli->src->id, coli->src->x, coli->src->y, coli->src->commRadius);
+call    0 never executed
+        -:   22:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   23:    //     fprintf(Collisions_output,"%d ",coli->src_oneHop[i]);
+        -:   24:    // }
+        -:   25:    // fprintf(Collisions_output,"\n");
+        -:   26:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   27:    //     fprintf(Collisions_output,"%d ",coli->src_twoHop[i]);
+        -:   28:    // }
+        -:   29:    // fprintf(Collisions_output,"\n");
+        -:   30:
+        -:   31:    //dst
+    #####:   32:    fprintf(Collisions_output,"dst ID: %d, x: %lf, y: %lf ,comm.R: %lf \n",coli->dst->id, coli->dst->x, coli->dst->y, coli->dst->commRadius);
+call    0 never executed
+        -:   33:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   34:    //     fprintf(Collisions_output,"%d ",coli->dst_oneHop[i]);
+        -:   35:    // }
+        -:   36:    // fprintf(Collisions_output,"\n");
+        -:   37:    // for(int i = 0; i< SlotPerFrame; i++){
+        -:   38:    //     fprintf(Collisions_output,"%d ",coli->dst_twoHop[i]);
+        -:   39:    // }
+    #####:   40:    fprintf(Collisions_output,"\n");
+call    0 never executed
+        -:   41:
+    #####:   42:    fclose(Collisions_output);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:   43:
+        -:   44:    //释放当前结构体内存
+    #####:   45:    free(coli->src_oneHop);
+    #####:   46:    free(coli->src_twoHop);
+    #####:   47:    free(coli->dst_oneHop);
+    #####:   48:    free(coli->dst_twoHop);
+    #####:   49:    free(coli);
+    #####:   50:}
+    %%%%%:   50-block  0
+        -:   51:
+        -:   52:
+        -:   53:
+        -:   54://生成Collision， 记录type, slot, 两个车及两车对应的当前slot使用情况
+function _Z18generate_collisionP7vehicleS0_ii called 0 returned 0% blocks executed 0%
+    #####:   55:struct collision* generate_collision(struct vehicle *aCar, struct vehicle *bCar,  int type, int slot){
+        -:   56:    struct collision * coli;
+    #####:   57:    coli = (struct collision*)malloc(sizeof(struct collision));
+    #####:   58:    coli->type = type;
+    #####:   59:    coli->slot = slot;
+    #####:   60:    coli->src = aCar;
+    #####:   61:    coli->dst = bCar;
+        -:   62:
+    #####:   63:    coli->src_oneHop = (int*)malloc(sizeof(int)*SlotPerFrame);
+    #####:   64:    coli->src_twoHop = (int*)malloc(sizeof(int)*SlotPerFrame);
+    #####:   65:    coli->dst_oneHop = (int*)malloc(sizeof(int)*SlotPerFrame);
+    #####:   66:    coli->dst_twoHop = (int*)malloc(sizeof(int)*SlotPerFrame);
+        -:   67:
+    #####:   68:    for(int i = 0; i < SlotPerFrame; i++){   //将时槽占用情况输出出来；如果有占用，则输出1，如果没占用，则输出0；后面可以改成输出ID
+    %%%%%:   68-block  0
+    %%%%%:   68-block  1
+branch  0 never executed
+branch  1 never executed
+    #####:   69:        coli->src_oneHop[i] = aCar->OHN[i]==NULL? 0 : 1;
+    #####:   70:        coli->src_twoHop[i] = aCar->THN[i]==NULL? 0 : 1;
+    #####:   71:        coli->dst_oneHop[i] = bCar->OHN[i]==NULL? 0 : 1;
+    #####:   72:        coli->dst_twoHop[i] = bCar->THN[i]==NULL? 0 : 1;
+    %%%%%:   72-block  0
+        -:   73:    }
+        -:   74:
+    #####:   75:    return coli;
+    %%%%%:   75-block  0
+        -:   76:}
