@@ -133,9 +133,34 @@ void bubble_protocol_slot(struct Duallist *ALL_Vehicles, int slot){
 
         //单车的case,单车的时候，随机选择
         if(aCar->role_condition == ROLE_S) {
+            aCar->slot_occupied = choose_slot(aCar);
+            aCar->slot_condition  = ACCESS;
+        }else if(aCar->role_condition == ROLE_H){
 
-
-        }else if(aCar->role_condition == )
+        }
 
     }
+}
+
+
+int choose_slot(struct vehicle* aCar){
+    int a, b;
+    int ans = 0;
+    if(aCar->ve_resource_pool == 0){
+        a = 0;
+        b = (SlotPerFrame - 1)/2;
+        while(1){
+            ans = rand()%(b - a + 1) + a;
+            if(aCar->THN[ans]== NULL) return ans;
+        }
+    }else if(aCar->ve_resource_pool == 1){
+        a = (SlotPerFrame - 1)/2 +1;
+        b = SlotPerFrame - 1;
+        while(1){
+            ans = rand()%(b - a + 1) + a;
+            if(aCar->THN[ans]== NULL) return ans;
+        }
+    }
+    printf("Error!!!!!! Nosense slot chooser\n");
+    return 11;
 }

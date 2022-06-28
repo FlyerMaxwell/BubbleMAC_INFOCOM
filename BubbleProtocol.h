@@ -11,7 +11,7 @@ using namespace std;
 
 void bubble_protocol_commRange(struct Duallist * ALL_vehicles, int slot);
 void bubble_protocol_slot(struct Duallist *ALL_Vehicles, int slot);
-
+int choose_slot(struct vehicle* aCar);
 
 void bubble_protocol(struct Duallist *ALL_Vehicles, int slot);
 struct vehicle* nearestVehicle(struct vehicle* aCar, vector<struct vehicle*> &vehicleList);
