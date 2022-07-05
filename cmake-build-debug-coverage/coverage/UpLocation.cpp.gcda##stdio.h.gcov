@@ -313,20 +313,20 @@
         -:  309:
         -:  310:__mingw_ovr
         -:  311:__attribute__((__format__ (gnu_scanf, 2, 3))) __MINGW_ATTRIB_NONNULL(2)
-function _Z6fscanfP6_iobufPKcz called 49524 returned 100% blocks executed 100%
-    49524:  312:int fscanf(FILE *__stream, const char *__format, ...)
+function _Z6fscanfP6_iobufPKcz called 21417 returned 100% blocks executed 100%
+    21417:  312:int fscanf(FILE *__stream, const char *__format, ...)
         -:  313:{
         -:  314:  int __retval;
-    49524:  315:  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
-    49524:  316:  __retval = __mingw_vfscanf( __stream, __format, __local_argv );
-    49524:  316-block  0
-call    0 returned 49524
-branch  1 taken 49524 (fallthrough)
+    21417:  315:  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
+    21417:  316:  __retval = __mingw_vfscanf( __stream, __format, __local_argv );
+    21417:  316-block  0
+call    0 returned 21417
+branch  1 taken 21417 (fallthrough)
 branch  2 taken 0 (throw)
-    49524:  317:  __builtin_va_end( __local_argv );
-    49524:  318:  return __retval;
-    49524:  318-block  0
-    49524:  318-block  1
+    21417:  317:  __builtin_va_end( __local_argv );
+    21417:  318:  return __retval;
+    21417:  318-block  0
+    21417:  318-block  1
         -:  319:}
         -:  320:
         -:  321:#ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
@@ -376,21 +376,21 @@ branch  2 taken 0 (throw)
         -:  365:
         -:  366:__mingw_ovr
         -:  367:__attribute__((__format__ (gnu_printf, 1, 2))) __MINGW_ATTRIB_NONNULL(1)
-function _Z6printfPKcz called 0 returned 0% blocks executed 0%
-    #####:  368:int printf (const char *__format, ...)
+function _Z6printfPKcz called 299 returned 100% blocks executed 100%
+      299:  368:int printf (const char *__format, ...)
         -:  369:{
         -:  370:  int __retval;
-    #####:  371:  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
-    #####:  372:  __retval = __mingw_vfprintf( stdout, __format, __local_argv );
-    %%%%%:  372-block  0
-call    0 never executed
-branch  1 never executed
-branch  2 never executed
-    %%%%%:  372-block  1
-call    3 never executed
-    #####:  373:  __builtin_va_end( __local_argv );
-    #####:  374:  return __retval;
-    %%%%%:  374-block  0
+      299:  371:  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
+      299:  372:  __retval = __mingw_vfprintf( stdout, __format, __local_argv );
+      299:  372-block  0
+call    0 returned 299
+branch  1 taken 299 (fallthrough)
+branch  2 taken 0 (throw)
+      299:  372-block  1
+call    3 returned 299
+      299:  373:  __builtin_va_end( __local_argv );
+      299:  374:  return __retval;
+      299:  374-block  0
         -:  375:}
         -:  376:
         -:  377:#if __MINGW_FORTIFY_VA_ARG
@@ -412,16 +412,16 @@ call    3 never executed
         -:  393:
         -:  394:__mingw_ovr
         -:  395:__attribute__((__format__ (gnu_printf, 2, 3))) __MINGW_ATTRIB_NONNULL(2)
-function _Z7sprintfPcPKcz called 60 returned 100% blocks executed 100%
-       60:  396:int sprintf (char *__stream, const char *__format, ...)
+function _Z7sprintfPcPKcz called 81 returned 100% blocks executed 100%
+       81:  396:int sprintf (char *__stream, const char *__format, ...)
         -:  397:{
         -:  398:  int __retval;
-       60:  399:  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
-       60:  400:  __retval = __mingw_vsprintf( __stream, __format, __local_argv );
-       60:  400-block  0
-call    0 returned 60
-       60:  401:  __builtin_va_end( __local_argv );
-       60:  402:  return __retval;
+       81:  399:  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
+       81:  400:  __retval = __mingw_vsprintf( __stream, __format, __local_argv );
+       81:  400-block  0
+call    0 returned 81
+       81:  401:  __builtin_va_end( __local_argv );
+       81:  402:  return __retval;
         -:  403:}
         -:  404:
         -:  405:#endif /* __MINGW_FORTIFY_VA_ARG */

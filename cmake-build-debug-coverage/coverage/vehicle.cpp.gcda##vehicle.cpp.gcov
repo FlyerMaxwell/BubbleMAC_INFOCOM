@@ -10,29 +10,59 @@
         -:    6:#include "math.h"
         -:    7:#include <cstdio>
         -:    8:#include <stddef.h>
-        -:    9:
-function _Z24distance_between_vehiclePK7vehicleS1_ called 299936 returned 100% blocks executed 100%
-   299936:   10:double distance_between_vehicle(const struct vehicle* aCar, const struct vehicle* bCar){
-   299936:   11:    return sqrt((aCar->x - bCar->x)*(aCar->x - bCar->x) + (aCar->y - bCar->y)*(aCar->y - bCar->y));
-   299936:   11-block  0
-        -:   12:}
-        -:   13:
-        -:   14:
-function _Z13printVehilcesP8Duallist called 60 returned 100% blocks executed 100%
-       60:   15:void printVehilces(struct Duallist *ALL_Vehicles){
-        -:   16:    struct Item *aItem;
-        -:   17:    struct vehicle* aCar;
-        -:   18:
-       60:   19:    aItem =ALL_Vehicles-> head;
-     4182:   20:    while(aItem != NULL){
-       60:   20-block  0
-     4182:   20-block  1
-branch  0 taken 4122
-branch  1 taken 60 (fallthrough)
-     4122:   21:        aCar = (struct vehicle*)aItem->datap;
-     4122:   22:        printf("handled=%d, id= %s, x=%lf, y=%lf, CommRage=%lf, slot_occupied=%d, slot_condition=%d \n", aCar->handled, aCar->id, aCar->x, aCar->y, aCar->commRadius, aCar->slot_occupied, aCar->slot_condition);
-     4122:   22-block  0
-call    0 returned 4122
-     4122:   23:        aItem = aItem->next;
-        -:   24:    }
-       60:   25:}
+        -:    9:#include <iostream>
+        -:   10:
+        -:   11:using namespace  std;
+function _Z24distance_between_vehiclePK7vehicleS1_ called 40997 returned 100% blocks executed 100%
+    40997:   12:double distance_between_vehicle(const struct vehicle* aCar, const struct vehicle* bCar){
+    40997:   13:    return sqrt((aCar->x - bCar->x)*(aCar->x - bCar->x) + (aCar->y - bCar->y)*(aCar->y - bCar->y));
+    40997:   13-block  0
+        -:   14:}
+        -:   15:
+        -:   16:
+function _Z13printVehilcesP8Duallist called 85 returned 100% blocks executed 100%
+       85:   17:void printVehilces(struct Duallist *ALL_Vehicles){
+        -:   18:    struct Item *aItem;
+        -:   19:    struct vehicle* aCar;
+        -:   20:
+       85:   21:    aItem =ALL_Vehicles-> head;
+     1925:   22:    while(aItem != NULL){
+       85:   22-block  0
+     1925:   22-block  1
+branch  0 taken 1840
+branch  1 taken 85 (fallthrough)
+     1840:   23:        aCar = (struct vehicle*)aItem->datap;
+     1840:   24:        cout<<"handled="<<aCar->handled<<" ,id="<<aCar->id<<" ,x="<<aCar->x <<" ,y="<<aCar->y <<" ,CommRange="<<aCar->commRadius <<" ,slot_occupied="<< aCar->slot_occupied <<" ,slot_condition="<<aCar->slot_condition<<" ,pos="<<aCar->pos<<", speed="<<aCar->speed<<", a="<<aCar->a<<", slot_resource="<<aCar->resource_pool<<", angle="<<aCar->angle<<endl;
+     1840:   24-block  0
+call    0 returned 1840
+call    1 returned 1840
+call    2 returned 1840
+call    3 returned 1840
+call    4 returned 1840
+call    5 returned 1840
+call    6 returned 1840
+call    7 returned 1840
+call    8 returned 1840
+call    9 returned 1840
+call   10 returned 1840
+call   11 returned 1840
+call   12 returned 1840
+call   13 returned 1840
+call   14 returned 1840
+call   15 returned 1840
+call   16 returned 1840
+call   17 returned 1840
+call   18 returned 1840
+call   19 returned 1840
+call   20 returned 1840
+call   21 returned 1840
+call   22 returned 1840
+call   23 returned 1840
+call   24 returned 1840
+        -:   25:
+     1840:   26:        aItem = aItem->next;
+        -:   27:
+        -:   28:       // (aCar->queue_Vehicles)[aCar]++;
+        -:   29:        //(aCar->queue_Vehicles).clear();
+        -:   30:    }
+       85:   31:}

@@ -8,6 +8,8 @@
 #include "parameters.h"
 #include "packets.h"
 #include "collision.h"
+#include <iostream>
+using namespace std;
 
 
 // transmit packets. For each vehicle, if it is a tx, it broadcast to neighbors within its communication range. If the rx also is a tx, there will be a collision, if not  it will receive the packet.
@@ -25,7 +27,7 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
             continue;
         }
 
-        printf("Current Slot: %d, Current Transmitter: %s\n", slot, aCar->id);//对当前时槽正好发射的节点进行操作
+       // cout<<"Current Slot:"<<slot<<"Current Transmitter: "<<aCar->id<<endl;//对当前时槽正好发射的节点进行操作
         cnt_pkt_tx++;
         bItem = (struct Item*)aCar->neighbours.head;//遍历当前transmitter的邻居节点
         while(bItem != NULL){
@@ -41,16 +43,16 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
                     cnt_pkt_0++;
                     struct packet* pkt = generate_packet(aCar,bCar,slot,0);
                     duallist_add_to_head(&(bCar->packets), pkt);
-                    printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
-                    log_packet(pkt,slot);
+                    //printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
+                    // log_packet(pkt,slot);
 
                     struct collision* coli =  generate_collision(aCar,bCar,0,slot);
-                    log_collision(coli);
+                    //log_collision(coli);
                     bItem = bItem->next;
                 }else{
                     struct packet* pkt = generate_packet(aCar,bCar,slot,1);
                     duallist_add_to_head(&(bCar->packets), pkt);
-                    printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
+                    //printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
                     //log_packet(pkt,slot);
                     bItem = bItem->next;
                 }
@@ -102,7 +104,7 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
             bItem = (struct Item*)aCar->packets.head;
             struct packet* pkt= (struct packet*)bItem->datap;
             pkt->condition = 1;
-            log_packet(pkt,slot);       //正常收包
+            // log_packet(pkt,slot);       //正常收包
             cnt_pkt_1++;
             cnt_received++;
         }else if(cnt_cur_pkt >=2 ){     //产生碰撞的包
@@ -111,19 +113,19 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
             while(bItem!=NULL){
                 struct packet* pkt= (struct packet*)bItem->datap;
                 pkt->condition = 2;
-                log_packet(pkt,slot);
+                // log_packet(pkt,slot);
                 if(pkt->timestamp == slot){
                     if(pkt->srcVehicle->slot_condition == 1){
                         //printf("hello!!!!_____________________________________________!!!!!!\n");
                         //printf("%d %d\n",aCar->id,pkt->srcVehicle->id);
                         struct collision* coli = generate_collision(aCar,pkt->srcVehicle,1,slot);
-                        log_collision(coli);
+                        // log_collision(coli);
                     }else if(pkt->srcVehicle->slot_condition == 2){
                         //printf("hello!!!!_____________________________________________~~~~~~~\n");
                         struct collision* coli = generate_collision(aCar,pkt->srcVehicle,2,slot);
-                        log_collision(coli);
+                        // log_collision(coli);
                     }
-                    printf("hello!!!!_____________________________________________\n");
+                   // printf("hello!!!!_____________________________________________\n");
                 }
                 bItem = bItem->next;
             }

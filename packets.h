@@ -6,6 +6,10 @@
 #define BUBBLEMAC_INFOCOM_PACKETS_H
 
 #include "vehicle.h"
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
 
 typedef struct packet{
     struct vehicle* srcVehicle, *dstVehicle;//for debug
@@ -30,6 +34,8 @@ typedef struct packet{
 
     // queue info
     unordered_map<struct vehicle*, int> hashtable;
+    vector<struct vehicle*> hashtable_vehicles;
+    vector<int> hashtable_slot;
 }Packet;
 
 

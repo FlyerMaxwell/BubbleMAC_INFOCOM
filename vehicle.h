@@ -9,6 +9,7 @@
 #include "common.h"
 #include <vector>
 #include <unordered_map>
+#include "parameters.h"
 
 #define ROLE_H 1
 #define ROLE_T 2
@@ -16,6 +17,8 @@
 #define ROLE_S 0
 #define OCCUPIED 1
 #define ACCESS 0
+
+using namespace std;
 
 typedef struct vehicle
 {
@@ -68,12 +71,15 @@ typedef struct vehicle
     //front vehicles and rear vehicles From the last frame. For bubble MAC
     vector<struct vehicle*> front_Vehicles;
     vector<struct vehicle*> rearV_Vehicles;
-    unordered_map<struct vehicle*, int> queue_Vehicles;
+    vector<struct vehicle*> queue_Vehicles; //用这俩组合作为hashtable吧
+    vector<int> queue_Vehicles_slot;
 
     struct vehicle* frontV;
     struct vehicle* rearV;
     struct vehicle* forntV_his; //用于比较之前的前后车是否都认可了自己
     struct vehicle* rearV_his;
+
+    int counter = 0;
 
 
 }Vehicle;

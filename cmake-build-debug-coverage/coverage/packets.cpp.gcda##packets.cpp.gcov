@@ -63,27 +63,27 @@ branch  2 never executed
         -:   44:
         -:   45:
         -:   46://generate_packet
-function _Z15generate_packetP7vehicleS0_ii called 0 returned 0% blocks executed 0%
-    #####:   47:struct packet * generate_packet(struct vehicle *aCar, struct vehicle *bCar, int slot, int condition){
+function _Z15generate_packetP7vehicleS0_ii called 45 returned 100% blocks executed 100%
+       45:   47:struct packet * generate_packet(struct vehicle *aCar, struct vehicle *bCar, int slot, int condition){
         -:   48:    struct packet* pkt;
-    #####:   49:    pkt = (struct packet*)malloc(sizeof(struct packet));
-    #####:   50:    pkt->timestamp = slot;
+       45:   49:    pkt = (struct packet*)malloc(sizeof(struct packet));
+       45:   50:    pkt->timestamp = slot;
         -:   51:    // pkt->slot_condition = 0;//还没有发生碰撞
-    #####:   52:    pkt->srcVehicle = aCar;
-    #####:   53:    pkt->dstVehicle = bCar;
-    #####:   54:    pkt->condition = condition;
+       45:   52:    pkt->srcVehicle = aCar;
+       45:   53:    pkt->dstVehicle = bCar;
+       45:   54:    pkt->condition = condition;
         -:   55:
-    #####:   56:    for(int i = 0; i < SlotPerFrame; i++){
-    %%%%%:   56-block  0
-    %%%%%:   56-block  1
-branch  0 never executed
-branch  1 never executed
-    #####:   57:        pkt->OHN_snapshot[i] = aCar->OHN[i];
-    %%%%%:   57-block  0
+     9045:   56:    for(int i = 0; i < SlotPerFrame; i++){
+       45:   56-block  0
+     9045:   56-block  1
+branch  0 taken 9000
+branch  1 taken 45 (fallthrough)
+     9000:   57:        pkt->OHN_snapshot[i] = aCar->OHN[i];
+     9000:   57-block  0
         -:   58:    }
         -:   59:
-    #####:   60:    return pkt;
-    %%%%%:   60-block  0
+       45:   60:    return pkt;
+       45:   60-block  0
         -:   61:}
         -:   62:
         -:   63:

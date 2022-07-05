@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include "parameters.h"
 #include "string.h"
+#include <string>
 
 int init_simulation(struct Duallist *ALL_Vehicles){
     struct Item *aItem;
@@ -30,7 +31,7 @@ int init_simulation(struct Duallist *ALL_Vehicles){
 
 
 // Update location.
-void updateLocation(struct Duallist *ALL_Vehicles, int slot){
+void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
     FILE *fin = NULL;
     int flag;
     int timestep;
@@ -38,13 +39,17 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot){
     //struct neighbour_car* tNeigh, *nNeigh, *bNeigh;
     struct vehicle *aCar, *bCar;
     int car_count = 0;
-    char file_path[100];
 
+    trace_path += to_string(slot);
+    trace_path += ".txt";
 
-    printf("Loading vehilces...\n");
+    //printf("Loading vehilces...\n");
 
-    sprintf(file_path, "E:\\Bubble_transform\\MyCross\\transformed\\carposition_%d.txt", slot);
-    fin = fopen(file_path, "r");
+    //sprintf(file_path, "C:\\Users\\cyx02\\Desktop\\SUMO\\highway\\transformerd\\carposition_%d.txt", slot);
+    //fin = fopen(file_path, "r");
+
+    //printf("%s\n", trace_path.c_str());
+    fin = fopen(trace_path.c_str(), "r");
 
     //读取文件，添加车辆
     while(fscanf(fin, "%d", &timestep)!=-1){
@@ -72,11 +77,18 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot){
         //new_car->slot_occupied = 0;
         new_car->slot_occupied = -1;
 
+
+        // new_car->queue_Vehicles.clear();
         //init slot information for vemac
+        new_car->role_condition = 0;
         new_car->slot_condition = 0;
         new_car->slot_occupied = 0;
         if(new_car->angle >= 0 && new_car->angle <180) new_car->ve_resource_pool = 1;
         else new_car->ve_resource_pool = 0;
+
+        if(new_car->angle >= 0 && new_car->angle <180) new_car->resource_pool = 1;
+        else new_car->resource_pool = 0;
+
         new_car->ve_count_srp = 3;
         new_car->ve_check_flag = 1;
         for(int ii = 0; ii < SlotPerFrame; ii++){
@@ -130,6 +142,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot){
             //bCar->ve_slot_condition = new_car->ve_slot_condition;
             //bCar->ve_slot_occupied = new_car->ve_slot_occupied;
             bCar->ve_resource_pool = new_car->ve_resource_pool;
+            bCar->resource_pool = new_car->resource_pool;
             //bCar->ve_count_srp = new_car->ve_count_srp;
             //bCar->ve_check_flag = new_car->ve_check_flag;
 
@@ -157,15 +170,18 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot){
     while(aItem != NULL){
         aCar = (struct vehicle*)aItem->datap;
         if(aCar->handled == 0){
-            duallist_pick_item(ALL_Vehicles, aItem);
+            struct Item* deleteItem = aItem;
+            aItem = aItem->next;
+            duallist_pick_item(ALL_Vehicles, deleteItem);
+
         }else{
             car_count++;
+            aItem = aItem->next;
         }
-        aItem = aItem->next;
     }
 
-    printf("total car number in this slot: %d\n", car_count);
-    printf("Vehicles have been loaded!\n");
+    //printf("total car number in this slot: %d\n", car_count);
+    //printf("Vehicles have been loaded!\n");
     return;
 }
 

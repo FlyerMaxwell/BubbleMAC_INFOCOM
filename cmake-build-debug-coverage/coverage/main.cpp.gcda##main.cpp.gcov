@@ -8,103 +8,177 @@
         -:    4:#include "common.h"
         -:    5:#include "UpLocation.h"
         -:    6:#include "communication.h"
-        -:    7:
-        -:    8:using namespace std;
-        -:    9:
-function main called 1 returned 100% blocks executed 100%
-        1:   10:int main() {
-        1:   11:    cout << "Hello, World!" << endl;
-        1:   11-block  0
+        -:    7:#include "BubbleProtocol.h"
+        -:    8:
+        -:    9:using namespace std;
+        -:   10:
+function main called 1 returned 0% blocks executed 83%
+        1:   11:int main() {
+        1:   12:    cout << "Hello, World!" << endl;
+        1:   12-block  0
 call    0 returned 1
 branch  1 taken 1 (fallthrough)
 branch  2 taken 0 (throw)
-        1:   11-block  1
+        1:   12-block  1
 call    3 returned 1
 branch  4 taken 1 (fallthrough)
 branch  5 taken 0 (throw)
-        1:   12:    srand(0);
-        1:   12-block  0
+        1:   13:    srand(0);
+        1:   13-block  0
 call    0 returned 1
-        -:   13:
-        1:   14:    int slot_start = 0;
-        1:   15:    int slot_end = 300;
-        1:   16:    int slot_step = 1;
-        -:   17:
-        -:   18:    struct Duallist ALL_Vehicles;
-        1:   19:    duallist_init(&ALL_Vehicles);
+        -:   14:
+        1:   15:    int slot_start = 0;
+        1:   16:    int slot_end = 600;
+        1:   17:    int slot_step = 1;
+        -:   18:
+        -:   19:    struct Duallist ALL_Vehicles;
+        1:   20:    duallist_init(&ALL_Vehicles);
 call    0 returned 1
 branch  1 taken 1 (fallthrough)
 branch  2 taken 0 (throw)
-        -:   20:
-      301:   21:    for(int slot = slot_start; slot < slot_end; slot+=slot_step){
-        1:   21-block  0
-      300:   21-block  1
-      301:   21-block  2
-branch  0 taken 300
+        -:   21:
+        1:   22:    unordered_map<struct vehicle*, int> hashtable1;
+        1:   22-block  0
+call    0 returned 1
+        1:   23:    hashtable1.clear();
+call    0 returned 1
+        1:   24:    hashtable1[nullptr]++;
+call    0 returned 1
 branch  1 taken 1 (fallthrough)
-      300:   22:        cout<<"slot = "<< slot<<endl;
-      300:   22-block  0
-call    0 returned 300
-branch  1 taken 300 (fallthrough)
 branch  2 taken 0 (throw)
-      300:   22-block  1
-call    3 returned 300
-branch  4 taken 300 (fallthrough)
+    $$$$$:   24-block  0
+        -:   25:
+      401:   26:    for(int slot = slot_start; slot < slot_end; slot += slot_step){
+        1:   26-block  0
+      400:   26-block  1
+      401:   26-block  2
+branch  0 taken 401
+branch  1 taken 0 (fallthrough)
+      401:   27:        cout<<"slot = "<< slot<<endl;
+      401:   27-block  0
+call    0 returned 401
+branch  1 taken 401 (fallthrough)
+branch  2 taken 0 (throw)
+      401:   27-block  1
+call    3 returned 401
+branch  4 taken 401 (fallthrough)
 branch  5 taken 0 (throw)
-      300:   22-block  2
-call    6 returned 300
-branch  7 taken 300 (fallthrough)
+      401:   27-block  2
+call    6 returned 401
+branch  7 taken 401 (fallthrough)
 branch  8 taken 0 (throw)
-        -:   23:
-      300:   24:        if(slot % UpLocSlot == 0){
-      300:   24-block  0
-branch  0 taken 60 (fallthrough)
-branch  1 taken 240
-       60:   25:            init_simulation(&ALL_Vehicles);
-       60:   25-block  0
-call    0 returned 60
-branch  1 taken 60 (fallthrough)
+        -:   28:
+      401:   29:        if(slot % UpLocSlot == 0){
+      401:   29-block  0
+branch  0 taken 81 (fallthrough)
+branch  1 taken 320
+       81:   30:            init_simulation(&ALL_Vehicles);
+       81:   30-block  0
+call    0 returned 81
+branch  1 taken 81 (fallthrough)
 branch  2 taken 0 (throw)
-       60:   26:            updateLocation(&ALL_Vehicles, slot);
-       60:   26-block  0
-call    0 returned 60
-branch  1 taken 60 (fallthrough)
+       81:   31:            updateLocation(&ALL_Vehicles, slot);
+       81:   31-block  0
+call    0 returned 81
+branch  1 taken 81 (fallthrough)
 branch  2 taken 0 (throw)
-       60:   27:            handle_neighbours(&ALL_Vehicles);
-       60:   27-block  0
-call    0 returned 60
-branch  1 taken 60 (fallthrough)
+       81:   32:            handle_neighbours(&ALL_Vehicles);
+       81:   32-block  0
+call    0 returned 81
+branch  1 taken 81 (fallthrough)
 branch  2 taken 0 (throw)
-       60:   28:            printf("The location of vehicles has been updated, Current slot = %d\n", slot);
-       60:   28-block  0
-call    0 returned 60
-branch  1 taken 60 (fallthrough)
+       81:   33:            cout<<"The location of vehicles has been updated, Current slot = "<<slot<<endl;
+       81:   33-block  0
+call    0 returned 81
+branch  1 taken 81 (fallthrough)
 branch  2 taken 0 (throw)
-       60:   29:            printVehilces(&ALL_Vehicles);
-       60:   29-block  0
-call    0 returned 60
-branch  1 taken 60 (fallthrough)
+       81:   33-block  1
+call    3 returned 81
+branch  4 taken 81 (fallthrough)
+branch  5 taken 0 (throw)
+       81:   33-block  2
+call    6 returned 81
+branch  7 taken 81 (fallthrough)
+branch  8 taken 0 (throw)
+       81:   34:            printVehilces(&ALL_Vehicles);
+       81:   34-block  0
+call    0 returned 81
+branch  1 taken 81 (fallthrough)
 branch  2 taken 0 (throw)
-        -:   30:        }
-        -:   31:
-        -:   32:        //handle the transmitter at each slot
-      300:   33:        handle_transmitter(&ALL_Vehicles, slot);
-      300:   33-block  0
-call    0 returned 300
-branch  1 taken 300 (fallthrough)
+        -:   35:        }
+        -:   36:
+        -:   37:        //Bubble MAC, determine the communication range and slot
+      401:   38:        if(slot % SlotPerFrame == 0){
+      401:   38-block  0
+branch  0 taken 3 (fallthrough)
+branch  1 taken 398
+        3:   39:            bubble_handle_packets(&ALL_Vehicles, slot);
+        3:   39-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
 branch  2 taken 0 (throw)
-        -:   34:        //handle the receiver at each slot
-      300:   35:        handle_receiver(&ALL_Vehicles, slot);
-      300:   35-block  0
-call    0 returned 300
-branch  1 taken 300 (fallthrough)
+        2:   40:            bubble_protocol_commRange(&ALL_Vehicles, slot);
+        2:   40-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
 branch  2 taken 0 (throw)
-        -:   36:    }
-        1:   37:    printf("Total Cars: %d\n cnt_pkt_tx: %d\n cnt_pkt_0: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n", Car_Number, cnt_pkt_tx, cnt_pkt_0, cnt_pkt_1, cnt_pkt_2);
-        1:   37-block  0
-call    0 returned 1
-branch  1 taken 1 (fallthrough)
+        2:   41:            cout<<"after commRange deter-----------------------"<<endl;
+        2:   41-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
 branch  2 taken 0 (throw)
-        1:   38:    return 0;
-        1:   38-block  0
-        -:   39:}
+        2:   41-block  1
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   42:            printVehilces(&ALL_Vehicles);
+        2:   42-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   43:            bubble_protocol_slot(&ALL_Vehicles, slot);
+        2:   43-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   44:            cout<<"after slot deter------------------------"<<endl;
+        2:   44-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   44-block  1
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   45:            printVehilces(&ALL_Vehicles);
+        2:   45-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   46:        }
+        -:   47:
+        -:   48:
+        -:   49:        //handle the transmitter at each slot
+      400:   50:        handle_transmitter(&ALL_Vehicles, slot);
+      400:   50-block  0
+call    0 returned 400
+branch  1 taken 400 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   51:        //handle the receiver at each slot
+      400:   52:        handle_receiver(&ALL_Vehicles, slot);
+      400:   52-block  0
+call    0 returned 400
+branch  1 taken 400 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   53:    }
+    #####:   54:    printf("Total Cars: %d\n cnt_pkt_tx: %d\n cnt_pkt_0: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n", Car_Number, cnt_pkt_tx, cnt_pkt_0, cnt_pkt_1, cnt_pkt_2);
+    %%%%%:   54-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:   55:    return 0;
+    #####:   56:}
+    %%%%%:   56-block  0
+call    0 never executed
+    $$$$$:   56-block  1
+call    1 never executed
