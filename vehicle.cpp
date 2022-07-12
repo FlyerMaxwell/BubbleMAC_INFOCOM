@@ -21,11 +21,31 @@ void printVehilces(struct Duallist *ALL_Vehicles){
     aItem =ALL_Vehicles-> head;
     while(aItem != NULL){
         aCar = (struct vehicle*)aItem->datap;
-        cout<<"handled="<<aCar->handled<<" ,id="<<aCar->id<<" ,x="<<aCar->x <<" ,y="<<aCar->y <<" ,CommRange="<<aCar->commRadius <<" ,slot_occupied="<< aCar->slot_occupied <<" ,slot_condition="<<aCar->slot_condition<<" ,pos="<<aCar->pos<<", speed="<<aCar->speed<<", a="<<aCar->a<<", slot_resource="<<aCar->resource_pool<<", angle="<<aCar->angle<<endl;
+        cout<<"handled="<<aCar->handled<<" ,id="<<aCar->id<<" ,x="<<aCar->x <<" ,y="<<aCar->y <<" ,CommRange="<<aCar->commRadius <<" ,slot_occupied="<< aCar->slot_occupied <<" ,slot_condition="<<aCar->slot_condition<<" ,pos="<<aCar->pos<<", speed="<<aCar->speed<<", decel="<<aCar->acc<<", resource_pool="<<aCar->resource_pool<<", angle="<<aCar->angle<<endl;
 
         aItem = aItem->next;
 
        // (aCar->queue_Vehicles)[aCar]++;
         //(aCar->queue_Vehicles).clear();
     }
+}
+
+void logVehilcesInfo(struct Duallist *ALL_Vehicles, ofstream & logfile){
+    struct Item *aItem;
+    struct vehicle* aCar;
+
+    aItem =ALL_Vehicles-> head;
+    while(aItem != NULL){
+        aCar = (struct vehicle*)aItem->datap;
+        logfile<<"handled="<<aCar->handled<<" ,id="<<aCar->id<<", lane="<<aCar->lane<<" ,x="<<aCar->x <<" ,y="<<aCar->y <<" ,CommRange="<<aCar->commRadius <<" ,slot_occupied="<< aCar->slot_occupied <<" ,slot_condition="<<aCar->slot_condition<<" ,pos="<<aCar->pos<<", speed="<<aCar->speed<<", decel="<<aCar->acc<<", slot_resource="<<aCar->resource_pool<<", angle="<<aCar->angle<<", Role_condition="<<aCar->role_condition<<", slot_appeared="<<aCar->slot_appeared<<endl;
+
+        aItem = aItem->next;
+
+        // (aCar->queue_Vehicles)[aCar]++;
+        //(aCar->queue_Vehicles).clear();
+    }
+}
+
+void logACar(struct vehicle* aCar, ofstream & logfile){
+    logfile << "id=" <<aCar->id<<", x="<<aCar->x<<", y="<<aCar->y<<", CommR="<<aCar->commRadius<<", SlotOccupied="<<aCar->slot_occupied<<", Role="<<aCar->role_condition;
 }

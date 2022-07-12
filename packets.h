@@ -8,6 +8,7 @@
 #include "vehicle.h"
 #include <unordered_map>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 
@@ -33,13 +34,13 @@ typedef struct packet{
     double commRange;
 
     // queue info
-    unordered_map<struct vehicle*, int> hashtable;
-    vector<struct vehicle*> hashtable_vehicles;
-    vector<int> hashtable_slot;
+    // unordered_map<struct vehicle*, int> hashtable;
+    vector<struct vehicle*> *hashtable_vehicles;
+    vector<int> *hashtable_slot;
 }Packet;
 
 
-void log_packet(struct packet * aPkt, int slot);
+void log_packet(struct packet * aPkt, int slot, ofstream &logfile);
 
 
 

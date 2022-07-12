@@ -11,6 +11,7 @@
 #include "parameters.h"
 #include "string.h"
 #include <string>
+#include <iostream>
 
 int init_simulation(struct Duallist *ALL_Vehicles){
     struct Item *aItem;
@@ -50,6 +51,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
 
     //printf("%s\n", trace_path.c_str());
     fin = fopen(trace_path.c_str(), "r");
+    if(!fin){cerr <<"create file error \n"; return ;}
 
     //读取文件，添加车辆
     while(fscanf(fin, "%d", &timestep)!=-1){
@@ -70,12 +72,13 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         fscanf(fin, "%lf", &new_car->flow);
         fscanf(fin, "%lf", &new_car->speed2);
 
-        new_car->a = 1;  //not updated
+        new_car->acc = 4.5;
         new_car->turn = 0;
         //init slot information
         new_car->slot_condition = 1;
         //new_car->slot_occupied = 0;
         new_car->slot_occupied = -1;
+        new_car->slot_appeared = slot;
 
 
         // new_car->queue_Vehicles.clear();

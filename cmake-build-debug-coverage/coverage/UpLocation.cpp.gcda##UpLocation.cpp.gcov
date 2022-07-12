@@ -14,372 +14,381 @@
         -:   10:#include <stdlib.h>
         -:   11:#include "parameters.h"
         -:   12:#include "string.h"
-        -:   13:
-function _Z15init_simulationP8Duallist called 81 returned 100% blocks executed 100%
-       81:   14:int init_simulation(struct Duallist *ALL_Vehicles){
-        -:   15:    struct Item *aItem;
-        -:   16:    struct vehicle *aCar;
-       81:   17:    aItem = ALL_Vehicles->head;
-     1830:   18:    while (aItem != NULL){
-       81:   18-block  0
-     1830:   18-block  1
-branch  0 taken 1749
-branch  1 taken 81 (fallthrough)
-     1749:   19:        aCar = (struct vehicle*)aItem->datap;
-        -:   20:
-        -:   21:        //---需要初始化的内容---//
-     1749:   22:        aCar->handled = 0;
-        -:   23:        //---需要初始化的内容---//
-        -:   24:
-     1749:   25:        aItem = aItem->next;
-     1749:   25-block  0
-        -:   26:    }
-       81:   27:    return 0;
-       81:   27-block  0
-        -:   28:}
-        -:   29:
+        -:   13:#include <string>
+        -:   14:
+function _Z15init_simulationP8Duallist called 2800 returned 100% blocks executed 100%
+     2800:   15:int init_simulation(struct Duallist *ALL_Vehicles){
+        -:   16:    struct Item *aItem;
+        -:   17:    struct vehicle *aCar;
+     2800:   18:    aItem = ALL_Vehicles->head;
+    39597:   19:    while (aItem != NULL){
+     2800:   19-block  0
+    39597:   19-block  1
+branch  0 taken 36797
+branch  1 taken 2800 (fallthrough)
+    36797:   20:        aCar = (struct vehicle*)aItem->datap;
+        -:   21:
+        -:   22:        //---需要初始化的内容---//
+    36797:   23:        aCar->handled = 0;
+        -:   24:        //---需要初始化的内容---//
+        -:   25:
+    36797:   26:        aItem = aItem->next;
+    36797:   26-block  0
+        -:   27:    }
+     2800:   28:    return 0;
+     2800:   28-block  0
+        -:   29:}
         -:   30:
         -:   31:
-        -:   32:// Update location.
-function _Z14updateLocationP8Duallisti called 81 returned 100% blocks executed 100%
-       81:   33:void updateLocation(struct Duallist *ALL_Vehicles, int slot){
-       81:   34:    FILE *fin = NULL;
-        -:   35:    int flag;
-        -:   36:    int timestep;
-        -:   37:    struct Item *aItem, *bItem;
-        -:   38:    //struct neighbour_car* tNeigh, *nNeigh, *bNeigh;
-        -:   39:    struct vehicle *aCar, *bCar;
-       81:   40:    int car_count = 0;
-        -:   41:    char file_path[100];
+        -:   32:
+        -:   33:// Update location.
+function _Z14updateLocationP8DuallistiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 2800 returned 100% blocks executed 95%
+     2800:   34:void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
+     2800:   35:    FILE *fin = NULL;
+        -:   36:    int flag;
+        -:   37:    int timestep;
+        -:   38:    struct Item *aItem, *bItem;
+        -:   39:    //struct neighbour_car* tNeigh, *nNeigh, *bNeigh;
+        -:   40:    struct vehicle *aCar, *bCar;
+     2800:   41:    int car_count = 0;
         -:   42:
-        -:   43:
-       81:   44:    printf("Loading vehilces...\n");
-       81:   44-block  0
-call    0 returned 81
-branch  1 taken 81 (fallthrough)
+     2800:   43:    trace_path += to_string(slot);
+     2800:   43-block  0
+call    0 returned 2800
+branch  1 taken 2800 (fallthrough)
+branch  2 taken 0 (throw)
+     2800:   43-block  1
+call    3 returned 2800
+branch  4 taken 2800 (fallthrough)
+branch  5 taken 0 (throw)
+     2800:   43-block  2
+call    6 returned 2800
+    $$$$$:   43-block  3
+call    7 never executed
+    $$$$$:   43-block  4
+     2800:   44:    trace_path += ".txt";
+call    0 returned 2800
+branch  1 taken 2800 (fallthrough)
 branch  2 taken 0 (throw)
         -:   45:
-       81:   46:    sprintf(file_path, "C:\\Users\\cyx02\\Desktop\\SUMO\\highway\\transformerd\\carposition_%d.txt", slot);
-       81:   46-block  0
-call    0 returned 81
-       81:   47:    fin = fopen(file_path, "r");
-call    0 returned 81
-branch  1 taken 81 (fallthrough)
-branch  2 taken 0 (throw)
-        -:   48:
-        -:   49:    //读取文件，添加车辆
-     1859:   50:    while(fscanf(fin, "%d", &timestep)!=-1){
-       81:   50-block  0
-     1859:   50-block  1
-call    0 returned 1859
-branch  1 taken 1859 (fallthrough)
-branch  2 taken 0 (throw)
-     1859:   50-block  2
-branch  3 taken 1778
-branch  4 taken 81 (fallthrough)
-        -:   51:        struct vehicle *new_car;
-     1778:   52:        new_car=(struct vehicle*)malloc(sizeof(struct vehicle));
+        -:   46:    //printf("Loading vehilces...\n");
+        -:   47:
+        -:   48:    //sprintf(file_path, "C:\\Users\\cyx02\\Desktop\\SUMO\\highway\\transformerd\\carposition_%d.txt", slot);
+        -:   49:    //fin = fopen(file_path, "r");
+        -:   50:
+        -:   51:    //printf("%s\n", trace_path.c_str());
+     2800:   52:    fin = fopen(trace_path.c_str(), "r");
+     2800:   52-block  0
+call    0 returned 2800
+call    1 returned 2800
+branch  2 taken 2800 (fallthrough)
+branch  3 taken 0 (throw)
         -:   53:
-     1778:   54:        new_car->handled = 2;//新车
-        -:   55:        //load location information
-     1778:   56:        fscanf(fin, "%s", new_car->id);
-     1778:   56-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+        -:   54:    //读取文件，添加车辆
+    39597:   55:    while(fscanf(fin, "%d", &timestep)!=-1){
+     2800:   55-block  0
+    39597:   55-block  1
+call    0 returned 39597
+branch  1 taken 39597 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   57:        fscanf(fin, "%lf", &new_car->x);
-     1778:   57-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    39597:   55-block  2
+branch  3 taken 36797
+branch  4 taken 2800 (fallthrough)
+        -:   56:        struct vehicle *new_car;
+    36797:   57:        new_car=(struct vehicle*)malloc(sizeof(struct vehicle));
+        -:   58:
+    36797:   59:        new_car->handled = 2;//新车
+        -:   60:        //load location information
+    36797:   61:        fscanf(fin, "%s", new_car->id);
+    36797:   61-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   58:        fscanf(fin, "%lf", &new_car->y);
-     1778:   58-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   62:        fscanf(fin, "%lf", &new_car->x);
+    36797:   62-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   59:        fscanf(fin, "%lf", &new_car->angle);
-     1778:   59-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   63:        fscanf(fin, "%lf", &new_car->y);
+    36797:   63-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   60:        fscanf(fin, "%s", new_car->type);
-     1778:   60-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   64:        fscanf(fin, "%lf", &new_car->angle);
+    36797:   64-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   61:        fscanf(fin, "%lf", &new_car->speed);
-     1778:   61-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   65:        fscanf(fin, "%s", new_car->type);
+    36797:   65-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   62:        fscanf(fin, "%lf", &new_car->pos);
-     1778:   62-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   66:        fscanf(fin, "%lf", &new_car->speed);
+    36797:   66-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   63:        fscanf(fin, "%s", new_car->lane);
-     1778:   63-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   67:        fscanf(fin, "%lf", &new_car->pos);
+    36797:   67-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   64:        fscanf(fin, "%lf", &new_car->slope);
-     1778:   64-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   68:        fscanf(fin, "%s", new_car->lane);
+    36797:   68-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   65:        fscanf(fin, "%lf", &new_car->flow);
-     1778:   65-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   69:        fscanf(fin, "%lf", &new_car->slope);
+    36797:   69-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-     1778:   66:        fscanf(fin, "%lf", &new_car->speed2);
-     1778:   66-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
+    36797:   70:        fscanf(fin, "%lf", &new_car->flow);
+    36797:   70-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-        -:   67:
-     1778:   68:        new_car->a = 1;  //not updated
-     1778:   69:        new_car->turn = 0;
-        -:   70:        //init slot information
-     1778:   71:        new_car->slot_condition = 1;
-        -:   72:        //new_car->slot_occupied = 0;
-     1778:   73:        new_car->slot_occupied = -1;
-        -:   74:
-        -:   75:
-        -:   76:        // new_car->queue_Vehicles.clear();
-        -:   77:        //init slot information for vemac
-     1778:   78:        new_car->role_condition = 0;
-     1778:   79:        new_car->slot_condition = 0;
-     1778:   80:        new_car->slot_occupied = 0;
-     1778:   81:        if(new_car->angle >= 0 && new_car->angle <180) new_car->ve_resource_pool = 1;
-     1778:   81-block  0
-branch  0 taken 1778 (fallthrough)
+    36797:   71:        fscanf(fin, "%lf", &new_car->speed2);
+    36797:   71-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   72:
+    36797:   73:        new_car->a = 1;  //not updated
+    36797:   74:        new_car->turn = 0;
+        -:   75:        //init slot information
+    36797:   76:        new_car->slot_condition = 1;
+        -:   77:        //new_car->slot_occupied = 0;
+    36797:   78:        new_car->slot_occupied = -1;
+        -:   79:
+        -:   80:
+        -:   81:        // new_car->queue_Vehicles.clear();
+        -:   82:        //init slot information for vemac
+    36797:   83:        new_car->role_condition = 0;
+    36797:   84:        new_car->slot_condition = 0;
+    36797:   85:        new_car->slot_occupied = 0;
+    36797:   86:        if(new_car->angle >= 0 && new_car->angle <180) new_car->ve_resource_pool = 1;
+    36797:   86-block  0
+branch  0 taken 36797 (fallthrough)
 branch  1 taken 0
-     1778:   81-block  1
-branch  2 taken 856 (fallthrough)
-branch  3 taken 922
-      856:   81-block  2
-      922:   82:        else new_car->ve_resource_pool = 0;
-      922:   82-block  0
-        -:   83:
-     1778:   84:        if(new_car->angle >= 0 && new_car->angle <180) new_car->resource_pool = 1;
-     1778:   84-block  0
-branch  0 taken 1778 (fallthrough)
+    36797:   86-block  1
+branch  2 taken 17780 (fallthrough)
+branch  3 taken 19017
+    17780:   86-block  2
+    19017:   87:        else new_car->ve_resource_pool = 0;
+    19017:   87-block  0
+        -:   88:
+    36797:   89:        if(new_car->angle >= 0 && new_car->angle <180) new_car->resource_pool = 1;
+    36797:   89-block  0
+branch  0 taken 36797 (fallthrough)
 branch  1 taken 0
-     1778:   84-block  1
-branch  2 taken 856 (fallthrough)
-branch  3 taken 922
-      856:   84-block  2
-      922:   85:        else new_car->resource_pool = 0;
-      922:   85-block  0
-        -:   86:
-     1778:   87:        new_car->ve_count_srp = 3;
-     1778:   88:        new_car->ve_check_flag = 1;
-   357378:   89:        for(int ii = 0; ii < SlotPerFrame; ii++){
-     1778:   89-block  0
-   357378:   89-block  1
-branch  0 taken 355600
-branch  1 taken 1778 (fallthrough)
-   355600:   90:            new_car->OHN[ii] = NULL;
-   355600:   91:            new_car->THN[ii] = NULL;
-   355600:   91-block  0
-        -:   92:        }
-        -:   93:
-        -:   94:        // init commRange
-        -:   95:        //new_car->commRadius = (new_car->speed/3.6)*(new_car->speed/3.6)/2/new_car->a;
-        -:   96:
-        -:   97:
-     1778:   98:        duallist_init(&new_car->packets);
-     1778:   98-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
-branch  2 taken 0 (throw)
-     1778:   99:        duallist_init(&new_car->neighbours);
-     1778:   99-block  0
-call    0 returned 1778
-branch  1 taken 1778 (fallthrough)
-branch  2 taken 0 (throw)
-        -:  100:        // duallist_init(&new_car->frontV);
-        -:  101:        // duallist_init(&new_car->rearV);
+    36797:   89-block  1
+branch  2 taken 17780 (fallthrough)
+branch  3 taken 19017
+    17780:   89-block  2
+    19017:   90:        else new_car->resource_pool = 0;
+    19017:   90-block  0
+        -:   91:
+    36797:   92:        new_car->ve_count_srp = 3;
+    36797:   93:        new_car->ve_check_flag = 1;
+  7396197:   94:        for(int ii = 0; ii < SlotPerFrame; ii++){
+    36797:   94-block  0
+  7396197:   94-block  1
+branch  0 taken 7359400
+branch  1 taken 36797 (fallthrough)
+  7359400:   95:            new_car->OHN[ii] = NULL;
+  7359400:   96:            new_car->THN[ii] = NULL;
+  7359400:   96-block  0
+        -:   97:        }
+        -:   98:
+        -:   99:        // init commRange
+        -:  100:        //new_car->commRadius = (new_car->speed/3.6)*(new_car->speed/3.6)/2/new_car->a;
+        -:  101:
         -:  102:
-        -:  103:        //查找new_Car是否已经存在， 若存在，flag=true；若不存在，则flag = false;遍历一次ALL_Vehicles双链表，看是否已经存在（id是否相等），若相等则flag=true；若不相等，则flag=false
-     1778:  104:        flag = false;
-     1778:  105:        bItem = (struct Item*)ALL_Vehicles->head;
-    23495:  106:        while(bItem != NULL){
-     1778:  106-block  0
-    23495:  106-block  1
-branch  0 taken 23403
-branch  1 taken 92 (fallthrough)
-    23403:  107:            bCar = (struct vehicle*)bItem->datap;
-    23403:  108:            if (!strcmp(bCar->id, new_car->id)) {
-    23403:  108-block  0
-branch  0 taken 1686 (fallthrough)
-branch  1 taken 21717
-     1686:  109:                flag = true;
-     1686:  110:                break;
-     1686:  110-block  0
-        -:  111:            }
-    21717:  112:            bItem = bItem->next;
-    21717:  112-block  0
-        -:  113:        }
-        -:  114:
-        -:  115:        //若之前已存在，则更新其运动学信息
-     1778:  116:        if(flag == true){
-     1778:  116-block  0
-branch  0 taken 1686 (fallthrough)
-branch  1 taken 92
-     1686:  117:            bCar->x = new_car->x;
-     1686:  118:            bCar->y = new_car->y;
-     1686:  119:            bCar->angle = new_car->angle;
-     1686:  120:            bCar->speed = new_car->speed;
-     1686:  121:            bCar->pos = new_car->pos;
-        -:  122:            // bCar->lane = new_car->lane;// there may be an error.
-        -:  123:            // bCar->prev_lane = new_car->prev_lane;// error
-     1686:  124:            if(strcmp(bCar->lane, new_car->lane) == 0){ // 判断是否进行变道，如果当前时刻与上一时刻的车道不同了，则turn变为1
-     1686:  124-block  0
-branch  0 taken 1414 (fallthrough)
-branch  1 taken 272
-     1414:  125:                bCar->turn = 0;
-     1414:  125-block  0
-        -:  126:            }else{
-      272:  127:                bCar->turn = 1;
-      272:  127-block  0
-        -:  128:            }
-     1686:  129:            strcpy(bCar->prev_lane, new_car->lane);//记录下来是从哪个车道便过来的
-     1686:  130:            strcpy(bCar->lane, new_car->lane);
-        -:  131:
-     1686:  132:            bCar->slope = new_car->slope;
-     1686:  133:            bCar->flow = new_car->flow;
-     1686:  134:            bCar->speed2 = new_car->speed2;
-        -:  135:
-        -:  136:            //update slot infor for vemac
-        -:  137:            //bCar->ve_slot_condition = new_car->ve_slot_condition;
-        -:  138:            //bCar->ve_slot_occupied = new_car->ve_slot_occupied;
-     1686:  139:            bCar->ve_resource_pool = new_car->ve_resource_pool;
-     1686:  140:            bCar->resource_pool = new_car->resource_pool;
-        -:  141:            //bCar->ve_count_srp = new_car->ve_count_srp;
-        -:  142:            //bCar->ve_check_flag = new_car->ve_check_flag;
-        -:  143:
-        -:  144:
-     1686:  145:            bCar->handled = 1;//已有的车辆且处理
-        -:  146:            // bCar->commRadius = new_car->commRadius;
-     1686:  147:            bCar->resource_pool = new_car->resource_pool;
-        -:  148:            // duallist_pick_item(ALL_Vehicles, bItem);//这样做也没错，只是没必要。。先不改了
-        -:  149:            // duallist_add_to_tail(ALL_Vehicles, bCar);//添加更新后的节点
-     1686:  150:            free(new_car);
-     1686:  150-block  0
-        -:  151:        }
-        -:  152:
-        -:  153:        //若之前不存在,则添加新车
-     1778:  154:        if (flag == false){
-     1778:  154-block  0
-branch  0 taken 92 (fallthrough)
-branch  1 taken 1686
-       92:  155:            Car_Number++;
-       92:  156:            duallist_add_to_tail(ALL_Vehicles, new_car);
-       92:  156-block  0
-call    0 returned 92
-branch  1 taken 92 (fallthrough)
+    36797:  103:        duallist_init(&new_car->packets);
+    36797:  103-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-        -:  157:        }
-        -:  158:
-        -:  159:    }
-        -:  160:
-       81:  161:    fclose(fin);
-       81:  161-block  0
-call    0 returned 81
-branch  1 taken 81 (fallthrough)
+    36797:  104:        duallist_init(&new_car->neighbours);
+    36797:  104-block  0
+call    0 returned 36797
+branch  1 taken 36797 (fallthrough)
 branch  2 taken 0 (throw)
-        -:  162:
-        -:  163:    //处理消失的车(离开地图)，直接去掉即可。我的协议可以应对这种case，无非就是下个时刻听不到它了呗。没问题
-       81:  164:    aItem = ALL_Vehicles->head;
-     1922:  165:    while(aItem != NULL){
-       81:  165-block  0
-     1922:  165-block  1
-branch  0 taken 1841
-branch  1 taken 81 (fallthrough)
-     1841:  166:        aCar = (struct vehicle*)aItem->datap;
-     1841:  167:        if(aCar->handled == 0){
-     1841:  167-block  0
-branch  0 taken 63 (fallthrough)
-branch  1 taken 1778
-       63:  168:            struct Item* deleteItem = aItem;
-       63:  169:            aItem = aItem->next;
-       63:  170:            duallist_pick_item(ALL_Vehicles, deleteItem);
-       63:  170-block  0
-call    0 returned 63
-branch  1 taken 63 (fallthrough)
+        -:  105:        // duallist_init(&new_car->frontV);
+        -:  106:        // duallist_init(&new_car->rearV);
+        -:  107:
+        -:  108:        //查找new_Car是否已经存在， 若存在，flag=true；若不存在，则flag = false;遍历一次ALL_Vehicles双链表，看是否已经存在（id是否相等），若相等则flag=true；若不相等，则flag=false
+    36797:  109:        flag = false;
+    36797:  110:        bItem = (struct Item*)ALL_Vehicles->head;
+   527760:  111:        while(bItem != NULL){
+    36797:  111-block  0
+   527760:  111-block  1
+branch  0 taken 526160
+branch  1 taken 1600 (fallthrough)
+   526160:  112:            bCar = (struct vehicle*)bItem->datap;
+   526160:  113:            if (!strcmp(bCar->id, new_car->id)) {
+   526160:  113-block  0
+branch  0 taken 35197 (fallthrough)
+branch  1 taken 490963
+    35197:  114:                flag = true;
+    35197:  115:                break;
+    35197:  115-block  0
+        -:  116:            }
+   490963:  117:            bItem = bItem->next;
+   490963:  117-block  0
+        -:  118:        }
+        -:  119:
+        -:  120:        //若之前已存在，则更新其运动学信息
+    36797:  121:        if(flag == true){
+    36797:  121-block  0
+branch  0 taken 35197 (fallthrough)
+branch  1 taken 1600
+    35197:  122:            bCar->x = new_car->x;
+    35197:  123:            bCar->y = new_car->y;
+    35197:  124:            bCar->angle = new_car->angle;
+    35197:  125:            bCar->speed = new_car->speed;
+    35197:  126:            bCar->pos = new_car->pos;
+        -:  127:            // bCar->lane = new_car->lane;// there may be an error.
+        -:  128:            // bCar->prev_lane = new_car->prev_lane;// error
+    35197:  129:            if(strcmp(bCar->lane, new_car->lane) == 0){ // 判断是否进行变道，如果当前时刻与上一时刻的车道不同了，则turn变为1
+    35197:  129-block  0
+branch  0 taken 29490 (fallthrough)
+branch  1 taken 5707
+    29490:  130:                bCar->turn = 0;
+    29490:  130-block  0
+        -:  131:            }else{
+     5707:  132:                bCar->turn = 1;
+     5707:  132-block  0
+        -:  133:            }
+    35197:  134:            strcpy(bCar->prev_lane, new_car->lane);//记录下来是从哪个车道便过来的
+    35197:  135:            strcpy(bCar->lane, new_car->lane);
+        -:  136:
+    35197:  137:            bCar->slope = new_car->slope;
+    35197:  138:            bCar->flow = new_car->flow;
+    35197:  139:            bCar->speed2 = new_car->speed2;
+        -:  140:
+        -:  141:            //update slot infor for vemac
+        -:  142:            //bCar->ve_slot_condition = new_car->ve_slot_condition;
+        -:  143:            //bCar->ve_slot_occupied = new_car->ve_slot_occupied;
+    35197:  144:            bCar->ve_resource_pool = new_car->ve_resource_pool;
+    35197:  145:            bCar->resource_pool = new_car->resource_pool;
+        -:  146:            //bCar->ve_count_srp = new_car->ve_count_srp;
+        -:  147:            //bCar->ve_check_flag = new_car->ve_check_flag;
+        -:  148:
+        -:  149:
+    35197:  150:            bCar->handled = 1;//已有的车辆且处理
+        -:  151:            // bCar->commRadius = new_car->commRadius;
+    35197:  152:            bCar->resource_pool = new_car->resource_pool;
+        -:  153:            // duallist_pick_item(ALL_Vehicles, bItem);//这样做也没错，只是没必要。。先不改了
+        -:  154:            // duallist_add_to_tail(ALL_Vehicles, bCar);//添加更新后的节点
+    35197:  155:            free(new_car);
+    35197:  155-block  0
+        -:  156:        }
+        -:  157:
+        -:  158:        //若之前不存在,则添加新车
+    36797:  159:        if (flag == false){
+    36797:  159-block  0
+branch  0 taken 1600 (fallthrough)
+branch  1 taken 35197
+     1600:  160:            Car_Number++;
+     1600:  161:            duallist_add_to_tail(ALL_Vehicles, new_car);
+     1600:  161-block  0
+call    0 returned 1600
+branch  1 taken 1600 (fallthrough)
 branch  2 taken 0 (throw)
-        -:  171:
-        -:  172:        }else{
-     1778:  173:            car_count++;
-     1778:  174:            aItem = aItem->next;
-     1778:  174-block  0
-        -:  175:        }
-        -:  176:    }
-        -:  177:
-       81:  178:    printf("total car number in this slot: %d\n", car_count);
-       81:  178-block  0
-call    0 returned 81
-branch  1 taken 81 (fallthrough)
+        -:  162:        }
+        -:  163:
+        -:  164:    }
+        -:  165:
+     2800:  166:    fclose(fin);
+     2800:  166-block  0
+call    0 returned 2800
+branch  1 taken 2800 (fallthrough)
 branch  2 taken 0 (throw)
-       81:  179:    printf("Vehicles have been loaded!\n");
-       81:  179-block  0
-call    0 returned 81
-branch  1 taken 81 (fallthrough)
+        -:  167:
+        -:  168:    //处理消失的车(离开地图)，直接去掉即可。我的协议可以应对这种case，无非就是下个时刻听不到它了呗。没问题
+     2800:  169:    aItem = ALL_Vehicles->head;
+    41197:  170:    while(aItem != NULL){
+     2800:  170-block  0
+    41197:  170-block  1
+branch  0 taken 38397
+branch  1 taken 2800 (fallthrough)
+    38397:  171:        aCar = (struct vehicle*)aItem->datap;
+    38397:  172:        if(aCar->handled == 0){
+    38397:  172-block  0
+branch  0 taken 1600 (fallthrough)
+branch  1 taken 36797
+     1600:  173:            struct Item* deleteItem = aItem;
+     1600:  174:            aItem = aItem->next;
+     1600:  175:            duallist_pick_item(ALL_Vehicles, deleteItem);
+     1600:  175-block  0
+call    0 returned 1600
+branch  1 taken 1600 (fallthrough)
 branch  2 taken 0 (throw)
-      162:  180:    return;
-       81:  180-block  0
-       81:  180-block  1
-        -:  181:}
+        -:  176:
+        -:  177:        }else{
+    36797:  178:            car_count++;
+    36797:  179:            aItem = aItem->next;
+    36797:  179-block  0
+        -:  180:        }
+        -:  181:    }
         -:  182:
-        -:  183://handle neighbors： 处理邻居，将所有车辆的所在的九宫格内的车挂载到其潜在的neighbors中,即每个车辆的neighbors就是当前九宫格内的邻居。暴力，两层循环。这里暴力是为了后面每次遍历的时候能少遍历一点
-function _Z17handle_neighboursP8Duallist called 81 returned 100% blocks executed 100%
-       81:  184:void handle_neighbours(struct Duallist *ALL_Vehicles){
-        -:  185:    struct Cell *aCell, *nCell;
-        -:  186:    struct Item *aItem, *nItem;
-        -:  187:    struct vehicle* aCar, *nCar;
-        -:  188:
-       81:  189:    aItem =ALL_Vehicles-> head;
-     1859:  190:    while(aItem != NULL){
-       81:  190-block  0
-     1859:  190-block  1
-branch  0 taken 1778
-branch  1 taken 81 (fallthrough)
-     1778:  191:        aCar = (struct vehicle*)aItem->datap;
-     1778:  192:        duallist_destroy(&(aCar->neighbours), NULL);//先把之前的清空掉
-     1778:  192-block  0
-call    0 returned 1778
-     1778:  193:        nItem = ALL_Vehicles-> head;
-    44328:  194:        while(nItem != NULL){
-    44328:  194-block  0
-branch  0 taken 42550
-branch  1 taken 1778 (fallthrough)
-    42550:  195:            nCar = (struct vehicle*)nItem->datap;
-        -:  196:            //id不相等且处于两千米以内，则将其加入到neighbors
-    42550:  197:            if(strcmp(nCar->id, aCar->id)!=0 && distance_between_vehicle(aCar,nCar) < 2000){
-    42550:  197-block  0
-branch  0 taken 40772 (fallthrough)
-branch  1 taken 1778
-    40772:  197-block  1
-call    2 returned 40772
-branch  3 taken 40772 (fallthrough)
+        -:  183:    //printf("total car number in this slot: %d\n", car_count);
+        -:  184:    //printf("Vehicles have been loaded!\n");
+     5600:  185:    return;
+     2800:  185-block  0
+     2800:  185-block  1
+        -:  186:}
+        -:  187:
+        -:  188://handle neighbors： 处理邻居，将所有车辆的所在的九宫格内的车挂载到其潜在的neighbors中,即每个车辆的neighbors就是当前九宫格内的邻居。暴力，两层循环。这里暴力是为了后面每次遍历的时候能少遍历一点
+function _Z17handle_neighboursP8Duallist called 2800 returned 100% blocks executed 100%
+     2800:  189:void handle_neighbours(struct Duallist *ALL_Vehicles){
+        -:  190:    struct Cell *aCell, *nCell;
+        -:  191:    struct Item *aItem, *nItem;
+        -:  192:    struct vehicle* aCar, *nCar;
+        -:  193:
+     2800:  194:    aItem =ALL_Vehicles-> head;
+    39597:  195:    while(aItem != NULL){
+     2800:  195-block  0
+    39597:  195-block  1
+branch  0 taken 36797
+branch  1 taken 2800 (fallthrough)
+    36797:  196:        aCar = (struct vehicle*)aItem->datap;
+    36797:  197:        duallist_destroy(&(aCar->neighbours), NULL);//先把之前的清空掉
+    36797:  197-block  0
+call    0 returned 36797
+    36797:  198:        nItem = ALL_Vehicles-> head;
+   987186:  199:        while(nItem != NULL){
+   987186:  199-block  0
+branch  0 taken 950389
+branch  1 taken 36797 (fallthrough)
+   950389:  200:            nCar = (struct vehicle*)nItem->datap;
+        -:  201:            //id不相等且处于两千米以内，则将其加入到neighbors
+   950389:  202:            if(strcmp(nCar->id, aCar->id)!=0 && distance_between_vehicle(aCar,nCar) < 2000){
+   950389:  202-block  0
+branch  0 taken 913592 (fallthrough)
+branch  1 taken 36797
+   913592:  202-block  1
+call    2 returned 913592
+branch  3 taken 913592 (fallthrough)
 branch  4 taken 0
-    40772:  197-block  2
-     1778:  197-block  3
-    42550:  197-block  4
-branch  5 taken 40772 (fallthrough)
-branch  6 taken 1778
-    40772:  198:                duallist_add_to_tail(&(aCar->neighbours), nCar);//将id不同的车加入到neighbor list。
-    40772:  198-block  0
-call    0 returned 40772
-        -:  199:            }
-    42550:  200:            nItem = nItem->next;
-    42550:  200-block  0
-        -:  201:        }
-     1778:  202:        aItem = aItem->next;
-     1778:  202-block  0
-        -:  203:    }
-       81:  204:}
-        -:  205:
-        -:  206:
+   913592:  202-block  2
+    36797:  202-block  3
+   950389:  202-block  4
+branch  5 taken 913592 (fallthrough)
+branch  6 taken 36797
+   913592:  203:                duallist_add_to_tail(&(aCar->neighbours), nCar);//将id不同的车加入到neighbor list。
+   913592:  203-block  0
+call    0 returned 913592
+        -:  204:            }
+   950389:  205:            nItem = nItem->next;
+   950389:  205-block  0
+        -:  206:        }
+    36797:  207:        aItem = aItem->next;
+    36797:  207-block  0
+        -:  208:    }
+     2800:  209:}
+        -:  210:
+        -:  211:

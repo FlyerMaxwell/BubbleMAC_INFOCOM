@@ -10,6 +10,7 @@
 #include <vector>
 #include <unordered_map>
 #include "parameters.h"
+#include <fstream>
 
 #define ROLE_H 1
 #define ROLE_T 2
@@ -23,7 +24,7 @@ using namespace std;
 typedef struct vehicle
 {
     int handled;                  //  to indicate whether the car has been updated during this time
-
+    int slot_appeared;
     //basic info
     char id[20];// id of the car
     char type[10]; //model of the car
@@ -41,7 +42,7 @@ typedef struct vehicle
     double speed2;
 
 
-    double a;  // for this version. this is determined by type.
+    double acc = 4.5;  // for this version. this is determined by type.
     int turn;  //0 for not turn the lane, 1 for turn the lane.
 
     //slot info for VeMAC
@@ -69,10 +70,10 @@ typedef struct vehicle
     struct Duallist neighbours;
 
     //front vehicles and rear vehicles From the last frame. For bubble MAC
-    vector<struct vehicle*> front_Vehicles;
-    vector<struct vehicle*> rearV_Vehicles;
-    vector<struct vehicle*> queue_Vehicles; //用这俩组合作为hashtable吧
-    vector<int> queue_Vehicles_slot;
+    vector<struct vehicle*> *front_Vehicles;
+    vector<struct vehicle*> *rearV_Vehicles;
+    vector<struct vehicle*> *queue_Vehicles; //用这俩组合作为hashtable吧
+    vector<int> *queue_Vehicles_slot;
 
     struct vehicle* frontV;
     struct vehicle* rearV;
@@ -86,5 +87,7 @@ typedef struct vehicle
 
 double distance_between_vehicle(const struct vehicle* aCar, const struct vehicle* bCar);
 void printVehilces(struct Duallist *ALL_Vehicles);
+void logVehilcesInfo(struct Duallist *ALL_Vehicles, ofstream & logfile);
+void logACar(struct vehicle* aCar, ofstream & logfile);
 
 #endif //BUBBLEMAC_INFOCOM_VEHICLE_H

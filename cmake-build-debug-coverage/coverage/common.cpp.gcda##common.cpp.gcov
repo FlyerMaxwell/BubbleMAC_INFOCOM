@@ -124,93 +124,93 @@ call    1 never executed
         -:   70:}
         -:   71:
         -:   72:
-function _Z13duallist_initP8Duallist called 3557 returned 100% blocks executed 75%
-     3557:   73:void duallist_init(struct Duallist *duallist)
+function _Z13duallist_initP8Duallist called 73595 returned 100% blocks executed 75%
+    73595:   73:void duallist_init(struct Duallist *duallist)
         -:   74:{
         -:   75:    //Function：to initialize a duallist
         -:   76:    //Input: Address of a duallist
         -:   77:    //Output: Set the head of Duallist to 0, set the nItems=0.
-     3557:   78:    if(duallist == NULL) {
-     3557:   78-block  0
+    73595:   78:    if(duallist == NULL) {
+    73595:   78-block  0
 branch  0 taken 0 (fallthrough)
-branch  1 taken 3557
+branch  1 taken 73595
     #####:   79:        return;
     %%%%%:   79-block  0
         -:   80:    }
-     3557:   81:    duallist->head = NULL;
-     3557:   82:    duallist->nItems = 0;
-     3557:   82-block  0
+    73595:   81:    duallist->head = NULL;
+    73595:   82:    duallist->nItems = 0;
+    73595:   82-block  0
         -:   83:}
         -:   84:
-function _Z20duallist_add_to_headP8DuallistPv called 45 returned 100% blocks executed 86%
-       45:   85:struct Item* duallist_add_to_head(struct Duallist* duallist, void *data)
+function _Z20duallist_add_to_headP8DuallistPv called 1049 returned 100% blocks executed 86%
+     1049:   85:struct Item* duallist_add_to_head(struct Duallist* duallist, void *data)
         -:   86:{
         -:   87:    struct Item *newp;
         -:   88:
-       45:   89:    if(duallist == NULL) {
-       45:   89-block  0
+     1049:   89:    if(duallist == NULL) {
+     1049:   89-block  0
 branch  0 taken 0 (fallthrough)
-branch  1 taken 45
+branch  1 taken 1049
     #####:   90:        return NULL;
     %%%%%:   90-block  0
         -:   91:    }
-       45:   92:    newp = (struct Item*)malloc(sizeof(struct Item));
-       45:   93:    newp->datap = data;
-       45:   94:    if(duallist->head != NULL) {
-       45:   94-block  0
-branch  0 taken 27 (fallthrough)
-branch  1 taken 18
-       27:   95:        newp->next = duallist->head;
-       27:   96:        newp->prev = duallist->head->prev;
-       27:   97:        duallist->head->prev = newp;
-       27:   98:        duallist->head = newp;
-       27:   98-block  0
+     1049:   92:    newp = (struct Item*)malloc(sizeof(struct Item));
+     1049:   93:    newp->datap = data;
+     1049:   94:    if(duallist->head != NULL) {
+     1049:   94-block  0
+branch  0 taken 504 (fallthrough)
+branch  1 taken 545
+      504:   95:        newp->next = duallist->head;
+      504:   96:        newp->prev = duallist->head->prev;
+      504:   97:        duallist->head->prev = newp;
+      504:   98:        duallist->head = newp;
+      504:   98-block  0
         -:   99:    } else {
-       18:  100:        newp->next = NULL;
-       18:  101:        newp->prev = newp;
-       18:  102:        duallist->head = newp;
-       18:  102-block  0
+      545:  100:        newp->next = NULL;
+      545:  101:        newp->prev = newp;
+      545:  102:        duallist->head = newp;
+      545:  102-block  0
         -:  103:    }
-       45:  104:    duallist->nItems ++;
-       45:  105:    return newp;
-       45:  105-block  0
+     1049:  104:    duallist->nItems ++;
+     1049:  105:    return newp;
+     1049:  105-block  0
         -:  106:}
         -:  107:
-function _Z20duallist_add_to_tailP8DuallistPv called 40864 returned 100% blocks executed 86%
-    40864:  108:struct Item* duallist_add_to_tail(struct Duallist *duallist, void *data)
+function _Z20duallist_add_to_tailP8DuallistPv called 915192 returned 100% blocks executed 86%
+   915192:  108:struct Item* duallist_add_to_tail(struct Duallist *duallist, void *data)
         -:  109:{
         -:  110:    //Function: Add a data to the duallist at rhe tail.
         -:  111:    //Input: Address of a duallist, address of a data.
         -:  112:    //Output: Address of an Item, which is not necessary.
         -:  113:    struct Item *newp;
         -:  114:
-    40864:  115:    if(duallist == NULL) {
-    40864:  115-block  0
+   915192:  115:    if(duallist == NULL) {
+   915192:  115-block  0
 branch  0 taken 0 (fallthrough)
-branch  1 taken 40864
+branch  1 taken 915192
     #####:  116:        return NULL;
     %%%%%:  116-block  0
         -:  117:    }
-    40864:  118:    newp = (struct Item*)malloc(sizeof(struct Item));
-    40864:  119:    newp->datap = data;
-    40864:  120:    if(duallist->head != NULL) {
-    40864:  120-block  0
-branch  0 taken 39085 (fallthrough)
-branch  1 taken 1779
-    39085:  121:        newp->next = NULL;
-    39085:  122:        newp->prev = duallist->head->prev;
-    39085:  123:        duallist->head->prev->next = newp;
-    39085:  124:        duallist->head->prev = newp;
-    39085:  124-block  0
+   915192:  118:    newp = (struct Item*)malloc(sizeof(struct Item));
+   915192:  119:    newp->datap = data;
+   915192:  120:    if(duallist->head != NULL) {
+   915192:  120-block  0
+branch  0 taken 878394 (fallthrough)
+branch  1 taken 36798
+   878394:  121:        newp->next = NULL;
+   878394:  122:        newp->prev = duallist->head->prev;
+   878394:  123:        duallist->head->prev->next = newp;
+   878394:  124:        duallist->head->prev = newp;
+   878394:  124-block  0
         -:  125:    } else {
-     1779:  126:        newp->next = NULL;
-     1779:  127:        newp->prev = newp;
-     1779:  128:        duallist->head = newp;
-     1779:  128-block  0
+    36798:  126:        newp->next = NULL;
+    36798:  127:        newp->prev = newp;
+    36798:  128:        duallist->head = newp;
+    36798:  128-block  0
         -:  129:    }
-    40864:  130:    duallist->nItems ++;
-    40864:  131:    return newp;
-    40864:  131-block  0
+   915192:  130:    duallist->nItems ++;
+   915192:  131:    return newp;
+   915192:  131-block  0
         -:  132:}
         -:  133:
         -:  134:
@@ -517,82 +517,82 @@ branch  1 never executed
     %%%%%:  308-block  0
         -:  309:}
         -:  310:
-function _Z18duallist_pick_itemP8DuallistP4Item called 63 returned 100% blocks executed 80%
-       63:  311:void* duallist_pick_item(struct Duallist *duallist, struct Item *theItem)
+function _Z18duallist_pick_itemP8DuallistP4Item called 1600 returned 100% blocks executed 90%
+     1600:  311:void* duallist_pick_item(struct Duallist *duallist, struct Item *theItem)
         -:  312:{
         -:  313:    void *rt;
         -:  314:
-       63:  315:    if(duallist == NULL) {
-       63:  315-block  0
+     1600:  315:    if(duallist == NULL) {
+     1600:  315-block  0
 branch  0 taken 0 (fallthrough)
-branch  1 taken 63
+branch  1 taken 1600
     #####:  316:        return NULL;
     %%%%%:  316-block  0
         -:  317:    }
-       63:  318:    if(theItem == duallist->head) {
-       63:  318-block  0
-branch  0 taken 18 (fallthrough)
-branch  1 taken 45
-       18:  319:        duallist->head = theItem->next;
-       18:  320:        if(theItem->next != NULL)
-       18:  320-block  0
-branch  0 taken 18 (fallthrough)
-branch  1 taken 0
-       18:  321:            duallist->head->prev = theItem->prev;
-       18:  321-block  0
+     1600:  318:    if(theItem == duallist->head) {
+     1600:  318-block  0
+branch  0 taken 325 (fallthrough)
+branch  1 taken 1275
+      325:  319:        duallist->head = theItem->next;
+      325:  320:        if(theItem->next != NULL)
+      325:  320-block  0
+branch  0 taken 324 (fallthrough)
+branch  1 taken 1
+      324:  321:            duallist->head->prev = theItem->prev;
+      324:  321-block  0
         -:  322:    } else {
-       45:  323:        theItem->prev->next = theItem->next;
-       45:  324:        if(theItem->next != NULL)
-       45:  324-block  0
-branch  0 taken 45 (fallthrough)
-branch  1 taken 0
-       45:  325:            theItem->next->prev = theItem->prev;
-       45:  325-block  0
+     1275:  323:        theItem->prev->next = theItem->next;
+     1275:  324:        if(theItem->next != NULL)
+     1275:  324-block  0
+branch  0 taken 1273 (fallthrough)
+branch  1 taken 2
+     1273:  325:            theItem->next->prev = theItem->prev;
+     1273:  325-block  0
         -:  326:        else
-    #####:  327:            duallist->head->prev = theItem->prev;
-    %%%%%:  327-block  0
+        2:  327:            duallist->head->prev = theItem->prev;
+        2:  327-block  0
         -:  328:    }
-       63:  329:    rt = theItem->datap;
-       63:  330:    free(theItem);
-       63:  331:    duallist->nItems --;
-       63:  332:    return rt;
-       63:  332-block  0
+     1600:  329:    rt = theItem->datap;
+     1600:  330:    free(theItem);
+     1600:  331:    duallist->nItems --;
+     1600:  332:    return rt;
+     1600:  332-block  0
         -:  333:}
         -:  334:
         -:  335:/*
         -:  336: * Pick up the head item from the duallist and return the
         -:  337: * wrapped data.
         -:  338: */
-function _Z18duallist_pick_headP8Duallist called 38364 returned 100% blocks executed 75%
-    38364:  339:void * duallist_pick_head(struct Duallist *duallist)
+function _Z18duallist_pick_headP8Duallist called 873059 returned 100% blocks executed 75%
+   873059:  339:void * duallist_pick_head(struct Duallist *duallist)
         -:  340:{
         -:  341:    struct Item *aItem;
         -:  342:    void *rt;
         -:  343:
-    38364:  344:    if(duallist == NULL) {
-    38364:  344-block  0
+   873059:  344:    if(duallist == NULL) {
+   873059:  344-block  0
 branch  0 taken 0 (fallthrough)
-branch  1 taken 38364
+branch  1 taken 873059
     #####:  345:        return NULL;
     %%%%%:  345-block  0
         -:  346:    }
-    38364:  347:    if(duallist->head != NULL) {
-    38364:  347-block  0
-branch  0 taken 38364 (fallthrough)
+   873059:  347:    if(duallist->head != NULL) {
+   873059:  347-block  0
+branch  0 taken 873059 (fallthrough)
 branch  1 taken 0
-    38364:  348:        aItem = duallist->head;
-    38364:  349:        duallist->head = aItem->next;
-    38364:  350:        if(aItem->next != NULL)
-    38364:  350-block  0
-branch  0 taken 36678 (fallthrough)
-branch  1 taken 1686
-    36678:  351:            duallist->head->prev = aItem->prev;
-    36678:  351-block  0
-    38364:  352:        rt = aItem->datap;
-    38364:  353:        free(aItem);
-    38364:  354:        duallist->nItems --;
-    38364:  355:        return rt;
-    38364:  355-block  0
+   873059:  348:        aItem = duallist->head;
+   873059:  349:        duallist->head = aItem->next;
+   873059:  350:        if(aItem->next != NULL)
+   873059:  350-block  0
+branch  0 taken 837862 (fallthrough)
+branch  1 taken 35197
+   837862:  351:            duallist->head->prev = aItem->prev;
+   837862:  351-block  0
+   873059:  352:        rt = aItem->datap;
+   873059:  353:        free(aItem);
+   873059:  354:        duallist->nItems --;
+   873059:  355:        return rt;
+   873059:  355-block  0
         -:  356:    }
     #####:  357:    return NULL;
     %%%%%:  357-block  0
@@ -641,53 +641,53 @@ branch  1 never executed
     %%%%%:  385-block  0
         -:  386:}
         -:  387:
-function _Z17is_duallist_emptyP8Duallist called 40142 returned 100% blocks executed 83%
-    40142:  388:int is_duallist_empty(struct Duallist *duallist)
+function _Z17is_duallist_emptyP8Duallist called 909856 returned 100% blocks executed 83%
+   909856:  388:int is_duallist_empty(struct Duallist *duallist)
         -:  389:{
-    40142:  390:    if(duallist == NULL) {
-    40142:  390-block  0
+   909856:  390:    if(duallist == NULL) {
+   909856:  390-block  0
 branch  0 taken 0 (fallthrough)
-branch  1 taken 40142
+branch  1 taken 909856
     #####:  391:        return -1;
     %%%%%:  391-block  0
         -:  392:    }
-    40142:  393:    if(duallist->head != NULL)
-    40142:  393-block  0
-branch  0 taken 38364 (fallthrough)
-branch  1 taken 1778
-    38364:  394:        return 0;
-    38364:  394-block  0
-     1778:  395:    return 1;
-     1778:  395-block  0
+   909856:  393:    if(duallist->head != NULL)
+   909856:  393-block  0
+branch  0 taken 873059 (fallthrough)
+branch  1 taken 36797
+   873059:  394:        return 0;
+   873059:  394-block  0
+    36797:  395:    return 1;
+    36797:  395-block  0
         -:  396:}
         -:  397:
-function _Z16duallist_destroyP8DuallistPFvPvE called 1778 returned 100% blocks executed 78%
-     1778:  398:void duallist_destroy(struct Duallist *duallist, void (*free_func)(void*))
+function _Z16duallist_destroyP8DuallistPFvPvE called 36797 returned 100% blocks executed 78%
+    36797:  398:void duallist_destroy(struct Duallist *duallist, void (*free_func)(void*))
         -:  399:{
         -:  400:    //Function: To destroy a duallist
         -:  401:    //Input: (1)address of a duallist (2)address of free function
         -:  402:    //Output:
         -:  403:    void *datap;
         -:  404:
-     1778:  405:    if(duallist == NULL) {
-     1778:  405-block  0
+    36797:  405:    if(duallist == NULL) {
+    36797:  405-block  0
 branch  0 taken 0 (fallthrough)
-branch  1 taken 1778
+branch  1 taken 36797
     #####:  406:        return ;
     %%%%%:  406-block  0
         -:  407:    }
-    40142:  408:    while (!is_duallist_empty(duallist)) {
-     1778:  408-block  0
-    40142:  408-block  1
-call    0 returned 40142
-branch  1 taken 38364
-branch  2 taken 1778 (fallthrough)
-    38364:  409:        datap = duallist_pick_head(duallist);
-    38364:  409-block  0
-call    0 returned 38364
-    38364:  410:        if(free_func)
+   909856:  408:    while (!is_duallist_empty(duallist)) {
+    36797:  408-block  0
+   909856:  408-block  1
+call    0 returned 909856
+branch  1 taken 873059
+branch  2 taken 36797 (fallthrough)
+   873059:  409:        datap = duallist_pick_head(duallist);
+   873059:  409-block  0
+call    0 returned 873059
+   873059:  410:        if(free_func)
 branch  0 taken 0 (fallthrough)
-branch  1 taken 38364
+branch  1 taken 873059
     #####:  411:            free_func(datap);
     %%%%%:  411-block  0
 call    0 never executed

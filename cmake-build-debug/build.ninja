@@ -125,6 +125,7 @@ build CMakeFiles/BubbleMAC_INFOCOM.dir/Protocol_VeMAC.cpp.obj: CXX_COMPILER__Bub
 
 build BubbleMAC_INFOCOM.exe: CXX_EXECUTABLE_LINKER__BubbleMAC_INFOCOM_Debug CMakeFiles/BubbleMAC_INFOCOM.dir/main.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/parameters.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/common.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/vehicle.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/UpLocation.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/packets.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/communication.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/collision.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/BubbleProtocol.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/Protocol_80211.cpp.obj CMakeFiles/BubbleMAC_INFOCOM.dir/Protocol_VeMAC.cpp.obj
   FLAGS = -g
+  LINK_FLAGS = -static-libgcc -static-libstdc++
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\BubbleMAC_INFOCOM.dir
   POST_BUILD = cd .

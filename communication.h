@@ -5,9 +5,11 @@
 #ifndef BUBBLEMAC_INFOCOM_COMMUNICATION_H
 #define BUBBLEMAC_INFOCOM_COMMUNICATION_H
 
+#include <fstream>
+using namespace std;
 
-void handle_transmitter(struct Duallist *ALL_Vehicles, int slot);
-void handle_receiver(struct Duallist *ALL_Vehicles, int slot);
+void handle_transmitter(struct Duallist *ALL_Vehicles, int slot, ofstream &logfile);
+void handle_receiver(struct Duallist *ALL_Vehicles, int slot,ofstream &logfile);
 
 
 struct packet * generate_packet(struct vehicle *aCar, struct vehicle *bCar ,int slot, int condition);

@@ -1,7 +1,6 @@
 //
 // Created by cyx02 on 2022/6/27.
 //
-
 #include <cstring>
 #include <cstdlib>
 #include "BubbleProtocol.h"
@@ -30,10 +29,10 @@ void bubble_handle_packets(struct Duallist *ALL_Vehicles, int slot){
         aCar = (struct vehicle*)aItem->datap;
 
         //初始化记录的变量，也就是更新这些东西啦
-        (aCar->front_Vehicles).clear();
-        (aCar->rearV_Vehicles).clear();
-        (aCar->queue_Vehicles).clear();
-        (aCar->queue_Vehicles_slot).clear();
+        aCar->front_Vehicles = new vector<struct vehicle*>;
+        aCar->rearV_Vehicles = new vector<struct vehicle*>;
+        aCar->queue_Vehicles = new vector<struct vehicle*>;
+        aCar->queue_Vehicles_slot = new vector<int>;
         aCar->frontV = nullptr;
         aCar->rearV = nullptr;
 
@@ -60,16 +59,16 @@ void bubble_handle_packets(struct Duallist *ALL_Vehicles, int slot){
                 //更新front_Vehicles, rear_Vehicles
                 if(strcmp(aCar->lane, pkt->srcVehicle->lane) == 0){ //处于相同车道
                     if(pkt->srcVehicle->pos > aCar->pos){//同车道前方
-                        (aCar->front_Vehicles).push_back(pkt->srcVehicle);
+                        (*(aCar->front_Vehicles)).push_back(pkt->srcVehicle);
                     }else{//同车道后方
-                        (aCar->rearV_Vehicles).push_back(pkt->srcVehicle);
+                        (*(aCar->rearV_Vehicles)).push_back(pkt->srcVehicle);
                     }
 
                     // 更新同车道前后最近邻车辆的信息
                     aCar->forntV_his = aCar->frontV;
                     aCar->rearV_his = aCar->rearV_his;
-                    aCar->rearV = nearestVehicle(aCar, aCar->rearV_Vehicles);
-                    aCar->frontV = nearestVehicle(aCar, aCar->rearV_Vehicles);
+                    aCar->rearV = nearestVehicle(aCar, *(aCar->rearV_Vehicles));
+                    aCar->frontV = nearestVehicle(aCar, *(aCar->front_Vehicles));
 
                     // 更新车队信息,哪些车用了什么时槽
 //                    for(auto tmp: pkt->hashtable){
@@ -77,20 +76,27 @@ void bubble_handle_packets(struct Duallist *ALL_Vehicles, int slot){
 //                        int slot_index = tmp.second;
 //                        aCar->queue_Vehicles[bCar] = slot_index;
 //                    }
-                    for(int ii = 0; ii < pkt->hashtable_slot.size(); ii++){
-                        struct vehicle* bCar = pkt->hashtable_vehicles[ii];
-                        int slot_index = pkt->hashtable_slot[ii];
-                        aCar->queue_Vehicles.push_back(bCar);
-                        aCar->queue_Vehicles_slot.push_back(slot_index);
-                    }
+                    for(int ii = 0; ii < (*(pkt->hashtable_slot)).size(); ii++){
+                        struct vehicle* bCar = (*(pkt->hashtable_vehicles))[ii];
+                        int slot_index = (*(pkt->hashtable_slot))[ii];
 
+                        (*(aCar->queue_Vehicles)).push_back(bCar);
+                        (*(aCar->queue_Vehicles_slot)).push_back(slot_index);
+                    }
 
                 }else{//对于非同车道的车，若听到了一个tail，则将其车队信息更新到THN不可用中
                     if(pkt->srcVehicle->role_condition == ROLE_T){
-                        for(auto tmp: pkt->hashtable){
-                            struct vehicle* bCar = tmp.first;
-                            int slot_index = tmp.second;
-                            aCar->THN[slot_index] = bCar;
+//                        for(auto tmp: pkt->hashtable){
+//                            struct vehicle* bCar = tmp.first;
+//                            int slot_index = tmp.second;
+//                            aCar->THN[slot_index] = bCar;
+//                        }
+                        for(int ii = 0; ii < (*(pkt->hashtable_slot)).size(); ii++){
+                            struct vehicle* bCar = (*(pkt->hashtable_vehicles))[ii];
+                            int slot_index = (*(pkt->hashtable_slot))[ii];
+
+                            (*(aCar->queue_Vehicles)).push_back(bCar);
+                            (*(aCar->queue_Vehicles_slot)).push_back(slot_index);
                         }
                     }
                 }
@@ -101,6 +107,11 @@ void bubble_handle_packets(struct Duallist *ALL_Vehicles, int slot){
                 bItem = bItem->next;
             }
         }
+        delete aCar->front_Vehicles;
+        delete aCar->rearV_Vehicles;
+        delete aCar->queue_Vehicles;
+        delete aCar->queue_Vehicles_slot;
+
         aItem = aItem->next;
     }
     //cout<<"hello!!!"<<endl;
@@ -125,9 +136,9 @@ double safe_range(struct vehicle* aCar, struct vehicle* frontV){
     double ans;
 
     if(frontV == nullptr){
-        return (aCar->speed)*(aCar->speed)/2/(aCar->a)+3;
+        return (aCar->speed)*(aCar->speed)/2/(aCar->acc)+20;
     }else{
-        return ((aCar->speed)*(aCar->speed) - (frontV->speed)*(frontV->speed))/2/aCar->a +3;
+        return ((aCar->speed)*(aCar->speed) - (frontV->speed)*(frontV->speed))/2/aCar->acc +20;
     }
 }
 
@@ -140,6 +151,7 @@ void bubble_protocol_commRange(struct Duallist *ALL_Vehicles, int slot){
     aItem = ALL_Vehicles->head;
     while(aItem != NULL) {
         aCar = (struct vehicle*)aItem->datap;
+
         if(aCar->frontV == nullptr && aCar->rearV == nullptr){
             aCar->commRadius = safe_range(aCar, aCar->frontV);
         }else if(aCar->frontV == nullptr && aCar->rearV != nullptr){
