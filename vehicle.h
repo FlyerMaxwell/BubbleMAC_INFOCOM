@@ -57,8 +57,15 @@ typedef struct vehicle
     int slot_occupied; //the occupied slot
     int resource_pool;  //0 for left and 1 for R
 
+
     struct vehicle* OHN[200];
     struct vehicle* THN[200];
+    struct vehicle* prev_OHN[200];
+
+    int single_timestamp;
+    int acceess_timestamp;
+    int occupied_timestamp;
+    int bubble_flag;
 
     //Commrange
     double commRadius;
@@ -68,6 +75,7 @@ typedef struct vehicle
 
     //Neighbors to acc
     struct Duallist neighbours;
+
 
     //front vehicles and rear vehicles From the last frame. For bubble MAC
     vector<struct vehicle*> *front_Vehicles;
@@ -79,6 +87,8 @@ typedef struct vehicle
     struct vehicle* rearV;
     struct vehicle* forntV_his; //用于比较之前的前后车是否都认可了自己
     struct vehicle* rearV_his;
+
+
 
     int counter = 0;
 

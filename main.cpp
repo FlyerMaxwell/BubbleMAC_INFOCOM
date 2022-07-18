@@ -25,19 +25,9 @@ int main(int argc, char *argv[]) {
     trace_path = argv[1];       //读取文件路径
     cout<< "Current trace file is from:"<< trace_path <<"..."<<endl;
 
-    switch (protocol) {
-        case 0:
-            cout<<"Current Protocol is Bubble MAC..."<<endl;
-            break;
-        case 1:
-            cout<<"Current Protocol is 802.11p MAC..."<<endl;
-            break;
-        case 2:
-            cout<<"Current Protocol is VeMAC..."<<endl;
-            break;
-        default:
-            cout<<"error! Please input a right MAC protocol"<<endl;
-    }
+
+    cout<<"Current Protocol is Bubble MAC..."<<endl;
+
 
     //仿真的详细log路径，记录所有发生的事件
     string log_dir = ".\\log_";
@@ -50,11 +40,10 @@ int main(int argc, char *argv[]) {
     if(!logfile){cerr <<"create file error \n"; return 1;}
 
 
-
     srand(0);
 
     int slot_start = 0;
-    int slot_end = 19000; //19200 挂掉了
+    int slot_end =20000; //19200 挂掉了
     int slot_step = 1;
 
     struct Duallist ALL_Vehicles;
@@ -66,7 +55,7 @@ int main(int argc, char *argv[]) {
     Car_Number = 0;
 
     for(int slot = slot_start; slot < slot_end; slot += slot_step){
-        // cout<<"slot = "<< slot<<endl;
+         cout<<"slot = "<< slot<<endl;
 
         if(slot % UpLocSlot == 0){
             init_simulation(&ALL_Vehicles);
@@ -80,50 +69,22 @@ int main(int argc, char *argv[]) {
             logfile<<endl;
         }
 
-
-        if(slot % SlotPerFrame ==0){
-            switch (protocol){
-                case p_Bubble:
-                    bubble_handle_packets(&ALL_Vehicles, slot);
-                    bubble_protocol_commRange(&ALL_Vehicles, slot);
-                    // cout<<"after commRange deter-----------------------"<<endl;
-                    //printVehilces(&ALL_Vehicles);
-                    bubble_protocol_slot(&ALL_Vehicles, slot);
-                    //cout<<"after slot deter------------------------"<<endl;
-                    //printVehilces(&ALL_Vehicles);
-                    //if(slot >=SlotPerFrame){
-                        logfile<<"Event: Bubble MAC! Current slot = "<<slot<<endl;
-                        logfile<<"After the MAC, the info of vehicles are...."<<endl;
-                        logVehilcesInfo(&ALL_Vehicles, logfile);
-                        logfile<<endl<<endl;
-                    //}
-
-
-                    break;
-                case p_80211:
-                    mac_80211p(&ALL_Vehicles, slot);
-                    //printVehilces(&ALL_Vehicles);
-                    //if(slot >=SlotPerFrame){
-                        logfile<<"Event: 802.11p MAC! Current slot = "<<slot<<endl;
-                        logfile<<"After the MAC, the info of vehicles are...."<<endl;
-                        logVehilcesInfo(&ALL_Vehicles, logfile);
-                        logfile<<endl;
-                    //}
-
-                    break;
-                case p_VeMAC:
-                    ve_mac(&ALL_Vehicles, slot);
-                    //printVehilces(&ALL_Vehicles);
-                    //if(slot >= SlotPerFrame){
-                        logfile<<"Event: VeMAC MAC! Current slot = "<<slot<<endl;
-                        logfile<<"After the MAC, the info of vehicles are...."<<endl;
-                        logVehilcesInfo(&ALL_Vehicles, logfile);
-                        logfile<<endl;
-                   // }
-                    break;
-                default:break;
-            }
-        }
+        bubble(&ALL_Vehicles, slot);
+//        if(slot % SlotPerFrame == 0){
+//            bubble_handle_packets(&ALL_Vehicles, slot);
+//            bubble_protocol_commRange(&ALL_Vehicles, slot);
+//                    // cout<<"after commRange deter-----------------------"<<endl;
+//                    //printVehilces(&ALL_Vehicles);
+//            bubble_protocol_slot(&ALL_Vehicles, slot);
+//                    //cout<<"after slot deter------------------------"<<endl;
+//                    //printVehilces(&ALL_Vehicles);
+//                    //if(slot >=SlotPerFrame){
+//            logfile<<"Event: Bubble MAC! Current slot = "<<slot<<endl;
+//            logfile<<"After the MAC, the info of vehicles are...."<<endl;
+//            logVehilcesInfo(&ALL_Vehicles, logfile);
+//            logfile<<endl<<endl;
+//
+//        }
 ////
 //        //handle the transmitter at each slot
 //       // if(slot>=SlotPerFrame)
@@ -143,7 +104,7 @@ int main(int argc, char *argv[]) {
 //        //if(slot>=SlotPerFrame)
 //            logfile<<endl;
     }
-    printf("Total Cars: %d\n cnt_pkt_tx: %d\n cnt_pkt_0: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n", Car_Number, cnt_pkt_tx, cnt_pkt_0, cnt_pkt_1, cnt_pkt_2);
+    printf(" Total Cars: %d\n Total slot:%d \n cnt_pkt_tx: %d\n cnt_pkt_0: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n Receive Rate=%lf \n", Car_Number,slot_end,  cnt_pkt_tx, cnt_pkt_0, cnt_pkt_1, cnt_pkt_2, (double)(cnt_pkt_1)/(cnt_pkt_0+cnt_pkt_1+cnt_pkt_2));
 
     logfile.close();
     return 0;

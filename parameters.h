@@ -9,9 +9,14 @@
 #define ROLE_H 1
 #define ROLE_T 2
 #define ROLE_I 3
+#define ROLE_A 4   //在申请
+
 #define ROLE_VeMAC 4
-#define OCCUPIED 1
-#define ACCESS 0
+
+
+#define OCCUPIED 2
+#define ACCESS 1
+#define SINGLE 0
 
 extern int UpLocSlot;
 extern int SlotPerFrame;

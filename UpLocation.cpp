@@ -108,6 +108,14 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         // duallist_init(&new_car->frontV);
         // duallist_init(&new_car->rearV);
 
+
+
+
+
+        new_car->single_timestamp = slot;
+        new_car->acceess_timestamp = -1;
+        new_car->occupied_timestamp = -1;
+
         //查找new_Car是否已经存在， 若存在，flag=true；若不存在，则flag = false;遍历一次ALL_Vehicles双链表，看是否已经存在（id是否相等），若相等则flag=true；若不相等，则flag=false
         flag = false;
         bItem = (struct Item*)ALL_Vehicles->head;
@@ -160,6 +168,11 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
 
         //若之前不存在,则添加新车
         if (flag == false){
+            new_car->front_Vehicles = new vector<struct vehicle*>;
+            new_car->rearV_Vehicles = new vector<struct vehicle*>;
+            new_car->queue_Vehicles = new vector<struct vehicle*>;
+            new_car->queue_Vehicles_slot = new vector<int>;
+
             Car_Number++;
             duallist_add_to_tail(ALL_Vehicles, new_car);
         }
@@ -173,6 +186,12 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
     while(aItem != NULL){
         aCar = (struct vehicle*)aItem->datap;
         if(aCar->handled == 0){
+
+            delete aCar->front_Vehicles;
+            delete aCar->rearV_Vehicles;
+            delete aCar->queue_Vehicles;
+            delete aCar->queue_Vehicles_slot;
+
             struct Item* deleteItem = aItem;
             aItem = aItem->next;
             duallist_pick_item(ALL_Vehicles, deleteItem);

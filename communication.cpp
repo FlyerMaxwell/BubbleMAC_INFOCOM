@@ -121,7 +121,7 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot, ofstream &logfile)
             bItem = bItem->next;
         }
 
-        logfile << aCar->id<<" receice "<<cnt_cur_pkt<<" packets in slot ="<<slot<<endl;
+        logfile << aCar->id<<" receive "<<cnt_cur_pkt<<" packets in slot ="<<slot<<endl;
 
         if(cnt_cur_pkt == 1){
             bItem = (struct Item*)aCar->packets.head;
