@@ -9,7 +9,7 @@
 
 void log_packet(struct packet * aPkt, int slot, ofstream &logfile){
     logfile<<"  Packet Info:"<<endl;
-    logfile<<"    --SrcVehicle="<<aPkt->srcVehicle->id<<", DstVehicle="<<aPkt->dstVehicle->id<<", slot="<<slot<<", condition="<<aPkt->condition<<endl;
+    logfile<<"    --SrcVehicle="<<aPkt->srcVehicle->id<<", Src_slot_occupied="<<aPkt->srcVehicle->slot_occupied<<", DstVehicle="<<aPkt->dstVehicle->id<<", Src_slot_occupied="<<aPkt->dstVehicle->slot_occupied<<", slot="<<slot<<", condition="<<aPkt->condition<<endl;
     logfile<<"    --ONH_snapshot: ";
     for(int i = 0; i < SlotPerFrame; i++){
         //logfile<<"i="<<i<<" V="<<",";

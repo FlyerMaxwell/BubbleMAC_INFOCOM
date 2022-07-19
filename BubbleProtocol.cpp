@@ -43,7 +43,7 @@ using namespace std;
 
 
 void bubble(struct Duallist *ALL_Vehicles, int slot){
-    struct Item * aItem, *bItem;
+    struct Item * aItem, *bItem, *cItem;
     struct vehicle* aCar;
 
     if(log_flag == true){
@@ -54,6 +54,22 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
     aItem = ALL_Vehicles->head;
     while(aItem != NULL) {
         aCar = (struct vehicle*)aItem->datap;               //[a,b] (rand()%(b-a+1))+a
+
+
+        if(strcmp(aCar->id, "a02.0") == 0){
+            if(aCar->packets.nItems!=0){
+                cout<<"-----------------a02.0's packet number:"<<aCar->packets.nItems<<endl;
+                struct Item* cItem = (struct Item*)aCar->packets.head;
+                while(cItem != NULL){
+                    struct packet* aPkt = (struct packet*)aItem->datap;
+                    cout<<"slot="<<slot<<"timestamp: "<<aPkt->timestamp<<"  src_vehicle:"<<aPkt->srcVehicle<<"  condition:"<<aPkt->condition<<endl;
+                    cItem  = cItem->next;
+                }
+
+
+            }
+
+        }
 
         handle_packets(aCar,slot);   //处理一帧以内收到的包的情况，更新进行决策的参考量;也要更新bubble_flag，看其是否被认可,等于true表明被认可，等于false表明不被认可
 

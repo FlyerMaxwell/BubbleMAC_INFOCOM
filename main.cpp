@@ -60,7 +60,9 @@ int main(int argc, char *argv[]) {
 
 
     collision_vehicle = new struct vehicle;
-    strcpy(collision_vehicle->id,"collision");
+    strcpy(collision_vehicle->id,"rx_collision");
+
+
 
     for(int slot = slot_start; slot < slot_end; slot += slot_step){
          //cout<<"slot = "<< slot<<endl;
