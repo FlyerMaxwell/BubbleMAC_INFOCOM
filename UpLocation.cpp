@@ -180,6 +180,8 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
             new_car->packets = new vector<struct packet*>;
 
             Car_Number++;
+            cnt_cars++;
+
             duallist_add_to_tail(ALL_Vehicles, new_car);
         }
 
@@ -228,7 +230,7 @@ void handle_neighbours(struct Duallist *ALL_Vehicles){
         while(nItem != NULL){
             nCar = (struct vehicle*)nItem->datap;
             //id不相等且处于两千米以内，则将其加入到neighbors
-            if(strcmp(nCar->id, aCar->id)!=0 && distance_between_vehicle(aCar,nCar) < 2000){
+            if(strcmp(nCar->id, aCar->id)!=0 && distance_between_vehicle(aCar,nCar) < 300){
                 duallist_add_to_tail(&(aCar->neighbours), nCar);//将id不同的车加入到neighbor list。
             }
             nItem = nItem->next;

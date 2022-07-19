@@ -46,9 +46,9 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
     struct Item * aItem, *bItem, *cItem;
     struct vehicle* aCar;
 
-    if(log_flag == true){
-        logfile <<"---------------------------------------------------"<<endl;
-        logfile << "slot = "<<slot<<endl;
+    if(log_process_flag == true){
+        log_process_file <<"---------------------------------------------------"<<endl;
+        log_process_file << "slot = "<<slot<<endl;
     }
 
     aItem = ALL_Vehicles->head;
@@ -60,13 +60,14 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
             if(aCar->packets->size()!=0){
                 cout<<"-----------------a02.0's packet number:"<<aCar->packets->size()<<endl;
                 for(auto aPkt: *(aCar->packets))
-                    cout<<"slot="<<slot<<"timestamp: "<<aPkt->timestamp<<"  src_vehicle:"<<aPkt->srcVehicle<<"  condition:"<<aPkt->condition<<endl;
+                    cout<<"slot="<<slot<<"timestamp: "<<aPkt->timestamp<<"  src_vehicle:"<<aPkt->srcVehicle->id<<"  condition:"<<aPkt->condition<<endl;
                 }
         }
 
+
         handle_packets(aCar,slot);   //处理一帧以内收到的包的情况，更新进行决策的参考量;也要更新bubble_flag，看其是否被认可,等于true表明被认可，等于false表明不被认可
 
-        if(log_flag == true){
+        if(log_process_flag == true){
             logACar(aCar);
         }
 
@@ -207,8 +208,8 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
     }
 
 
-    if(log_flag == true){
-        logfile <<endl;
+    if(log_process_flag == true){
+        log_process_file <<endl;
     }
 }
 

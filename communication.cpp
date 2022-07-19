@@ -9,6 +9,8 @@
 #include "packets.h"
 #include "collision.h"
 #include <iostream>
+#include <cstring>
+
 using namespace std;
 
 
@@ -41,10 +43,13 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
 //        logfile <<"Event: "<< aCar->id<<" is transmitting in slot ="<<slot<<" ";
 //        logACar(aCar);
 //        logfile<<endl;
+        int flag_tx_normal = true;//正常发包标志
+
 
         bItem = (struct Item*)aCar->neighbours.head;//遍历当前transmitter的邻居节点
         while(bItem != NULL){
             bCar = (struct vehicle*)bItem->datap;
+
             //printf("bCar Id: %s\n", bCar->id);
             double distanceAB = distance_between_vehicle(aCar, bCar);
             if(aCar->commRadius < distanceAB){
@@ -56,13 +61,14 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
 //                    logfile << "      Receiver "<<bCar->id<<" is also transmitting in slot ="<<slot<<", Distance is"<<distanceAB<<" ";
 //                    logACar(bCar, logfile);
 //                    logfile<<endl;
+                    flag_tx_normal = false;
                     aCar->counter_rx_TxCollision++;
                     cnt_tx_collision++;
                     struct packet* pkt = generate_packet(aCar,bCar,slot,TX_COLI);
                     cout<<"timestamp = "<<pkt->timestamp<< ",there is a TX collision, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
                     bCar->packets->push_back(pkt);
                     //printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
-                    log_packet(pkt, slot, logfile);
+                    log_packet(pkt, slot, log_process_file);
 
                     struct collision* coli =  generate_collision(aCar,bCar,0,slot);
                     //log_collision(coli);
@@ -81,6 +87,10 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
                     bItem = bItem->next;
                 }
             }
+        }
+
+        if(flag_tx_normal){
+            cnt_pkt_tx_normal++;
         }
         aItem =aItem->next;
     }
@@ -124,24 +134,32 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
 
             struct packet* pkt= (*(aCar->packets))[len-1];
             pkt->condition = NO_COLI;
-            log_packet(pkt, slot, logfile);
+            log_packet(pkt, slot, log_process_file);
             cout<<"timestamp = "<<pkt->timestamp<< ",there is normal packet, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
 
             aCar->counter_rx_normal++;
-            cnt_pkt_1++;
-            cnt_received++;
+            cnt_rx_normal++;
+            if(strcmp(pkt->srcVehicle->lane, aCar->lane)==0 && pkt->srcVehicle->pos > aCar->pos)
+                cnt_frontV_normal++;
+            if(strcmp(pkt->srcVehicle->lane, aCar->lane)==0 && pkt->srcVehicle->pos < aCar->pos)
+                cnt_rearV_normal++;
+
         }else if(cnt_cur_pkt >=2 ){     //产生碰撞的包
-            cnt_pkt_2 += cnt_cur_pkt;
+            cnt_rx_colli += cnt_cur_pkt;
             aCar->counter_rx_RxCollision += cnt_cur_pkt;
             // cout<<"asdasdasd----------------"<<endl;
 
             for(int ii = len-1; ii >=len-cnt_cur_pkt; ii--){
                 struct packet *pkt = (struct packet*) (*(aCar->packets))[ii];
                 pkt->condition = RX_COLI;
-                log_packet(pkt,slot, logfile);
+                log_packet(pkt,slot, log_process_file);
                 if(pkt->timestamp == slot){
                     cout<<"timestamp = "<<pkt->timestamp<< ",there is a RX collision, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
                 }
+                if(strcmp(pkt->srcVehicle->lane, aCar->lane)==0 && pkt->srcVehicle->pos > aCar->pos)
+                    cnt_frontV_colli++;
+                if(strcmp(pkt->srcVehicle->lane, aCar->lane)==0 && pkt->srcVehicle->pos < aCar->pos)
+                    cnt_rearV_Colli++;
             }
         }
         //printf("hello\n");

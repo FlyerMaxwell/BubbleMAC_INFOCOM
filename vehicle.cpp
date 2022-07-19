@@ -47,20 +47,20 @@ void logVehilcesInfo(struct Duallist *ALL_Vehicles, ofstream & logfile){
 }
 
 void logACar(struct vehicle* aCar){
-    logfile << "id=" <<aCar->id<<", x="<<aCar->x<<", y="<<aCar->y<<", CommR="<<aCar->commRadius<<", Slot_Occupied="<<aCar->slot_occupied<<", Role_condition="<<aCar->role_condition<<", slot_appeared:"<<aCar->slot_appeared<<endl;
-    logfile << "   counter_tx="<<aCar->counter_tx<<", counter_rx_TxCollision="<<aCar->counter_rx_TxCollision<<", counter_rx_RxCollision="<<aCar->counter_rx_RxCollision<<", counter_rx_normal="<<aCar->counter_rx_normal<<endl;
+    log_process_file << "id=" <<aCar->id<<", x="<<aCar->x<<", y="<<aCar->y<<", CommR="<<aCar->commRadius<<", Slot_Occupied="<<aCar->slot_occupied<<", Role_condition="<<aCar->role_condition<<", slot_appeared:"<<aCar->slot_appeared<<endl;
+    log_process_file << "   counter_tx="<<aCar->counter_tx<<", counter_rx_TxCollision="<<aCar->counter_rx_TxCollision<<", counter_rx_RxCollision="<<aCar->counter_rx_RxCollision<<", counter_rx_normal="<<aCar->counter_rx_normal<<endl;
 
-    logfile <<"   OHN:"<<endl;
+    log_process_file <<"   OHN:"<<endl;
     for(int i = 0; i <SlotPerFrame; i++)
         if(aCar->OHN[i] != nullptr)
-            logfile<<i<<" : "<<aCar->OHN[i]->id<<"   ";
-    logfile<<endl;
+            log_process_file<<i<<" : "<<aCar->OHN[i]->id<<"   ";
+    log_process_file<<endl;
 
-    logfile <<"   THN:"<<endl;
+    log_process_file <<"   THN:"<<endl;
     for(int i = 0; i < SlotPerFrame; i++)
         if(aCar->THN[i] != nullptr)
-            logfile<<i<<" : "<<aCar->THN[i]->id<<" ";
-    logfile<<endl;
+            log_process_file<<i<<" : "<<aCar->THN[i]->id<<" ";
+    log_process_file<<endl;
 
     //logfile<<"    Neighbors in CommRange"<<endl;
 
