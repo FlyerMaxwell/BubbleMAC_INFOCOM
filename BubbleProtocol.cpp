@@ -66,7 +66,6 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
                     cItem  = cItem->next;
                 }
 
-
             }
 
         }
