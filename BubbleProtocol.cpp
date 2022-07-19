@@ -46,16 +46,25 @@ using namespace std;
  */
 
 
-
 void bubble(struct Duallist *ALL_Vehicles, int slot){
     struct Item * aItem, *bItem;
     struct vehicle* aCar;
+
+    if(log_flag == true){
+        logfile <<"---------------------------------------------------"<<endl;
+        logfile << "slot = "<<slot<<endl;
+    }
 
     aItem = ALL_Vehicles->head;
     while(aItem != NULL) {
         aCar = (struct vehicle*)aItem->datap;               //[a,b] (rand()%(b-a+1))+a
 
         handle_packets(aCar,slot);   //处理一帧以内收到的包的情况，更新进行决策的参考量;也要更新bubble_flag，看其是否被认可,等于true表明被认可，等于false表明不被认可
+
+        if(log_flag == true){
+            logACar(aCar);
+        }
+
 
         if(aCar->slot_condition == SINGLE){
             if(slot < aCar->single_timestamp + SlotPerFrame){ //对于刚刚出现的车，需要听满一个frame才进行决策
@@ -67,7 +76,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                     aCar->forntV_his = aCar->frontV;
                     aCar->rearV_his = aCar->rearV;
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_S);//随机选择时槽 single
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_S, slot);//随机选择时槽 single
                     aCar->slot_condition = SINGLE; //保持single不变
                     aCar->single_timestamp = slot;//更新single_timestamp 否则后面每个时槽都会重新选择（我们只要一帧决策一次就好）
                     aCar->role_condition = ROLE_S;
@@ -79,7 +88,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                     aCar->forntV_his = aCar->frontV;
                     aCar->rearV_his = aCar->rearV;
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_H);//随机选择时槽
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_H, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
                     aCar->role_condition = ROLE_H;
@@ -91,7 +100,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                     aCar->forntV_his = aCar->frontV;
                     aCar->rearV_his = aCar->rearV;
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_T);//随机选择时槽
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_T, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
                     aCar->role_condition = ROLE_T;
@@ -103,7 +112,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                     aCar->forntV_his = aCar->frontV;
                     aCar->rearV_his = aCar->rearV;
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_I);//随机选择时槽
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_I, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
                     aCar->role_condition = ROLE_I;
@@ -119,7 +128,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
                 aItem = aItem->next;
                 continue;
             }else if(slot == aCar->acceess_timestamp + SlotPerFrame){
-                int tmp = choose_slot(aCar, slot);
+                int tmp = choose_slot(aCar, aCar->role_condition, slot);
                 // 确定身份是否被对应位置的车辆认可
                 if(IsValidRole(aCar) == true){                 //如果被认可
                     // aCar->slot_occupied = tmp; // 使用上次选择的时槽，本次不更新
@@ -148,7 +157,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
             }else{ //若未得到对应位置车辆的认可，重新进行时槽的选择，切换状态
                 if(aCar->frontV == nullptr && aCar->rearV == nullptr){
 
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_S);//随机选择时槽 single
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_S, slot);//随机选择时槽 single
                     aCar->slot_condition = SINGLE; //保持single不变
                     aCar->single_timestamp = slot;//更新single_timestamp 否则后面每个时槽都会重新选择（我们只要一帧决策一次就好）
                     aCar->role_condition = ROLE_S;
@@ -158,7 +167,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                 }else if(aCar->frontV == nullptr && aCar->rearV != nullptr){
 
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_H);//随机选择时槽
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_H, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
                     aCar->role_condition = ROLE_H;
@@ -168,7 +177,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                 }else if(aCar->frontV != nullptr && aCar->rearV == nullptr){
 
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_T);//随机选择时槽
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_T, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
                     aCar->role_condition = ROLE_T;
@@ -178,22 +187,28 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                 }else{
 
-                    aCar->slot_occupied = choose_slot(aCar,ROLE_I);//随机选择时槽
+                    aCar->slot_occupied = choose_slot(aCar,ROLE_I, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
                     aCar->role_condition = ROLE_I;
                     choose_commRange(aCar,slot); //决策通信半径
                     aItem = aItem->next;
                     continue;
+
                 }
             }
         }
 
     }
+
+
+    if(log_flag == true){
+        logfile <<endl;
+    }
 }
 
 // 根据角色，在对应得时槽资源池子里选一个时槽
-int choose_slot(struct vehicle* aCar, int role){
+int choose_slot(struct vehicle* aCar, int role, int slot){
     vector<int> slot_candidate;
 
     int a, b; //区间的开始和结束
@@ -231,6 +246,8 @@ int choose_slot(struct vehicle* aCar, int role){
     //进行时槽选择
 
     int len_candidate = slot_candidate.size();
+//    if(len_candidate == 0)
+//            return (a+b)/2;
     int choosed_slot = slot_candidate[rand() % len_candidate];
 
     return choosed_slot;
@@ -271,10 +288,11 @@ void handle_packets(struct vehicle* aCar, int slot){
             //更新OHN
             int index = (pkt->timestamp)%SlotPerFrame;
             aCar->OHN[index] = pkt->srcVehicle;
+            aCar->THN[index] = pkt->srcVehicle;
 
             //更新THN
             for(int i = 0; i < SlotPerFrame; i++){
-                if(pkt->OHN_snapshot[i]!=NULL)
+                if(pkt->OHN_snapshot[i]!=NULL && pkt->OHN_snapshot[i]!= aCar)
                     aCar->THN[i] = pkt->OHN_snapshot[i];
             }
 
@@ -315,8 +333,10 @@ void handle_packets(struct vehicle* aCar, int slot){
                         struct vehicle* bCar = (*(pkt->hashtable_vehicles))[ii];
                         int slot_index = (*(pkt->hashtable_slot))[ii];
 
+                        aCar->THN[slot_index] = bCar; //刷新THN
                         (*(aCar->queue_Vehicles)).push_back(bCar);
                         (*(aCar->queue_Vehicles_slot)).push_back(slot_index);
+
                     }
                 }
             }
@@ -324,6 +344,7 @@ void handle_packets(struct vehicle* aCar, int slot){
         }else if(pkt->condition == RX_COLI){//这种属于1个接收端同时有多个包送达，不能解出包，但是能感知到包的存在
             int index = (pkt->timestamp)%SlotPerFrame;
             aCar->OHN[index] = pkt->srcVehicle;
+
             bItem = bItem->next;
         }
     }

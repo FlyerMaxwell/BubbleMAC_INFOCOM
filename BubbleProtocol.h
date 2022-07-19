@@ -15,7 +15,7 @@ void handle_packets(struct vehicle* aCar, int slot);
 void choose_commRange(struct vehicle* aCar, int slot);
 bool IsMergingCollision(struct vehicle* aCar, int slot);
 bool IsValidRole(struct vehicle* aCar);
-int choose_slot(struct vehicle* aCar, int role);
+int choose_slot(struct vehicle* aCar, int role, int slot);
 struct vehicle* nearestVehicle(struct vehicle* aCar, vector<struct vehicle*> vehicleList);
 double safe_range(struct vehicle* aCar, struct vehicle* frontV);
 

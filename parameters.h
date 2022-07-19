@@ -14,6 +14,10 @@
 #define ROLE_VeMAC 4
 
 
+
+#include <fstream>
+using namespace std;
+
 #define OCCUPIED 2
 #define ACCESS 1
 #define SINGLE 0
@@ -32,4 +36,7 @@ extern int cnt_coli;
 extern int counterToChange;
 extern int len_head_resource;
 extern int len_tail_resouce;
+
+extern bool log_flag;
+extern  ofstream logfile;
 #endif //BUBBLEMAC_INFOCOM_PARAMETERS_H

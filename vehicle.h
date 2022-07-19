@@ -12,13 +12,6 @@
 #include "parameters.h"
 #include <fstream>
 
-#define ROLE_H 1
-#define ROLE_T 2
-#define ROLE_I 3
-#define ROLE_S 0
-#define OCCUPIED 1
-#define ACCESS 0
-
 using namespace std;
 
 typedef struct vehicle
@@ -88,9 +81,13 @@ typedef struct vehicle
     struct vehicle* forntV_his; //用于比较之前的前后车是否都认可了自己
     struct vehicle* rearV_his;
 
-
+    int counter_tx;
+    int counter_rx_TxCollision;
+    int counter_rx_RxCollision;
+    int counter_rx_normal;
 
     int counter = 0;
+
 
 
 }Vehicle;
@@ -98,6 +95,6 @@ typedef struct vehicle
 double distance_between_vehicle(const struct vehicle* aCar, const struct vehicle* bCar);
 void printVehilces(struct Duallist *ALL_Vehicles);
 void logVehilcesInfo(struct Duallist *ALL_Vehicles, ofstream & logfile);
-void logACar(struct vehicle* aCar, ofstream & logfile);
+void logACar(struct vehicle* aCar);
 
 #endif //BUBBLEMAC_INFOCOM_VEHICLE_H

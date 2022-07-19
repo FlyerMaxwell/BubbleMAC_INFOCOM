@@ -23,18 +23,19 @@ int main(int argc, char *argv[]) {
     int protocol = argv[2][0] - '0'; //0: bubble 1:802.11 2:veMAC
 
     trace_path = argv[1];       //读取文件路径
+
+
+    trace_path = "C:\\Users\\cyx02\\Desktop\\transformed\\transformed\\carposition_";
+
     cout<< "Current trace file is from:"<< trace_path <<"..."<<endl;
-
-
     cout<<"Current Protocol is Bubble MAC..."<<endl;
+
 
 
     //仿真的详细log路径，记录所有发生的事件
     string log_dir = ".\\log_";
     log_dir += to_string(protocol);
     log_dir += ".txt";
-    ofstream logfile;
-
 
     logfile.open(log_dir);
     if(!logfile){cerr <<"create file error \n"; return 1;}
@@ -42,8 +43,8 @@ int main(int argc, char *argv[]) {
 
     srand(0);
 
-    int slot_start = 0;
-    int slot_end =20000; //19200 挂掉了
+    int slot_start = 0; //每个slot是0.5毫秒
+    int slot_end = 600; //19200 挂掉了
     int slot_step = 1;
 
     struct Duallist ALL_Vehicles;
@@ -55,8 +56,9 @@ int main(int argc, char *argv[]) {
     Car_Number = 0;
 
     for(int slot = slot_start; slot < slot_end; slot += slot_step){
-         cout<<"slot = "<< slot<<endl;
+         //cout<<"slot = "<< slot<<endl;
 
+         //更新位置
         if(slot % UpLocSlot == 0){
             init_simulation(&ALL_Vehicles);
             updateLocation(&ALL_Vehicles, slot, trace_path);
@@ -64,9 +66,9 @@ int main(int argc, char *argv[]) {
             //cout<<"The location of vehicles has been updated, Current slot = "<<slot<<endl;
             //printVehilces(&ALL_Vehicles);
 
-            logfile<<"Event: Update location! Current slot = "<<slot<<", Car_Number="<<Car_Number<<endl;
-            logVehilcesInfo(&ALL_Vehicles, logfile);
-            logfile<<endl;
+//            logfile<<"Event: Update location! Current slot = "<<slot<<", Car_Number="<<Car_Number<<endl;
+//            logVehilcesInfo(&ALL_Vehicles, logfile);
+//            logfile<<endl;
         }
 
         bubble(&ALL_Vehicles, slot);
@@ -90,7 +92,7 @@ int main(int argc, char *argv[]) {
 //       // if(slot>=SlotPerFrame)
 //            logfile<<"Handle tx:"<<endl;
 //
-        handle_transmitter(&ALL_Vehicles, slot, logfile);
+        handle_transmitter(&ALL_Vehicles, slot);
 //
 //        //if(slot>=SlotPerFrame)
 //            logfile<<endl;
@@ -99,7 +101,7 @@ int main(int argc, char *argv[]) {
 //        //if(slot>=SlotPerFrame)
 //            logfile<<"Handle rx:"<<endl;
 //
-        handle_receiver(&ALL_Vehicles, slot,logfile);
+        handle_receiver(&ALL_Vehicles, slot);
 //
 //        //if(slot>=SlotPerFrame)
 //            logfile<<endl;

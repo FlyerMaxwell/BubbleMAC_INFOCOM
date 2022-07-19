@@ -41,7 +41,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
     struct vehicle *aCar, *bCar;
     int car_count = 0;
 
-    trace_path += to_string(slot);
+    trace_path += to_string(slot/2);
     trace_path += ".txt";
 
     //printf("Loading vehilces...\n");
@@ -75,7 +75,8 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         new_car->acc = 4.5;
         new_car->turn = 0;
         //init slot information
-        new_car->slot_condition = 1;
+        new_car->slot_condition = SINGLE;
+        new_car->role_condition = ROLE_S;
         //new_car->slot_occupied = 0;
         new_car->slot_occupied = -1;
         new_car->slot_appeared = slot;
@@ -83,9 +84,15 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
 
         // new_car->queue_Vehicles.clear();
         //init slot information for vemac
-        new_car->role_condition = 0;
-        new_car->slot_condition = 0;
-        new_car->slot_occupied = 0;
+        new_car->role_condition = ROLE_S;
+        new_car->slot_condition = SINGLE;
+        new_car->slot_occupied = -1;
+
+        new_car->counter_tx = 0;
+        new_car->counter_rx_TxCollision =0;
+        new_car->counter_rx_RxCollision = 0;
+        new_car->counter_rx_normal = 0;
+
         if(new_car->angle >= 0 && new_car->angle <180) new_car->ve_resource_pool = 1;
         else new_car->ve_resource_pool = 0;
 
@@ -107,8 +114,6 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         duallist_init(&new_car->neighbours);
         // duallist_init(&new_car->frontV);
         // duallist_init(&new_car->rearV);
-
-
 
 
 
