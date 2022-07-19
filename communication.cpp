@@ -60,7 +60,7 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
                     cnt_tx_collision++;
                     struct packet* pkt = generate_packet(aCar,bCar,slot,TX_COLI);
                     cout<<"timestamp = "<<pkt->timestamp<< ",there is a TX collision, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
-                    duallist_add_to_head(&(bCar->packets), pkt);
+                    bCar->packets->push_back(pkt);
                     //printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
                     log_packet(pkt, slot, logfile);
 
@@ -73,7 +73,9 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
 //                    logfile<<endl;
 
                     struct packet* pkt = generate_packet(aCar,bCar,slot,NO_COLI);
-                    duallist_add_to_head(&(bCar->packets), pkt);
+                    //duallist_add_to_head(&(bCar->packets), pkt);
+                    bCar->packets->push_back(pkt);
+
                     //printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
                     //log_packet(pkt,slot);
                     bItem = bItem->next;
@@ -100,29 +102,27 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
 
         //printf("Current Slot: %d, Current Receiver: %d\n", slot, aCar->id);//对当前时槽正好发射的节点进行操作
         //到目前时间一直都没有收到包
-        if(aCar->packets.nItems == 0){
+        if(aCar->packets->size() == 0){
             aItem = aItem->next;
             continue;
         }
 
         //数一下当前slot收到了多少个包---->packet只有当一个完整的frame才刷新
         int cnt_cur_pkt = 0;
-        bItem =  (struct Item*)aCar->packets.head;
-        while(bItem != NULL){
-            struct packet* pkt= (struct packet*)bItem->datap;
 
+        int len = (*(aCar->packets)).size();
+        for(int ii = len-1; ii >=0; ii--){
+            struct packet *pkt = (struct packet*) (*(aCar->packets))[ii];
             if(pkt->timestamp != slot)//仅统计当前slot的pkt
                 break;
             else
                 cnt_cur_pkt++;
-
-            bItem = bItem->next;
         }
 
 
         if(cnt_cur_pkt == 1){
-            bItem = (struct Item*)aCar->packets.head;
-            struct packet* pkt= (struct packet*)bItem->datap;
+
+            struct packet* pkt= (*(aCar->packets))[len-1];
             pkt->condition = NO_COLI;
             log_packet(pkt, slot, logfile);
             cout<<"timestamp = "<<pkt->timestamp<< ",there is normal packet, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
@@ -134,18 +134,14 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
             cnt_pkt_2 += cnt_cur_pkt;
             aCar->counter_rx_RxCollision += cnt_cur_pkt;
             // cout<<"asdasdasd----------------"<<endl;
-            bItem = (struct Item*)aCar->packets.head;
-            while(bItem!=NULL){
-                struct packet* pkt= (struct packet*)bItem->datap;
+
+            for(int ii = len-1; ii >=len-cnt_cur_pkt; ii--){
+                struct packet *pkt = (struct packet*) (*(aCar->packets))[ii];
                 pkt->condition = RX_COLI;
-
                 log_packet(pkt,slot, logfile);
-
                 if(pkt->timestamp == slot){
                     cout<<"timestamp = "<<pkt->timestamp<< ",there is a RX collision, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
-
                 }
-                bItem = bItem->next;
             }
         }
         //printf("hello\n");

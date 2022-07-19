@@ -57,17 +57,11 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
 
         if(strcmp(aCar->id, "a02.0") == 0){
-            if(aCar->packets.nItems!=0){
-                cout<<"-----------------a02.0's packet number:"<<aCar->packets.nItems<<endl;
-                struct Item* cItem = (struct Item*)aCar->packets.head;
-                while(cItem != NULL){
-                    struct packet* aPkt = (struct packet*)aItem->datap;
+            if(aCar->packets->size()!=0){
+                cout<<"-----------------a02.0's packet number:"<<aCar->packets->size()<<endl;
+                for(auto aPkt: *(aCar->packets))
                     cout<<"slot="<<slot<<"timestamp: "<<aPkt->timestamp<<"  src_vehicle:"<<aPkt->srcVehicle<<"  condition:"<<aPkt->condition<<endl;
-                    cItem  = cItem->next;
                 }
-
-            }
-
         }
 
         handle_packets(aCar,slot);   //处理一帧以内收到的包的情况，更新进行决策的参考量;也要更新bubble_flag，看其是否被认可,等于true表明被认可，等于false表明不被认可
@@ -284,17 +278,16 @@ void handle_packets(struct vehicle* aCar, int slot){
         aCar->THN[ii] = nullptr;
     }
 
-    bItem = (struct Item*)aCar->packets.head;
-
-    while(bItem != NULL){
-        struct packet* pkt = (struct packet*)bItem->datap;
+    int len = (*(aCar->packets)).size();
+    for( int ii = len-1; ii>=0; ii-- ){
+        struct packet* pkt = (struct packet*)(*(aCar->packets))[ii];
 
         if(pkt->timestamp < slot - SlotPerFrame){//一帧之外的包就不看了
             return;
         }
 
         if(pkt->condition == TX_COLI){//这个包属于两个同时发射，无法被感知到
-            bItem = bItem->next;
+           continue;
         }else if(pkt->condition == NO_COLI){//这种属于能够正常解的包
             //更新OHN
             int index = (pkt->timestamp)%SlotPerFrame;
@@ -351,13 +344,10 @@ void handle_packets(struct vehicle* aCar, int slot){
                     }
                 }
             }
-            bItem = bItem->next;
         }else if(pkt->condition == RX_COLI){//这种属于1个接收端同时有多个包送达，不能解出包，但是能感知到包的存在
             int index = (pkt->timestamp)%SlotPerFrame;
             aCar->OHN[index] = collision_vehicle;            //填自己的时候就表明发生碰撞了
             aCar->THN[index] = collision_vehicle;
-
-            bItem = bItem->next;
         }
     }
 
@@ -381,17 +371,16 @@ bool IsValidRole(struct vehicle* aCar){
 
 
 bool IsMergingCollision(struct vehicle* aCar, int slot){
-    struct Item* bItem =(struct Item *) aCar->packets.head;
 
-    while(bItem != NULL){
-        struct packet* pkt = (struct packet*) bItem->datap;
+
+    int len = (*(aCar->packets)).size();
+    for(int ii = len-1; ii >=0; ii--){
+        struct packet *pkt = (struct packet*) (*(aCar->packets))[ii];
 
         if(pkt->timestamp < slot){//只看最近的一个slot即可
             break;
-        }
-
-        if(pkt->condition == 0){         //condition为0的包车辆是听不到的，也解不出
-            bItem = bItem->next;
+        } if(pkt->condition == 0){         //condition为0的包车辆是听不到的，也解不出
+            continue;
         }else if(pkt->condition == 1){
             //检测是否全部认可了自己
             if(pkt->OHN_snapshot[aCar->slot_occupied] != aCar){
@@ -402,12 +391,11 @@ bool IsMergingCollision(struct vehicle* aCar, int slot){
                 }
             }
 
-            bItem = bItem->next;
+            continue;
         }else if(pkt->condition == 2){//对于冲突的包，只需要更新OHN为占用即可
-            bItem = bItem->next;
+            continue;
         }
     }
-
     return true;
 }
 

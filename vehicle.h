@@ -64,7 +64,7 @@ typedef struct vehicle
     double commRadius;
 
     //Packets Received
-    struct Duallist packets;
+    vector<struct packet*> *packets;
 
     //Neighbors to acc
     struct Duallist neighbours;

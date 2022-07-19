@@ -110,7 +110,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         //new_car->commRadius = (new_car->speed/3.6)*(new_car->speed/3.6)/2/new_car->a;
 
 
-        duallist_init(&new_car->packets);
+
         duallist_init(&new_car->neighbours);
         // duallist_init(&new_car->frontV);
         // duallist_init(&new_car->rearV);
@@ -177,6 +177,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
             new_car->rearV_Vehicles = new vector<struct vehicle*>;
             new_car->queue_Vehicles = new vector<struct vehicle*>;
             new_car->queue_Vehicles_slot = new vector<int>;
+            new_car->packets = new vector<struct packet*>;
 
             Car_Number++;
             duallist_add_to_tail(ALL_Vehicles, new_car);
@@ -192,10 +193,11 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         aCar = (struct vehicle*)aItem->datap;
         if(aCar->handled == 0){
 
-            delete aCar->front_Vehicles;
+            delete aCar->front_Vehicles;//车辆离开之前要进行统计再删除
             delete aCar->rearV_Vehicles;
             delete aCar->queue_Vehicles;
             delete aCar->queue_Vehicles_slot;
+            delete aCar->packets;
 
             struct Item* deleteItem = aItem;
             aItem = aItem->next;
