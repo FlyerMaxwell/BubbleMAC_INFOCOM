@@ -14,6 +14,11 @@
 #define ROLE_VeMAC 4
 
 
+//包的状态
+#define TX_COLI 0   //同时发射
+#define NO_COLI 1   //没有碰撞,正常解包
+#define RX_COLI 2   //接收端碰撞
+
 
 #include <fstream>
 using namespace std;
@@ -26,7 +31,7 @@ extern int UpLocSlot;
 extern int SlotPerFrame;
 extern int Car_Number;
 extern int cnt_pkt_tx;
-extern int cnt_pkt_0;
+extern int cnt_tx_collision;
 extern int cnt_pkt;
 extern int cnt_pkt_1;
 extern int cnt_pkt_2;
@@ -39,4 +44,6 @@ extern int len_tail_resouce;
 
 extern bool log_flag;
 extern  ofstream logfile;
+
+extern struct vehicle* collision_vehicle;
 #endif //BUBBLEMAC_INFOCOM_PARAMETERS_H

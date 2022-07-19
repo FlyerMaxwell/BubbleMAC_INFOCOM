@@ -57,8 +57,9 @@ void handle_transmitter(struct Duallist *ALL_Vehicles, int slot){
 //                    logACar(bCar, logfile);
 //                    logfile<<endl;
                     aCar->counter_rx_TxCollision++;
-                    cnt_pkt_0++;
+                    cnt_tx_collision++;
                     struct packet* pkt = generate_packet(aCar,bCar,slot,0);
+                    cout<<"timestamp = "<<pkt->timestamp<< ",there is a TX collision, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
                     duallist_add_to_head(&(bCar->packets), pkt);
                     //printf("A packet! cnt_pkt: %d, src: %s, dst:%s ,slot:%d, condition:%d \n", cnt_pkt, aCar->id, bCar->id,slot,pkt->condition);
                     // log_packet(pkt,slot);
@@ -127,8 +128,9 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
         if(cnt_cur_pkt == 1){
             bItem = (struct Item*)aCar->packets.head;
             struct packet* pkt= (struct packet*)bItem->datap;
-            pkt->condition = 1;
+            pkt->condition = NO_COLI;
             log_packet(pkt, slot, logfile);
+            cout<<"timestamp = "<<pkt->timestamp<< ",there is normal packet, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
 
             aCar->counter_rx_normal++;
             cnt_pkt_1++;
@@ -140,24 +142,25 @@ void handle_receiver(struct Duallist *ALL_Vehicles, int slot){
             bItem = (struct Item*)aCar->packets.head;
             while(bItem!=NULL){
                 struct packet* pkt= (struct packet*)bItem->datap;
-                pkt->condition = 2;
+                pkt->condition = RX_COLI;
+
                 log_packet(pkt,slot, logfile);
 
                 if(pkt->timestamp == slot){
-                    cout<<"timestamp = "<<pkt->timestamp<< ",there is a collision 2, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
+                    cout<<"timestamp = "<<pkt->timestamp<< ",there is a RX collision, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<< pkt->srcVehicle->commRadius<<" dst->commRange="<< pkt->dstVehicle->commRadius<<endl;
 
-                    if(pkt->srcVehicle->slot_condition == 1){
-                        //printf("hello!!!!_____________________________________________!!!!!!\n");
-                        //printf("%d %d\n",aCar->id,pkt->srcVehicle->id);
-                        struct collision* coli = generate_collision(aCar,pkt->srcVehicle,1,slot);
-                        // log_collision(coli);
-                        cout<<"timestamp = "<<pkt->timestamp<< ",there is a collision 2, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<<endl;
-                    }else if(pkt->srcVehicle->slot_condition == 2){
-                        //printf("hello!!!!_____________________________________________~~~~~~~\n");
-                        struct collision* coli = generate_collision(aCar,pkt->srcVehicle,2,slot);
-                        cout<<"timestamp = "<<pkt->timestamp<< ",there is a collision 2, pkt->src = "<<pkt->srcVehicle->id<<"pkt->dst = "<< pkt->dstVehicle<<endl;
-                        // log_collision(coli);
-                    }
+//                    if(pkt->srcVehicle->slot_condition == 1){
+//                        //printf("hello!!!!_____________________________________________!!!!!!\n");
+//                        //printf("%d %d\n",aCar->id,pkt->srcVehicle->id);
+//                        struct collision* coli = generate_collision(aCar,pkt->srcVehicle,1,slot);
+//                        // log_collision(coli);
+//                        cout<<"timestamp = "<<pkt->timestamp<< ",there is a collision 2, pkt->src = "<<pkt->srcVehicle->id<<" pkt->dst = "<< pkt->dstVehicle->id<<"src->slot="<<pkt->srcVehicle->slot_occupied <<" dst->slot= "<<pkt->dstVehicle->slot_occupied<<" src->role="<<pkt->srcVehicle->role_condition<<" src->role="<<pkt->dstVehicle->role_condition<<" src->commRange="<<endl;
+//                    }else if(pkt->srcVehicle->slot_condition == 2){
+//                        //printf("hello!!!!_____________________________________________~~~~~~~\n");
+//                        struct collision* coli = generate_collision(aCar,pkt->srcVehicle,2,slot);
+//                        cout<<"timestamp = "<<pkt->timestamp<< ",there is a collision 2, pkt->src = "<<pkt->srcVehicle->id<<"pkt->dst = "<< pkt->dstVehicle<<endl;
+//                        // log_collision(coli);
+//                    }
 
                    // printf("hello!!!!_____________________________________________\n");
                 }

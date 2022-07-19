@@ -9,7 +9,7 @@ int SlotPerFrame = 200;
 int Car_Number = 0;
 int cnt_pkt_tx = 0;
 
-int cnt_pkt_0;  //两个发射碰撞
+int cnt_tx_collision = 0;  //两个发射碰撞
 int cnt_pkt;
 int cnt_pkt_1;  //正常收包
 int cnt_pkt_2;  //产生碰撞的包
@@ -27,3 +27,4 @@ int len_tail_resouce = 10;
 
 bool log_flag = true;
 ofstream logfile;
+struct vehicle* collision_vehicle= nullptr;

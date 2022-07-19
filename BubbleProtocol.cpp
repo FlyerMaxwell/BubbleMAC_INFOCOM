@@ -13,10 +13,6 @@
 
 using namespace std;
 
-#define TX_COLI 0   //同时发射
-#define NO_COLI 1   //没有碰撞,正常解包
-#define RX_COLI 2   //接收端碰撞
-
 
 /*
  * 应该按照ve_MAC的感觉来写bubble MAC
@@ -343,7 +339,8 @@ void handle_packets(struct vehicle* aCar, int slot){
             bItem = bItem->next;
         }else if(pkt->condition == RX_COLI){//这种属于1个接收端同时有多个包送达，不能解出包，但是能感知到包的存在
             int index = (pkt->timestamp)%SlotPerFrame;
-            aCar->OHN[index] = pkt->srcVehicle;
+            aCar->OHN[index] = collision_vehicle;            //填自己的时候就表明发生碰撞了
+            aCar->THN[index] = collision_vehicle;
 
             bItem = bItem->next;
         }
@@ -433,7 +430,6 @@ struct vehicle* nearestVehicle(struct vehicle* aCar, vector<struct vehicle*> veh
 
 
 double safe_range(struct vehicle* aCar, struct vehicle* frontV){
-    double ans;
 
     if(frontV == nullptr){
         return (aCar->speed)*(aCar->speed)/2/(aCar->acc)+20;

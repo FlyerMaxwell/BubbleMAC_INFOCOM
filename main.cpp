@@ -8,6 +8,8 @@
 #include "BubbleProtocol.h"
 #include "Protocol_80211.h"
 #include "Protocol_VeMAC.h"
+#include "string.h"
+
 
 using namespace std;
 
@@ -54,6 +56,11 @@ int main(int argc, char *argv[]) {
     logfile <<"slot start from "<< slot_start<<" to "<<slot_end<<", the slot step is "<<slot_step<<endl<<endl;
 
     Car_Number = 0;
+
+
+
+    collision_vehicle = new struct vehicle;
+    strcpy(collision_vehicle->id,"collision");
 
     for(int slot = slot_start; slot < slot_end; slot += slot_step){
          //cout<<"slot = "<< slot<<endl;
@@ -106,7 +113,7 @@ int main(int argc, char *argv[]) {
 //        //if(slot>=SlotPerFrame)
 //            logfile<<endl;
     }
-    printf(" Total Cars: %d\n Total slot:%d \n cnt_pkt_tx: %d\n cnt_pkt_0: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n Receive Rate=%lf \n", Car_Number,slot_end,  cnt_pkt_tx, cnt_pkt_0, cnt_pkt_1, cnt_pkt_2, (double)(cnt_pkt_1)/(cnt_pkt_0+cnt_pkt_1+cnt_pkt_2));
+    printf(" Total Cars: %d\n Total slot:%d \n cnt_pkt_tx: %d\n cnt_tx_collision: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n Receive Rate=%lf \n", Car_Number,slot_end,  cnt_pkt_tx, cnt_tx_collision, cnt_pkt_1, cnt_pkt_2, (double)(cnt_pkt_1)/(cnt_tx_collision+cnt_pkt_1+cnt_pkt_2));
 
     logfile.close();
     return 0;
