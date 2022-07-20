@@ -71,14 +71,14 @@ int main(int argc, char *argv[]) {
     Car_Number = 0;
 
 
-
     collision_vehicle = new struct vehicle;
     strcpy(collision_vehicle->id,"rx_collision");
 
 
 
     for(int slot = slot_start; slot < slot_end; slot += slot_step){
-         //cout<<"slot = "<< slot<<endl;
+//        if(slot %1000 == 0)
+//            cout<<"slot = "<< slot<<endl;
 
 
          //Update Location every UpLocSlot slot
@@ -113,7 +113,8 @@ int main(int argc, char *argv[]) {
 
     }
     //printf(" Total Cars: %d\n Total slot:%d \n cnt_pkt_tx: %d\n cnt_tx_collision: %d\n cnt_pkt_1: %d\n cnt_pkt_2: %d\n Receive Rate=%lf \n", Car_Number,slot_end,  cnt_pkt_tx, cnt_tx_collision, cnt_pkt_1, cnt_pkt_2, (double)(cnt_pkt_1)/(cnt_tx_collision+cnt_pkt_1+cnt_pkt_2));
-
+    cout<<" Total Cars:"<<Car_Number<<endl;
+    cout<<" Total Slot:"<<slot_end<<endl;
     log_process_file.close();
     return 0;
 }
