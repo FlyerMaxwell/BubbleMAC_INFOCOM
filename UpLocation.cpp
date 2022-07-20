@@ -180,7 +180,6 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
             new_car->packets = new vector<struct packet*>;
 
             Car_Number++;
-            cnt_cars++;
 
             duallist_add_to_tail(ALL_Vehicles, new_car);
         }
@@ -207,6 +206,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
 
         }else{
             car_count++;
+            cnt_cars++;
             aItem = aItem->next;
         }
     }

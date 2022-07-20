@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
     srand(0);
 
     int slot_start = 0; //每个slot是0.5毫秒
-    int slot_end =400; //19200 挂掉了
+    int slot_end =1000; //19200 挂掉了
     int slot_step = 1;
 
     struct Duallist ALL_Vehicles;
