@@ -15,6 +15,8 @@ int main(int argc, char *argv[]) {
     cout<<"hello world"<<endl;
 
 
+
+
     // Set the trace path and traffic density
     string trace_path;
 //    int protocol = argv[2][0] - '0'; //0: bubble 1:802.11 2:veMAC
