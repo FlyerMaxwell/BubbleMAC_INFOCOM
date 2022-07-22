@@ -11,8 +11,8 @@ int Car_Number = 0;
 int traffic_density;
 
 int counterToChange = 3;
-int len_head_resource = 10;
-int len_tail_resouce = 10;
+int len_head_resource = 20;
+int len_tail_resouce = 20;
 
 
 // Log parameters

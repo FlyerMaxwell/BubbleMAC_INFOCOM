@@ -176,7 +176,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
             new_car->front_Vehicles = new vector<struct vehicle*>;
             new_car->rearV_Vehicles = new vector<struct vehicle*>;
             new_car->queue_Vehicles = new vector<struct vehicle*>;
-            new_car->queue_Vehicles_slot = new vector<int>;
+            //new_car->queue_Vehicles_slot = new vector<int>;
             new_car->packets = new vector<struct packet*>;
 
             Car_Number++;
@@ -197,7 +197,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
             delete aCar->front_Vehicles;//车辆离开之前要进行统计再删除
             delete aCar->rearV_Vehicles;
             delete aCar->queue_Vehicles;
-            delete aCar->queue_Vehicles_slot;
+            //delete aCar->queue_Vehicles_slot;
             delete aCar->packets;
 
             struct Item* deleteItem = aItem;

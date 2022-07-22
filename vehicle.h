@@ -73,8 +73,10 @@ typedef struct vehicle
     //front vehicles and rear vehicles From the last frame. For bubble MAC
     vector<struct vehicle*> *front_Vehicles;
     vector<struct vehicle*> *rearV_Vehicles;
+
+    // 储存本车队的时槽信息
     vector<struct vehicle*> *queue_Vehicles; //用这俩组合作为hashtable吧
-    vector<int> *queue_Vehicles_slot;
+//    vector<int> *queue_Vehicles_slot;
 
     struct vehicle* frontV;
     struct vehicle* rearV;

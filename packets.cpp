@@ -35,17 +35,26 @@ struct packet * generate_packet(struct vehicle *aCar, struct vehicle *bCar, int 
         pkt->OHN_snapshot[i] = aCar->OHN[i];
     }
 
-    pkt->hashtable_vehicles = new vector<struct vehicle*>;
+    pkt->hashtable_vehicles = new vector<struct vehicle*>;   //作用是传递车队信息
     pkt->hashtable_slot = new vector<int>;
 
-    for(int ii = 0; ii< SlotPerFrame; ii++){
-        struct vehicle* bCar = aCar->OHN[ii];
-        int slot_index = ii;
-
-        (*(pkt->hashtable_vehicles)).push_back(bCar);
-        (*(pkt->hashtable_slot)).push_back(slot_index);
-
+    int len = aCar->queue_Vehicles->size();
+    for(int i = 0; i< len; i++){
+        (*(pkt->hashtable_vehicles)).push_back((*(aCar->queue_Vehicles))[i]);
+        (*(pkt->hashtable_slot)).push_back((*(aCar->queue_Vehicles))[i]->slot_occupied);
     }
+
+
+//    for(int ii = 0; ii< SlotPerFrame; ii++){
+//        struct vehicle* bCar = aCar->OHN[ii];
+//        int slot_index = ii;
+//
+//        if (aCar->OHN[ii] != nullptr) {
+//            (*(pkt->hashtable_vehicles)).push_back(bCar);
+//            (*(pkt->hashtable_slot)).push_back(slot_index);
+//        }
+//
+//    }
 
 
     return pkt;

@@ -15,11 +15,9 @@ using namespace std;
 
 
 /*
- * 应该按照ve_MAC的感觉来写bubble MAC
+ *应该按照ve_MAC的感觉来写bubble MAC
  *
  * 时槽只有三种状态，申请、占有（head、 tail、 mid）、随机（单车）
- *
- *
  *
  * 整个的流程如下。对于每个时槽来说，需要根据身份进行具体的决策：
  *
@@ -268,7 +266,7 @@ void handle_packets(struct vehicle* aCar, int slot){
     (*(aCar->front_Vehicles)).clear();
     (*(aCar->rearV_Vehicles)).clear();
     (*(aCar->queue_Vehicles)).clear();
-    (*(aCar->queue_Vehicles_slot)).clear();
+//    (*(aCar->queue_Vehicles_slot)).clear();
 
     aCar->frontV = nullptr;
     aCar->rearV = nullptr;
@@ -324,7 +322,7 @@ void handle_packets(struct vehicle* aCar, int slot){
                     int slot_index = (*(pkt->hashtable_slot))[ii];
 
                     (*(aCar->queue_Vehicles)).push_back(bCar);
-                    (*(aCar->queue_Vehicles_slot)).push_back(slot_index);
+//                    (*(aCar->queue_Vehicles_slot)).push_back(slot_index);
                 }
 
             }else{//对于非同车道的车，若听到了一个tail，则将其车队信息更新到THN不可用中
@@ -340,7 +338,7 @@ void handle_packets(struct vehicle* aCar, int slot){
 
                         aCar->THN[slot_index] = bCar; //刷新THN
                         (*(aCar->queue_Vehicles)).push_back(bCar);
-                        (*(aCar->queue_Vehicles_slot)).push_back(slot_index);
+//                        (*(aCar->queue_Vehicles_slot)).push_back(slot_index);
 
                     }
                 }
@@ -393,7 +391,7 @@ bool IsMergingCollision(struct vehicle* aCar, int slot){
             }
 
             continue;
-        }else if(pkt->condition == 2){//对于冲突的包，只需要更新OHN为占用即可
+        }else if(pkt->condition == 2){      //对于冲突的包，只需要更新OHN为占用即可
             continue;
         }
     }
