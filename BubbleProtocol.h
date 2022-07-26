@@ -7,7 +7,15 @@
 
 
 #include<vector>
+#include <queue>
 using namespace std;
+
+
+void BubbleMAC(struct Duallist *ALL_Vehicles, int slot);
+void deleteOutdatedPackets(queue<struct packet*> *packets, int slot);
+void UpdateOneFrameInfo(struct vehicle* aCar);
+
+/*----------------------------*/
 
 void bubble(struct Duallist *ALL_Vehicles, int slot);
 

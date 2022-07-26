@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -38,6 +39,132 @@ using namespace std;
             -判断是否继续得到对应的认可，如果没有得到认可，则发生了Merging Collision，重新进行对应位置的申请
             -否则继续占用
  */
+
+
+
+void BubbleMAC(struct Duallist *ALL_Vehicles, int slot){
+    struct Item * aItem;
+    struct vehicle* aCar;
+
+    aItem = ALL_Vehicles->head;
+    while(aItem != NULL) {
+        aCar = (struct vehicle *) aItem->datap;
+
+        if(aCar->state == state_S){
+
+            //最特殊的case，刚刚出现不满一帧的车
+            if(slot < aCar->appear_timestamp + SlotPerFrame){ //对于刚刚出现的车，需要听满一个frame才进行决策
+
+                aItem = aItem->next;
+                continue;
+            }
+            // 更为single 不满一帧的情况，只需要继续调整半径，时槽保持不变
+            if((slot - aCar->state_timestamp)%SlotPerFrame != 0){
+                deleteOutdatedPackets(aCar->packets, slot);
+                UpdateOneFrameInfo(aCar);
+
+                choose_commRange(aCar,slot);
+
+                aItem = aItem->next;
+                continue;
+            }else{//对于已称为single满一帧的车辆，需要根据上一帧的信息进行决策
+                deleteOutdatedPackets(aCar->packets, slot);
+                UpdateOneFrameInfo(aCar);
+
+                choose_commRange(aCar,slot);
+
+                if(aCar->SameLaneFrontV == nullptr && aCar->SameLaneRearV == nullptr){
+
+                }else if(aCar->SameLaneRearV == nullptr && aCar->SameLaneRearV != nullptr){
+
+                }else if(aCar->SameLaneFrontV != nullptr && aCar->SameLaneRearV == nullptr){
+
+                }else{
+
+                }
+
+
+                aItem = aItem->next;
+                continue;
+
+            }
+
+
+
+
+        }else if(aCar->state == state_A){
+
+
+
+        }else if(aCar->state == state_O){
+
+
+
+        }
+
+
+
+
+    }
+}
+// 更新车辆的packets队列，将其中一帧以外的packets清除掉
+void deleteOutdatedPackets(queue<struct packet*> *packets, int slot){
+
+    if(packets->size() == 0)
+        return;
+
+    while(packets->size()!=0 && packets->front()->timestamp < slot - SlotPerFrame ){
+        free(packets->front());
+        packets->pop();
+    }
+
+    return;
+}
+
+// 根据一帧以内听到的packets，更新前后车、OHN、THN、车队
+void UpdateOneFrameInfo(struct vehicle* aCar){
+    aCar->SameLaneRearV_his = aCar->SameLaneRearV;
+    aCar->SameLaneFrontV_his = aCar->SameLaneFrontV;
+
+    aCar->prev_OHN->clear();
+
+    for(auto tmp: *(aCar->OHN))
+        aCar->prev_OHN->push_back(tmp);
+
+    aCar->OHN->clear();
+    aCar->THN->clear();
+
+
+
+
+
+    int len = aCar->packets->size();
+    while(len!=0){
+        struct packet* pkt = aCar->packets->front();
+        aCar->packets->pop();
+
+
+        //更新OHN
+        struct slot_info *info = (struct slot_info*)malloc(sizeof(struct slot_info ));
+        info->aCar = pkt->srcVehicle;
+        info->slot = pkt->timestamp;
+        aCar->OHN->push_back(info);
+
+        //更新THN
+
+
+
+        aCar->packets->push(pkt);
+        len--;
+    }
+}
+
+
+
+
+
+
+
 
 
 void bubble(struct Duallist *ALL_Vehicles, int slot){
@@ -327,43 +454,43 @@ void handle_packets(struct vehicle* aCar, int slot){
         }else if(pkt->condition == NO_COLI){//这种属于能够正常解的包
 
             //更新OHN
-            int index = (pkt->timestamp)%SlotPerFrame;
-            aCar->OHN[index] = pkt->srcVehicle;
-            aCar->THN[index] = pkt->srcVehicle;
+                int index = (pkt->timestamp)%SlotPerFrame;
+                aCar->OHN[index] = pkt->srcVehicle;
+                aCar->THN[index] = pkt->srcVehicle;
 
-            //更新THN
-            for(int i = 0; i < SlotPerFrame; i++){
-                if(pkt->OHN_snapshot[i]!=NULL && pkt->OHN_snapshot[i]!= aCar)
-                    aCar->THN[i] = pkt->OHN_snapshot[i];
-            }
-
-            //更新front_Vehicles, rear_Vehicles
-            if(strcmp(aCar->lane, pkt->srcVehicle->lane) == 0){ //处于相同车道
-                if(pkt->srcVehicle->pos > aCar->pos){//同车道前方
-                    (*(aCar->front_Vehicles)).push_back(pkt->srcVehicle);
-                }else{//同车道后方
-                    (*(aCar->rearV_Vehicles)).push_back(pkt->srcVehicle);
+                //更新THN
+                for(int i = 0; i < SlotPerFrame; i++){
+                    if(pkt->OHN_snapshot[i]!=NULL && pkt->OHN_snapshot[i]!= aCar)
+                        aCar->THN[i] = pkt->OHN_snapshot[i];
                 }
 
-                // 更新同车道前后最近邻车辆的信息
+                //更新front_Vehicles, rear_Vehicles
+                if(strcmp(aCar->lane, pkt->srcVehicle->lane) == 0){ //处于相同车道
+                    if(pkt->srcVehicle->pos > aCar->pos){//同车道前方
+                        (*(aCar->front_Vehicles)).push_back(pkt->srcVehicle);
+                    }else{//同车道后方
+                        (*(aCar->rearV_Vehicles)).push_back(pkt->srcVehicle);
+                    }
 
-                struct vehicle* tmp_rear = nearestVehicle(aCar, *(aCar->rearV_Vehicles));
-                struct vehicle* tmp_front = nearestVehicle(aCar, *(aCar->front_Vehicles));
+                    // 更新同车道前后最近邻车辆的信息
+
+                    struct vehicle* tmp_rear = nearestVehicle(aCar, *(aCar->rearV_Vehicles));
+                    struct vehicle* tmp_front = nearestVehicle(aCar, *(aCar->front_Vehicles));
 
 
-                if(tmp_rear != nullptr)
-                    aCar->rearV = tmp_rear;
-                if(tmp_front != nullptr)
-                    aCar->frontV = tmp_front;
+                    if(tmp_rear != nullptr)
+                        aCar->rearV = tmp_rear;
+                    if(tmp_front != nullptr)
+                        aCar->frontV = tmp_front;
 
-                // 更新车队信息,哪些车用了什么时槽
+                    // 更新车队信息,哪些车用了什么时槽
 //                    for(auto tmp: pkt->hashtable){
 //                        struct vehicle* bCar = tmp.first;
 //                        int slot_index = tmp.second;
 //                        aCar->queue_Vehicles[bCar] = slot_index;
 //                    }
-                for(int ii = 0; ii < (*(pkt->hashtable_slot)).size(); ii++)
-                    (*(aCar->queue_Vehicles)).push_back( (*(pkt->hashtable_vehicles))[ii]);
+                    for(int ii = 0; ii < (*(pkt->hashtable_slot)).size(); ii++)
+                        (*(aCar->queue_Vehicles)).push_back( (*(pkt->hashtable_vehicles))[ii]);
 
             }else{//对于非同车道的车，若听到了一个tail，则将其车队信息更新到THN不可用中
                 if(pkt->srcVehicle->role_condition == ROLE_T){

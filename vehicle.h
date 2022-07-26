@@ -107,6 +107,7 @@ typedef struct vehicle
 
     queue<struct packet*> *packets;
     vector<struct slot_info*> *OHN;
+    vector<struct slot_info*> *THN;
     vector<struct slot_info*> *prev_OHN;
 
 

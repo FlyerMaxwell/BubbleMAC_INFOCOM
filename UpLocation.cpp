@@ -128,6 +128,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
 
             new_car->packets = new queue<struct packet*>;
             new_car->OHN = new vector<struct slot_info*>;
+            new_car->THN = new vector<struct slot_info*>;
             new_car->prev_OHN = new vector<struct slot_info*>;
             new_car->frontQueue = new vector<struct slot_info*>;
             new_car->rearQueue = new vector<struct slot_info*>;
@@ -155,6 +156,8 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
            }
            for(auto tmp: *(aCar->OHN))
                free(tmp);
+            for(auto tmp: *(aCar->THN))
+                free(tmp);
            for(auto tmp :*(aCar->prev_OHN))
                free(tmp);
            for(auto tmp: *(aCar->frontQueue))
@@ -164,6 +167,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
 
             delete aCar->packets;//车辆离开之前要进行统计再删除
             delete aCar->OHN;
+            delete aCar->THN;
             delete aCar->prev_OHN;
             delete aCar->frontQueue;
             delete aCar->rearQueue;
