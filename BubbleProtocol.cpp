@@ -79,20 +79,32 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
             }else if(slot >= aCar->single_timestamp + SlotPerFrame){
                 if(aCar->frontV == nullptr && aCar->rearV == nullptr){
 
-                    aCar->forntV_his = aCar->frontV;
-                    aCar->rearV_his = aCar->rearV;
                     aCar->slot_occupied = choose_slot(aCar,ROLE_S, slot);//随机选择时槽 single
                     aCar->slot_condition = SINGLE; //保持single不变
                     aCar->single_timestamp = slot;//更新single_timestamp 否则后面每个时槽都会重新选择（我们只要一帧决策一次就好）
                     aCar->role_condition = ROLE_S;
                     choose_commRange(aCar,slot); //决策通信半径
+
+                    //Reset the Indicator
+                    aCar->forntV_his = aCar->frontV;
+                    aCar->rearV_his = aCar->rearV;
+                    aCar->frontV = nullptr;
+                    aCar->rearV = nullptr;
+                    for(int ii = 0; ii < SlotPerFrame; ii++){
+                        aCar->prev_OHN[ii] = aCar->OHN[ii];
+                        aCar->OHN[ii] = nullptr;
+                        aCar->THN[ii] = nullptr;
+                    }
+                    //前车，后车，以及他们所对应的时槽使用情况
+                    (*(aCar->front_Vehicles)).clear();
+                    (*(aCar->rearV_Vehicles)).clear();
+                    (*(aCar->queue_Vehicles)).clear();
+
                     aItem = aItem->next;
                     continue;
 
                 }else if(aCar->frontV == nullptr && aCar->rearV != nullptr){
 
-                    aCar->forntV_his = aCar->frontV;
-                    aCar->rearV_his = aCar->rearV;
                     aCar->slot_occupied = choose_slot(aCar,ROLE_H, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
@@ -103,8 +115,6 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                 }else if(aCar->frontV != nullptr && aCar->rearV == nullptr){
 
-                    aCar->forntV_his = aCar->frontV;
-                    aCar->rearV_his = aCar->rearV;
                     aCar->slot_occupied = choose_slot(aCar,ROLE_T, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
@@ -115,8 +125,6 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
 
                 }else{
 
-                    aCar->forntV_his = aCar->frontV;
-                    aCar->rearV_his = aCar->rearV;
                     aCar->slot_occupied = choose_slot(aCar,ROLE_I, slot);//随机选择时槽
                     aCar->slot_condition = ACCESS; //变为申请状态
                     aCar->acceess_timestamp = slot;
@@ -129,11 +137,10 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
             }
         }else if(aCar->slot_condition == ACCESS){
             if(slot < aCar->acceess_timestamp + SlotPerFrame){ //距离上次申请未超过一帧，不处理
-                // choose_commRange(aCar,slot); //决策通信半径,在一帧的中间要不要调整半径
+                choose_commRange(aCar,slot); //决策通信半径,在一帧的中间要不要调整半径
                 aItem = aItem->next;
                 continue;
-            }else if(slot == aCar->acceess_timestamp + SlotPerFrame){
-                int tmp = choose_slot(aCar, aCar->role_condition, slot);
+            }else if(slot >= aCar->acceess_timestamp + SlotPerFrame){
                 // 确定身份是否被对应位置的车辆认可
                 if(IsValidRole(aCar) == true){                 //如果被认可
                     // aCar->slot_occupied = tmp; // 使用上次选择的时槽，本次不更新
@@ -143,7 +150,7 @@ void bubble(struct Duallist *ALL_Vehicles, int slot){
                     aItem = aItem->next;
                     continue;
                 }else{                                      //若未得到对应位置车辆的认可
-                    aCar->slot_occupied = tmp;
+                    aCar->slot_occupied = choose_slot(aCar, aCar->role_condition, slot);
                     aCar->slot_condition = ACCESS;
                     aCar->acceess_timestamp = slot;
                     choose_commRange(aCar, slot);
@@ -265,24 +272,13 @@ int choose_slot(struct vehicle* aCar, int role, int slot){
 void handle_packets(struct vehicle* aCar, int slot){
     struct Item *bItem;
 
-
     //在何时初始化这些统计量
     if(aCar->role_condition == SINGLE & (slot - aCar->single_timestamp)%SlotPerFrame == 0){
-        aCar->frontV = nullptr;
-        aCar->rearV = nullptr;
 
-        for(int ii = 0; ii < SlotPerFrame; ii++){
-            aCar->prev_OHN[ii] = aCar->OHN[ii];
-            aCar->OHN[ii] = nullptr;
-            aCar->THN[ii] = nullptr;
-        }
-
-        //前车，后车，以及他们所对应的时槽使用情况
-        (*(aCar->front_Vehicles)).clear();
-        (*(aCar->rearV_Vehicles)).clear();
-        (*(aCar->queue_Vehicles)).clear();
 
     }else if(aCar->role_condition == ACCESS && (slot - aCar->acceess_timestamp)%SlotPerFrame == 0){
+        aCar->forntV_his = aCar->frontV;
+        aCar->rearV_his = aCar->rearV;
         aCar->frontV = nullptr;
         aCar->rearV = nullptr;
 
@@ -298,6 +294,8 @@ void handle_packets(struct vehicle* aCar, int slot){
         (*(aCar->queue_Vehicles)).clear();
 
     }else if(aCar->role_condition == OCCUPIED){
+        aCar->forntV_his = aCar->frontV;
+        aCar->rearV_his = aCar->rearV;
         aCar->frontV = nullptr;
         aCar->rearV = nullptr;
 
@@ -462,9 +460,9 @@ void choose_commRange(struct vehicle* aCar, int slot){
 
 // 找到一个链表（同车道）中，与aCar距离最近的车辆
 struct vehicle* nearestVehicle(struct vehicle* aCar, vector<struct vehicle*> vehicleList){
-    if(vehicleList.size() == 0){
+    if(vehicleList.size() == 0)
         return nullptr;
-    }
+
     struct vehicle* ans = vehicleList[0];
     for(int i = 0; i< vehicleList.size();i++){
         if(abs(vehicleList[i]->pos - aCar->pos) < abs(ans->pos - aCar->pos)){
@@ -476,10 +474,9 @@ struct vehicle* nearestVehicle(struct vehicle* aCar, vector<struct vehicle*> veh
 
 
 double safe_range(struct vehicle* aCar, struct vehicle* frontV){
+    if(frontV == nullptr)
+        return (aCar->speed)*(aCar->speed)/2/(aCar->acc)+ Max_speed*0.1;
+    else
+        return ((aCar->speed)*(aCar->speed) - (frontV->speed)*(frontV->speed))/2/aCar->acc +Max_speed*0.1;
 
-    if(frontV == nullptr){
-        return (aCar->speed)*(aCar->speed)/2/(aCar->acc)+20;
-    }else{
-        return ((aCar->speed)*(aCar->speed) - (frontV->speed)*(frontV->speed))/2/aCar->acc +20;
-    }
 }

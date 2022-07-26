@@ -7,6 +7,7 @@
 int UpLocSlot = 10;//每个slot单位是0.5ms，更新位置的时间间隔为5ms，故为5个slot.      slot/UpLocSlot即为第几个5ms，或第几个位置
 int SlotPerFrame = 200;
 int Car_Number = 0;
+int Max_speed;
 
 int traffic_density;
 

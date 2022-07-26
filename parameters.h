@@ -14,6 +14,26 @@
 #define ROLE_VeMAC 4
 
 
+//Bubble MAC related para
+
+#define S 0
+#define A 1
+#define O 2
+
+#define H 0
+#define I 1
+#define T 2
+
+
+
+
+
+
+
+
+
+
+
 //包的状态
 #define TX_COLI 0   //同时发射
 #define NO_COLI 1   //没有碰撞,正常解包
@@ -30,6 +50,7 @@ using namespace std;
 extern int UpLocSlot;
 extern int SlotPerFrame;
 extern int Car_Number;
+extern int Max_speed;
 
 
 extern int traffic_density;

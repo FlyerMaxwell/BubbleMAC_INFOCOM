@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
 //    trace_path = argv[1];       //读取文件路径
     trace_path = "C:\\Users\\cyx02\\Desktop\\transformed\\transformed\\carposition_";
     traffic_density = 240;
+    Max_speed = 22;
 
     cout<< "Current trace file is from:"<< trace_path <<"..."<<endl;
     cout<<"Current Protocol is Bubble MAC..."<<endl;

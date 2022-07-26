@@ -91,6 +91,10 @@ typedef struct vehicle
     int counter = 0;
 
 
+    //Bubble MAC Related para
+    int state;
+
+
 
 }Vehicle;
 
