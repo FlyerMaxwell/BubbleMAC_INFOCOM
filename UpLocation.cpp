@@ -41,7 +41,7 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
     struct vehicle *aCar, *bCar;
     int car_count = 0;
 
-    trace_path += to_string(slot/2);
+    trace_path += to_string(slot/20);//每个时槽是5毫秒，而车俩位置为50ms更新一次次
     trace_path += ".txt";
 
     //printf("Loading vehilces...\n");
@@ -71,55 +71,26 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         fscanf(fin, "%lf", &new_car->slope);
         fscanf(fin, "%lf", &new_car->flow);
         fscanf(fin, "%lf", &new_car->speed2);
-
         new_car->acc = 4.5;
-        new_car->turn = 0;
-        //init slot information
-        new_car->slot_condition = SINGLE;
-        new_car->role_condition = ROLE_S;
-        //new_car->slot_occupied = 0;
-        new_car->slot_occupied = -1;
-        new_car->slot_appeared = slot;
 
 
-        // new_car->queue_Vehicles.clear();
-        //init slot information for vemac
-        new_car->role_condition = ROLE_S;
-        new_car->slot_condition = SINGLE;
-        new_car->slot_occupied = -1;
-
-        new_car->counter_tx = 0;
-        new_car->counter_rx_TxCollision =0;
-        new_car->counter_rx_RxCollision = 0;
-        new_car->counter_rx_normal = 0;
-
-        if(new_car->angle >= 0 && new_car->angle <180) new_car->ve_resource_pool = 1;
-        else new_car->ve_resource_pool = 0;
+        new_car->appear_timestamp = slot;
+        new_car->state = state_S;
+        new_car->QueueRole = -1;
+        new_car->state_timestamp = slot;
+        new_car->transmission_slot = -1;
 
         if(new_car->angle >= 0 && new_car->angle <180) new_car->resource_pool = 1;
         else new_car->resource_pool = 0;
 
-        new_car->ve_count_srp = 3;
-        new_car->ve_check_flag = 1;
-        for(int ii = 0; ii < SlotPerFrame; ii++){
-            new_car->OHN[ii] = NULL;
-            new_car->THN[ii] = NULL;
-        }
-
-        // init commRange
-        //new_car->commRadius = (new_car->speed/3.6)*(new_car->speed/3.6)/2/new_car->a;
-
-
+        new_car->SameLaneFrontV = nullptr;
+        new_car->SameLaneFrontV_his = nullptr;
+        new_car->SameLaneRearV = nullptr;
+        new_car->SameLaneRearV_his = nullptr;
+        new_car->commRadius = 0;
 
         duallist_init(&new_car->neighbours);
-        // duallist_init(&new_car->frontV);
-        // duallist_init(&new_car->rearV);
 
-
-
-        new_car->single_timestamp = slot;
-        new_car->acceess_timestamp = -1;
-        new_car->occupied_timestamp = -1;
 
         //查找new_Car是否已经存在， 若存在，flag=true；若不存在，则flag = false;遍历一次ALL_Vehicles双链表，看是否已经存在（id是否相等），若相等则flag=true；若不相等，则flag=false
         flag = false;
@@ -140,44 +111,27 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
             bCar->angle = new_car->angle;
             bCar->speed = new_car->speed;
             bCar->pos = new_car->pos;
-            // bCar->lane = new_car->lane;// there may be an error.
-            // bCar->prev_lane = new_car->prev_lane;// error
-            if(strcmp(bCar->lane, new_car->lane) == 0){ // 判断是否进行变道，如果当前时刻与上一时刻的车道不同了，则turn变为1
-                bCar->turn = 0;
-            }else{
-                bCar->turn = 1;
-            }
-            strcpy(bCar->prev_lane, new_car->lane);//记录下来是从哪个车道便过来的
             strcpy(bCar->lane, new_car->lane);
-
             bCar->slope = new_car->slope;
             bCar->flow = new_car->flow;
             bCar->speed2 = new_car->speed2;
 
-            //update slot infor for vemac
-            //bCar->ve_slot_condition = new_car->ve_slot_condition;
-            //bCar->ve_slot_occupied = new_car->ve_slot_occupied;
-            bCar->ve_resource_pool = new_car->ve_resource_pool;
+
             bCar->resource_pool = new_car->resource_pool;
-            //bCar->ve_count_srp = new_car->ve_count_srp;
-            //bCar->ve_check_flag = new_car->ve_check_flag;
-
-
             bCar->handled = 1;//已有的车辆且处理
-            // bCar->commRadius = new_car->commRadius;
-            bCar->resource_pool = new_car->resource_pool;
-            // duallist_pick_item(ALL_Vehicles, bItem);//这样做也没错，只是没必要。。先不改了
-            // duallist_add_to_tail(ALL_Vehicles, bCar);//添加更新后的节点
+
             free(new_car);
         }
 
         //若之前不存在,则添加新车
         if (flag == false){
-            new_car->front_Vehicles = new vector<struct vehicle*>;
-            new_car->rearV_Vehicles = new vector<struct vehicle*>;
-            new_car->queue_Vehicles = new vector<struct vehicle*>;
-            //new_car->queue_Vehicles_slot = new vector<int>;
-            new_car->packets = new vector<struct packet*>;
+
+            new_car->packets = new queue<struct packet*>;
+            new_car->OHN = new vector<struct slot_info*>;
+            new_car->prev_OHN = new vector<struct slot_info*>;
+            new_car->frontQueue = new vector<struct slot_info*>;
+            new_car->rearQueue = new vector<struct slot_info*>;
+
 
             Car_Number++;
 
@@ -194,12 +148,27 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         aCar = (struct vehicle*)aItem->datap;
         if(aCar->handled == 0){
 
-            delete aCar->front_Vehicles;//车辆离开之前要进行统计再删除
-            delete aCar->rearV_Vehicles;
-            delete aCar->queue_Vehicles;
-            //delete aCar->queue_Vehicles_slot;
-            delete aCar->packets;
+            //防止内存泄露
+           while(!(aCar->packets->empty())){
+               free(aCar->packets->front());
+               aCar->packets->pop();
+           }
+           for(auto tmp: *(aCar->OHN))
+               free(tmp);
+           for(auto tmp :*(aCar->prev_OHN))
+               free(tmp);
+           for(auto tmp: *(aCar->frontQueue))
+               free(tmp);
+           for(auto tmp : *(aCar->rearQueue))
+               free(tmp);
 
+            delete aCar->packets;//车辆离开之前要进行统计再删除
+            delete aCar->OHN;
+            delete aCar->prev_OHN;
+            delete aCar->frontQueue;
+            delete aCar->rearQueue;
+
+            //节点删除
             struct Item* deleteItem = aItem;
             aItem = aItem->next;
             duallist_pick_item(ALL_Vehicles, deleteItem);
@@ -211,8 +180,6 @@ void updateLocation(struct Duallist *ALL_Vehicles, int slot, string trace_path){
         }
     }
 
-    //printf("total car number in this slot: %d\n", car_count);
-    //printf("Vehicles have been loaded!\n");
     return;
 }
 

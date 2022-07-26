@@ -5,29 +5,17 @@
 #ifndef BUBBLEMAC_INFOCOM_PARAMETERS_H
 #define BUBBLEMAC_INFOCOM_PARAMETERS_H
 
-#define ROLE_S 0
-#define ROLE_H 1
-#define ROLE_T 2
-#define ROLE_I 3
-#define ROLE_A 4   //在申请
-
-#define ROLE_VeMAC 4
-
-
 //Bubble MAC related para
 
-#define S 0
-#define A 1
-#define O 2
+// For state
+#define state_S 0
+#define state_A 1
+#define state_O 2
 
-#define H 0
-#define I 1
-#define T 2
-
-
-
-
-
+//For QueueRole
+#define role_H 0
+#define role_I 1
+#define role_T 2
 
 
 

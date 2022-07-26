@@ -13,10 +13,23 @@ using namespace std;
 
 
 typedef struct packet{
+
+    /*----Bubble Related---------*/
     struct vehicle* srcVehicle, *dstVehicle;//for debug
     //timestamp
     int timestamp;
     int condition;//0 for tx collsion;1 for not
+
+    vector<struct slot_info*> *OHN;
+    vector<struct slot_info*> *frontQueue;
+    vector<struct slot_info*> *rearQueue;
+
+    /*-----------------------*/
+
+
+
+
+
 
     //basic info
     char id[20];

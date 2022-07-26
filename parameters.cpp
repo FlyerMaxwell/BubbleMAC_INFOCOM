@@ -4,8 +4,8 @@
 
 #include "parameters.h"
 
-int UpLocSlot = 10;//每个slot单位是0.5ms，更新位置的时间间隔为5ms，故为5个slot.      slot/UpLocSlot即为第几个5ms，或第几个位置
-int SlotPerFrame = 200;
+int UpLocSlot = 100;//每个slot单位是0.5ms，更新位置的时间间隔为50ms，故为100个slot.      slot/UpLocSlot即为第几个5ms，或第几个位置
+int SlotPerFrame = 200; //每一帧0.1秒，100ms，是200个slot，那么每个slot的时间为0.5毫秒
 int Car_Number = 0;
 int Max_speed;
 
